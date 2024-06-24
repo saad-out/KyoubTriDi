@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/06/24 12:56:39 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:16:42 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,14 @@ int	main(void)
 	t_mlx *mlx;
 	mlx = (t_mlx *)malloc(sizeof(t_mlx));
 	ft_init(mlx);
-	my_mlx_pixel_put(&mlx->img, 10, 10, 0x00FF0000);
+	printf("line_length: %d\n", mlx->img.line_length);
+	printf("bpp: %d\n", mlx->img.bpp);
+	// printf("mlx->img: %p\n", &mlx->img);
+	// printf("mlx->img->img_ptr: %p\n", mlx->img.img_ptr);
+	// printf("mlx->img->addr: %p\n", mlx->img.addr);
+	my_mlx_pixel_put(&mlx->img, 0, 2, 0x00FF0000);	
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win, mlx->img.img_ptr, 0, 0);
+	mlx_loop(mlx->mlx_ptr);
 	// for (int i = 0; i < MAP_NUM_COLS; i++)
 	// {
 	// 	for (int j = 0; j < MAP_NUM_ROWS; j++)
@@ -37,5 +43,4 @@ int	main(void)
 	// 			draw_square(&mlx->img, j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, 0x00FF0000);
 	// 	}
 	// }
-	mlx_loop(mlx->mlx_ptr);
 }
