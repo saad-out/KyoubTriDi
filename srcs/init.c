@@ -6,7 +6,30 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:43:36 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/06/23 12:44:14 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/06/24 10:41:05 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/cub3d.h"
+
+void	ft_init(t_mlx *mlx)
+{
+	mlx->mlx_ptr = mlx_init();
+	if (NULL == mlx->mlx_ptr)
+		free(mlx);
+	mlx->win = mlx_new_window(mlx->mlx_ptr, WIDTH, HEIGHT, "cub3D");
+	if (NULL == mlx->win)
+	{
+		mlx_destroy_display(mlx->mlx_ptr);
+		free(mlx);
+	}
+	mlx->img.img_ptr = mlx_new_image(mlx->mlx_ptr, WIDTH, HEIGHT);
+	if (NULL == mlx->img.img_ptr)
+	{
+		mlx_destroy_window(mlx->mlx_ptr, mlx->win);
+		mlx_destroy_display(mlx->mlx_ptr);
+		free(mlx);
+	}
+	mlx->img.addr = mlx_get_data_addr(mlx->mlx_ptr, &mlx->img.bpp,
+			&mlx->img.line_length, &mlx->img.endian);
+}
