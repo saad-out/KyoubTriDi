@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/06/24 10:41:32 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/06/24 12:23:24 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 /*   Mcros   */
 # define WIDTH 640
 # define HEIGHT 480
+# define MAP_NUM_ROWS 5
+# define MAP_NUM_COLS 5
+# define TILE_SIZE 24
 
 /*   Includes   */
 # include "../libs/minilibx-linux/mlx.h"
@@ -52,4 +55,7 @@ struct					s_mlx
 
 /*   Prototypes   */
 void					ft_init(t_mlx *mlx);
+void					my_mlx_pixel_put(t_img *img, int x, int y, int color);
+void					draw_square(t_img *img, int x, int y, int size,
+							int color);
 #endif
