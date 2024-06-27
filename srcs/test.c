@@ -6,11 +6,12 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:43:02 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/06/24 14:50:47 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/06/26 11:44:59 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libs/minilibx-linux/mlx.h"
+#include <stdio.h>
 
 typedef struct s_data
 {
@@ -36,11 +37,13 @@ int	main(void)
 	t_data img;
 
 	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!");
-	img.img = mlx_new_image(mlx, 1920, 1080);
+	mlx_win = mlx_new_window(mlx, 420, 300, "Hello world!");
+	img.img = mlx_new_image(mlx, 420, 300);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
 			&img.endian);
 	my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
+	printf("line_length: %d\n", img.line_length);
+	printf("bpp: %d\n", img.bits_per_pixel);
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
 	mlx_loop(mlx);
 }
