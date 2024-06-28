@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/06/24 12:23:24 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/06/27 11:37:12 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # define HEIGHT 480
 # define MAP_NUM_ROWS 5
 # define MAP_NUM_COLS 5
-# define TILE_SIZE 24
+# define TILE_SIZE 100
 
 /*   Includes   */
 # include "../libs/minilibx-linux/mlx.h"
@@ -51,6 +51,19 @@ struct					s_mlx
 	void				*mlx_ptr;
 	void				*win;
 	t_img				img;
+};
+
+struct					player
+{
+	float				x;
+	float				y;
+	float				width;
+	float				height;
+	int					turnDirection;
+	int					walkDirection;
+	float				rotationAngle;
+	float				walkSpeed;
+	float				turnSpeed;
 };
 
 /*   Prototypes   */
