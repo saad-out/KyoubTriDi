@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 11:13:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/01 10:30:58 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/01 14:54:24 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,19 @@ void check_extension(char *file)
 		ft_error();
 }
 
+void check_all_is_walls(char *line)
+{
+	int i;
+
+	i = 0;
+	while (line[i] != '\0')
+	{
+		if (line[i] != '1' && line[i] != ' ')
+			ft_error();
+		i++;
+	}
+}
+
 void	parse_map_file(char *file, t_map_data *map_data)
 {
 	int fd;
@@ -173,12 +186,34 @@ void	parse_map_file(char *file, t_map_data *map_data)
 		// 	free(line);
 		line = get_next_line(fd);
 		// skip_spaces_new_line(&line);
-		// if (line[0] == '1')
-			// break;
+		if (line[0] == '1')
+			check_all_is_walls(line);
+		break;
+			
 	}
 	while (line)
 	{
-		// Parsing the map
+		line = get_next_line(fd);
+		line = ft_strtrim(line, " ");
+		printf("%s\n", line);
+		int i = 0;
+		while (i < ft_strlen(line))
+		{
+			if (line[i] == '0')
+			{
+				if (line[i - 1])
+				{
+					if(line[i - 1] != ' ' && line[i - 1] != '1')
+						ft_error();	
+				}
+				if (line[i + 1])
+				{
+					if(line[i + 1] != ' ' && line[i + 1] != '1')
+						ft_error();	
+				}
+			}
+			i++;
+		}		
 	}
 	
 	printf("NO: %s\n", map_data->no_texture);
