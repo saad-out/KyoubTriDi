@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/06/29 13:23:58 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/01 15:20:30 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # define TILE_SIZE 100
 
 /*   Includes   */
+# include "../libs/ft_containers/ft_data_structres.h"
 # include "../libs/libft/libft.h"
 # include "../libs/minilibx-linux/mlx.h"
 # include <errno.h>
@@ -87,7 +88,6 @@ struct						s_map_data
 	t_map_grid				map;
 };
 
-
 /*   Prototypes   */
 void						ft_init(t_mlx *mlx);
 void						my_mlx_pixel_put(t_img *img, int x, int y,
@@ -96,5 +96,5 @@ void						draw_square(t_img *img, int x, int y, int size,
 								int color);
 void						draw_map(t_mlx *mlx, t_map_data *map_data);
 /*   Parsing   */
-void	parse_map_file(char *file, t_map_data *map_data);
+void						parse_map_file(char *file, t_map_data *map_data);
 #endif

@@ -6,12 +6,13 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 11:13:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/01 14:54:24 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/01 15:38:38 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 #include "../includes/get_next_line.h"
+
 
 void	ft_error(void)
 {
@@ -92,6 +93,7 @@ int	get_color(char **line)
 	check_valide_number(b);
 	return (t << 24 | r << 16 | g << 8 | b);
 }
+
 // void skip_spaces_new_line(char **line)
 // {
 // 	while (**line == ' ' || **line == '\n')
@@ -128,6 +130,7 @@ void	parse_map_file(char *file, t_map_data *map_data)
 	char *line;
 	int i;
 	int j;
+	int counter_elements;
 
 	check_extension(file);
 	fd = open(file, O_RDONLY);
@@ -145,6 +148,7 @@ void	parse_map_file(char *file, t_map_data *map_data)
 			line += 2;
 			skip_spaces(&line);
 			map_data->no_texture = get_path(line);
+			++counter_elements;
 		}
 		else if (line[0] == 'S')
 		{
@@ -153,6 +157,7 @@ void	parse_map_file(char *file, t_map_data *map_data)
 			line += 2;
 			skip_spaces(&line);
 			map_data->so_texture = get_path(line);
+			++counter_elements;
 		}
 		else if (line[0] == 'W')
 		{
@@ -161,6 +166,7 @@ void	parse_map_file(char *file, t_map_data *map_data)
 			line += 2;
 			skip_spaces(&line);
 			map_data->we_texture = get_path(line);
+			++counter_elements;
 		}
 		else if (line[0] == 'E')
 		{
@@ -169,53 +175,53 @@ void	parse_map_file(char *file, t_map_data *map_data)
 			line += 2;
 			skip_spaces(&line);
 			map_data->ea_texture = get_path(line);
+			++counter_elements;
 		}
 		else if (line[0] == 'F')
 		{
 			line++;
 			skip_spaces(&line);
 			map_data->floor_color = get_color(&line);
+			++counter_elements;
 		}
 		else if (line[0] == 'C')
 		{
 			line++;
 			skip_spaces(&line);
 			map_data->ceil_color = get_color(&line);
+			++counter_elements;
 		}
-		// if (line)
-		// 	free(line);
+		else if (line[0] != '\0')
+			ft_error();
+		free(line);
 		line = get_next_line(fd);
-		// skip_spaces_new_line(&line);
-		if (line[0] == '1')
-			check_all_is_walls(line);
-		break;
-			
-	}
-	while (line)
-	{
-		line = get_next_line(fd);
-		line = ft_strtrim(line, " ");
-		printf("%s\n", line);
-		int i = 0;
-		while (i < ft_strlen(line))
-		{
-			if (line[i] == '0')
-			{
-				if (line[i - 1])
-				{
-					if(line[i - 1] != ' ' && line[i - 1] != '1')
-						ft_error();	
-				}
-				if (line[i + 1])
-				{
-					if(line[i + 1] != ' ' && line[i + 1] != '1')
-						ft_error();	
-				}
-			}
-			i++;
-		}		
+		if (counter_elements == 6)
+			break;
 	}
 	
+	while (line)
+	{
+		skip_spaces(&line);
+		if (line[0] != '\0')
+			break;
+		free(line);
+		line = get_next_line(fd);
+	}
+	t_list *head = NULL;
+	size_t max_len = 0;
+	while (line)
+	{
+		//trim the end spaces !!!!!!!!!
+		size_t curr_len = ft_strlen(line);
+		if (max_len < curr_len)
+			max_len = curr_len;
+		ft_lstadd_back(&head, ft_lstnew(line));
+		free(line);
+		line = get_next_line(fd);	
+	}
+	// build the 2D map of the game
+	map_data->map.map = (char **)malloc(sizeof(char *) * ft_lstsize(head));
+		
 	printf("NO: %s\n", map_data->no_texture);
 	printf("SO: %s\n", map_data->so_texture);
 	printf("WE: %s\n", map_data->we_texture);
