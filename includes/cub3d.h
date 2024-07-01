@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/06/29 11:10:21 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/06/29 13:23:58 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,14 @@ struct						s_player
 	float					turnSpeed;
 };
 
+struct						s_map_grid
+{
+	int						rows;
+	int						cols;
+	char					**map;
+	t_player				player;
+};
+
 struct						s_map_data
 {
 	int						ceil_color;
@@ -79,13 +87,6 @@ struct						s_map_data
 	t_map_grid				map;
 };
 
-struct						s_map_grid
-{
-	int						rows;
-	int						cols;
-	char					**map;
-	t_player				player;
-};
 
 /*   Prototypes   */
 void						ft_init(t_mlx *mlx);
@@ -93,4 +94,7 @@ void						my_mlx_pixel_put(t_img *img, int x, int y,
 								int color);
 void						draw_square(t_img *img, int x, int y, int size,
 								int color);
+void						draw_map(t_mlx *mlx, t_map_data *map_data);
+/*   Parsing   */
+void	parse_map_file(char *file, t_map_data *map_data);
 #endif
