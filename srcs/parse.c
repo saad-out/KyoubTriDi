@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 11:13:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/01 09:34:00 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/01 10:30:58 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,11 @@ int	get_color(char **line)
 	check_valide_number(b);
 	return (t << 24 | r << 16 | g << 8 | b);
 }
-void skip_spaces_new_line(char **line)
-{
-	while (**line == ' ' || **line == '\n')
-		(*line)++;
-}
+// void skip_spaces_new_line(char **line)
+// {
+// 	while (**line == ' ' || **line == '\n')
+// 		(*line)++;
+// }
 
 void check_extension(char *file)
 {
@@ -172,15 +172,14 @@ void	parse_map_file(char *file, t_map_data *map_data)
 		// if (line)
 		// 	free(line);
 		line = get_next_line(fd);
-		skip_spaces_new_line(&line);
-		if (line[0] == '1')
-			break;
+		// skip_spaces_new_line(&line);
+		// if (line[0] == '1')
+			// break;
 	}
 	while (line)
 	{
-		// PArsing the map
+		// Parsing the map
 	}
-	
 	
 	printf("NO: %s\n", map_data->no_texture);
 	printf("SO: %s\n", map_data->so_texture);
