@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 08:48:21 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/06/29 11:22:13 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/04 10:28:34 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_line
 }					t_line;
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 2
+#  define BUFFER_SIZE 42
 # endif
 
 char				*get_next_line(int fd);

@@ -3,53 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 09:39:47 by klakbuic          #+#    #+#             */
-/*   Updated: 2023/11/08 09:44:02 by klakbuic         ###   ########.fr       */
+/*   Created: 2023/11/03 15:52:35 by soutchak          #+#    #+#             */
+/*   Updated: 2024/07/03 09:38:29 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include <stdlib.h>
+#include <string.h>
 
-static int	fix_leaks(char **strs, int i)
+static int	ft_count_words(char const *s, char c)
 {
-	int	j;
-
-	j = 0;
-	while (j <= i)
-	{
-		free(strs[j]);
-		j++;
-	}
-	free(strs);
-	return (1);
-}
-
-static size_t	words_count(char *s, char c)
-{
-	size_t	nb;
-	size_t	i;
+	int	words;
+	int	i;
 
 	if (!s)
 		return (0);
-	nb = 0;
-	i = 1;
-	while (*s == c && *s)
-		s++;
-	while (*s && s[i])
-	{
-		if (s[i] == c && s[i - 1] != c)
-			nb++;
-		else if (s[i] != c && s[i + 1] == '\0')
-			nb++;
+	words = 0;
+	i = 0;
+	while (s[i] && s[i] == c)
 		i++;
+	if (!s[i])
+		return (0);
+	while (s[i])
+	{
+		if (s[i] != c)
+		{
+			words++;
+			while (s[i] && s[i] != c)
+				i++;
+		}
+		else
+			i++;
 	}
-	return (nb);
+	return (words);
 }
 
-static size_t	len_count(char const *s, char c)
+static size_t	ft_strlen_c(char const *s, char c)
 {
 	size_t	len;
 
@@ -59,31 +50,58 @@ static size_t	len_count(char const *s, char c)
 	return (len);
 }
 
+static int	ft_strcpy_k(char *dest, char const *src, int c)
+{
+	int	i;
+
+	i = 0;
+	while (src[i] && src[i] != c)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	if (c != '\0')
+	{
+		while (src[i] == c)
+			i++;
+	}
+	return (i);
+}
+
+char	**ft_free_all(char **arr, int i)
+{
+	if (!arr)
+		return (NULL);
+	while (i >= 0)
+		free(arr[i--]);
+	free(arr);
+	return (NULL);
+}
+
 char	**ft_split(char const *s, char c)
 {
-	char	*str;
-	char	**strs;
-	size_t	words;
-	size_t	i;
+	int		words;
+	int		i;
+	int		k;
+	char	**arr;
 
-	str = (char *)s;
-	words = words_count(str, c);
-	strs = (char **)malloc(sizeof(char *) * (words + 1));
-	if (!strs)
+	words = ft_count_words(s, c);
+	arr = (char **)malloc(sizeof(char *) * (words + 1));
+	if (!arr)
 		return (NULL);
 	i = 0;
+	k = 0;
+	while (s && s[k] && s[k] == c)
+		k++;
 	while (i < words)
 	{
-		while ((*str == c && *str != '\0'))
-			str++;
-		strs[i] = (char *)malloc(sizeof(char) * (len_count(str, c) + 1));
-		if (!strs[i] && fix_leaks(strs, i))
-			return (NULL);
-		ft_memcpy(strs[i], str, len_count(str, c));
-		strs[i++][len_count(str, c)] = '\0';
-		while ((*str != c && *str != '\0'))
-			str++;
+		arr[i] = (char *)malloc(sizeof(char) * (ft_strlen_c(s + k, c) + 1));
+		if (!arr[i])
+			return (ft_free_all(arr, --i));
+		k += ft_strcpy_k(arr[i], s + k, c);
+		i++;
 	}
-	strs[i] = NULL;
-	return (strs);
+	arr[i] = 0;
+	return (arr);
 }
