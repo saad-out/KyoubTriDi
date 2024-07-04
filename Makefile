@@ -6,7 +6,7 @@
 #    By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/20 16:06:03 by klakbuic          #+#    #+#              #
-#    Updated: 2024/06/29 13:23:07 by klakbuic         ###   ########.fr        #
+#    Updated: 2024/07/04 09:58:35 by klakbuic         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ CFLAGS       = -Wall -Wextra $(DEBUG) #-Werror
 MLX          = libs/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm
 LIBFT		 = libs/libft/libft.a
 SRCSDIR      = srcs
-SRCSFILES    = draw.c  get_next_line.c  get_next_line_utils.c  init.c  main.c  parse.c
+SRCSFILES    = draw.c  get_next_line.c  get_next_line_utils.c  init.c  main.c  parse2.c mem.c  parse_utils.c
 SRCS	     = $(addprefix $(SRCSDIR)/, $(SRCSFILES))
 
 OBJSDIR      = obj
