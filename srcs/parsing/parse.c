@@ -74,21 +74,18 @@ int	get_color(char *joined)
 	line = &joined;
 	t = 0;
 	r = ft_atoi_rgb(line);
-	// printf("r: %d\n", r);
 	skip_whitespace(line);
 	if (**line == ',')
 		(*line)++;
 	else
 		ft_error();
 	g = ft_atoi_rgb(line);
-	// printf("g: %d\n", g);
 	skip_whitespace(line);
 	if (**line == ',')
 		(*line)++;
 	else
 		ft_error();
 	b = ft_atoi_rgb(line);
-	// printf("b: %d\n", b);
 	return (t << 24 | r << 16 | g << 8 | b);
 }
 
@@ -139,7 +136,7 @@ void	parse_map_file(char *file, t_map_data *map_data)
 		}
 		else if (ft_strcmp(splited_line[0], "C") == 0 && splited_line[1])
 		{
-			map_data->ceil_color = get_color(join_splited(splited_line));			
+			map_data->ceil_color = get_color(join_splited(splited_line));		
 		}
 		free_split(splited_line);
 		free(line);

@@ -6,7 +6,7 @@
 #    By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/20 16:06:03 by klakbuic          #+#    #+#              #
-#    Updated: 2024/07/04 09:58:35 by klakbuic         ###   ########.fr        #
+#    Updated: 2024/07/04 12:34:13 by klakbuic         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,13 +16,24 @@ HEADER       = /includes/cub3d.h
 CC           = cc
 DEBUG        = -g3 -fsanitize=address
 CFLAGS       = -Wall -Wextra $(DEBUG) #-Werror
+
+# libs
 MLX          = libs/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm
 LIBFT		 = libs/libft/libft.a
-SRCSDIR      = srcs
-SRCSFILES    = draw.c  get_next_line.c  get_next_line_utils.c  init.c  main.c  parse2.c mem.c  parse_utils.c
+
+# directories
+SRCSDIR      := srcs
+OBJSDIR      := obj
+PARSEDIR     := parsing
+UTILSDIR     := utils
+
+# sources files
+PARSE		:= get_next_line.c  get_next_line_utils.c  parse.c  parse_utils.c
+UTILS		:= mem.c
+RENDER		:= draw.c  init.c
+
 SRCS	     = $(addprefix $(SRCSDIR)/, $(SRCSFILES))
 
-OBJSDIR      = obj
 OBJSFILES    = $(SRCSFILES:.c=.o)
 OBJS	     = $(addprefix $(OBJSDIR)/, $(OBJSFILES))
 
