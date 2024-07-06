@@ -6,7 +6,7 @@
 #    By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/20 16:06:03 by klakbuic          #+#    #+#              #
-#    Updated: 2024/07/06 09:30:27 by klakbuic         ###   ########.fr        #
+#    Updated: 2024/07/06 10:48:05 by klakbuic         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,8 @@ CFLAGS       = -Wall -Wextra $(DEBUG) #-Werror
 # libs
 MLX          = libs/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm
 LIBFT        = libs/libft/libft.a
+CONTAINERS   = libs/ft_containers/containersft.a
+LIBS         = $(MLX) $(LIBFT) $(CONTAINERS)
 
 # directories
 SRCSDIR      := srcs
@@ -29,7 +31,7 @@ UTILSDIR     := utils
 RENDERDIR    := render
 
 # sources files
-PARSE        := get_next_line.c  get_next_line_utils.c  parse.c  parse_utils.c
+PARSE        := get_next_line.c  get_next_line_utils.c  parse.c  parse_elements.c  parse_map.c  parse_utils.c
 UTILS        := mem.c
 RENDER       := draw.c  init.c
 
@@ -45,7 +47,7 @@ OBJS         := $(patsubst srcs/%.c, obj/%.o,$(SRCS))
 all: $(NAME)
 
 $(NAME): $(OBJSDIR) $(OBJS)
-	@$(CC) $(CFLAGS) $(OBJS) $(MLX) $(LIBFT) -I $(HEADER) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -I $(HEADER) -o $(NAME)
 
 $(OBJS) : $(OBJSDIR)/%.o : $(SRCSDIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@

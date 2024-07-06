@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstadd_at_index.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khalid <khalid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:03:28 by khalid            #+#    #+#             */
-/*   Updated: 2024/02/04 12:44:07 by khalid           ###   ########.fr       */
+/*   Updated: 2024/07/06 10:39:09 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_lst.h"
 
-bool	ft_lstadd_at_index(t_list **lst, t_list *new, unsigned int index)
+bool	ft_lstadd_at_index(t_lst **lst, t_lst *new, unsigned int index)
 {
-	t_list			*head;
+	t_lst			*head;
 	unsigned int	i;
 
 	if (lst == NULL || new == NULL)

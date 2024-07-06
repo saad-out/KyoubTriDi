@@ -6,11 +6,11 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 08:02:19 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/06/29 13:07:49 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/06 11:12:55 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/get_next_line.h"
+#include "../../includes/get_next_line.h"
 #define TRUE 1
 
 int	ft_lst_clear(t_list **lst)

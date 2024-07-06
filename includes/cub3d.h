@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/04 09:58:52 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/06 10:23:07 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,17 @@ void						my_mlx_pixel_put(t_img *img, int x, int y,
 void						draw_square(t_img *img, int x, int y, int size,
 								int color);
 void						draw_map(t_mlx *mlx, t_map_data *map_data);
+
 /*   Parsing   */
 void						ft_error(void);
+void						skip_digits(char **line);
+void						skip_whitespace(char **line);
+void						check_extension(char *filename);
+char						*join_splited(char **splited_line);
+int							get_color(char *joined);
 int							ft_atoi_rgb(char **str);
 void						parse_map_file(char *file, t_map_data *map_data);
+/* --------   */
 /*   Mem   */
 void						free_split(char **split);
 #endif

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstsearch_item.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khalid <khalid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:00:54 by khalid            #+#    #+#             */
-/*   Updated: 2024/02/04 13:00:23 by khalid           ###   ########.fr       */
+/*   Updated: 2024/07/06 10:39:34 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_lst.h"
 
-void	*ft_lstsearh_item(t_list *lst, void *ref, int (*cmp)())
+void	*ft_lstsearh_item(t_lst *lst, void *ref, int (*cmp)())
 {
 	if (lst == NULL || cmp == NULL)
 		return (NULL);

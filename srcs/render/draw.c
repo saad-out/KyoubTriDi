@@ -6,11 +6,11 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 12:08:19 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/06/26 11:45:10 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/06 09:02:48 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
  void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_stack.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khalid <khalid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:49:09 by khalid            #+#    #+#             */
-/*   Updated: 2024/02/04 12:36:59 by khalid           ###   ########.fr       */
+/*   Updated: 2024/07/06 10:46:11 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 typedef struct s_struct
 {
-	t_list	*top;
+	t_lst	*top;
 	size_t	size;
 }			t_stack;
 

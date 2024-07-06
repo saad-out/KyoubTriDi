@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstdel_at_index.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khalid <khalid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:34:51 by khalid            #+#    #+#             */
-/*   Updated: 2024/02/04 12:44:22 by khalid           ###   ########.fr       */
+/*   Updated: 2024/07/06 10:39:19 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_lst.h"
 
-bool	ft_lstdel_at_index(t_list **lst, unsigned int index,
+bool	ft_lstdel_at_index(t_lst **lst, unsigned int index,
 		void (*del)(void *))
 {
-	t_list			*head;
+	t_lst			*head;
 	unsigned int	i;
 
 	if (lst == NULL || *lst == NULL)

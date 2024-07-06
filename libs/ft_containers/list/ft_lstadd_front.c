@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khalid <khalid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:35:28 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/02/04 12:59:31 by khalid           ###   ########.fr       */
+/*   Updated: 2024/07/06 10:39:15 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_lst.h"
 
-bool	ft_lstadd_front(t_list **lst, t_list *new)
+bool	ft_lstadd_front(t_lst **lst, t_lst *new)
 {
 	if (new == NULL || lst == NULL)
 		return (false);

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstdel_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khalid <khalid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:56:01 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/02/04 12:59:57 by khalid           ###   ########.fr       */
+/*   Updated: 2024/07/06 10:39:21 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_lst.h"
 
-static t_list	*ft_lstlast(t_list *lst)
+static t_lst	*ft_lstlast(t_lst *lst)
 {
 	if (lst == NULL)
 		return (NULL);
@@ -21,9 +21,9 @@ static t_list	*ft_lstlast(t_list *lst)
 	return (lst);
 }
 
-bool	ft_lstdel_back(t_list **lst, void (*del)(void *))
+bool	ft_lstdel_back(t_lst **lst, void (*del)(void *))
 {
-	t_list	*last;
+	t_lst	*last;
 
 	if (del == NULL || (*lst) == NULL || lst == NULL)
 		return (false);

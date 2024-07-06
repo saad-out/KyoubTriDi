@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khalid <khalid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:02:18 by khalid            #+#    #+#             */
-/*   Updated: 2024/02/04 13:00:26 by khalid           ###   ########.fr       */
+/*   Updated: 2024/07/06 10:39:37 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_lst.h"
 
-size_t	ft_lstsize(t_list *lst)
+size_t	ft_lstsize(t_lst *lst)
 {
 	size_t	size;
 

@@ -11,8 +11,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
-#include "../includes/get_next_line.h"
+#include "../../includes/cub3d.h"
+#include "../../includes/get_next_line.h"
 
 void	ft_error(void)
 {
@@ -20,128 +20,160 @@ void	ft_error(void)
 	exit(EXIT_FAILURE);
 }
 
-void	skip_whitespace(char **line)
+bool	is_valide_identifier(char *identifier)
 {
-	while (**line == ' ' || **line == '\t')
-		(*line)++;
+	if (ft_strcmp(identifier, "NO") == 0 || ft_strcmp(identifier, "SO") == 0
+		|| ft_strcmp(identifier, "WE") == 0 || ft_strcmp(identifier, "EA") == 0
+		|| ft_strcmp(identifier, "F") == 0 || ft_strcmp(identifier, "C") == 0)
+		return (true);
+	return (false);
 }
 
-void	check_extension(char *file)
+int	max_line_len(t_lst *head)
 {
-	int	i;
+	t_lst	*lst;
+	int		max_len;
+	int		len;
 
-	i = 0;
-	while (file[i] != '\0')
-		i++;
-	if (file[i - 1] != 'b' || file[i - 2] != 'u' || file[i - 3] != 'c' || file[i
-		- 4] != '.')
-		ft_error();
-}
-
-void	skip_digits(char **line)
-{
-	while (ft_isdigit(**line))
-		(*line)++;
-}
-
-char	*join_splited(char **splited_line)
-{
-	int		i;
-	char	*joined;
-	char	*tmp;
-
-	i = 1;
-	joined = NULL;
-	while (splited_line[i])
+	lst = head;
+	max_len = 0;
+	while (lst)
 	{
-		tmp = joined;
-		joined = ft_strjoin(joined, splited_line[i]);
-		if (tmp)
-			free(tmp);
-		i++;
+		len = ft_strlen(lst->content);
+		if (len > max_len)
+			max_len = len;
+		lst = (t_lst *)lst->next;
 	}
-	return (joined);
+	return (max_len);
 }
 
-int	get_color(char *joined)
+char	**ft_lst_to_map(t_lst *head)
 {
-	int		r;
-	int		g;
-	int		b;
-	int		t;
-	char	**line;
+	char	*line;
+	char	**map;
+	t_lst	*lst;
+	int		i;
+	int		j;
 
-	line = &joined;
-	t = 0;
-	r = ft_atoi_rgb(line);
-	skip_whitespace(line);
-	if (**line == ',')
-		(*line)++;
-	else
+	map = (char **)malloc(sizeof(char *) * (ft_lstsize(head) + 1));
+	if (!map)
 		ft_error();
-	g = ft_atoi_rgb(line);
-	skip_whitespace(line);
-	if (**line == ',')
-		(*line)++;
-	else
-		ft_error();
-	b = ft_atoi_rgb(line);
-	return (t << 24 | r << 16 | g << 8 | b);
+	i = 0;
+	lst = head;
+	while (i < ft_lstsize(head))
+		map[i++] = (char *)malloc(sizeof(char) * max_line_len(head));
+	i = 0;
+	j = 0;
+	while (lst)
+	{
+		line = lst->content;
+		map[i][j] = line[j];
+		if (line[j] == '\0')
+		{
+			i++;
+			j = 0;
+		}
+		else
+			j++;
+		lst = (t_lst *)lst->next;
+	}
+	map[i] = NULL;
+	return (map);
 }
 
 void	parse_map_file(char *file, t_map_data *map_data)
 {
-	int fd;
-	char *line;
-	char **splited_line;
+	int		fd;
+	char	*line;
+	char	**splited_line;
+	int		count_elements;
+	t_lst	*head;
 
 	check_extension(file);
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 		ft_error();
 	line = get_next_line(fd);
+	count_elements = 0;
 	while (line)
 	{
 		splited_line = ft_split(line, ' ');
-		if (splited_line[0] == NULL)
+		if (count_elements == 6 && splited_line[0] && splited_line[0][0] == '1')
+		{
+			puts("break =====================");
+			break ;
+		}
+		else if (splited_line[0] == NULL || splited_line[0][0] == '\n'
+			|| splited_line[0][0] == '\0')
 		{
 			free_split(splited_line);
 			free(line);
 			line = get_next_line(fd);
 			continue ;
 		}
-		if (ft_strcmp(splited_line[0], "NO") == 0 && splited_line[1])
+		else if (ft_strcmp(splited_line[0], "NO") == 0 && splited_line[1])
 		{
 			// Check for the path with open
+			if (map_data->no_texture)
+				ft_error();
 			map_data->no_texture = ft_strdup(splited_line[1]);
+			count_elements++;
 		}
 		else if (ft_strcmp(splited_line[0], "SO") == 0 && splited_line[1])
 		{
 			// Check for the path with open
+			if (map_data->so_texture)
+				ft_error();
 			map_data->so_texture = ft_strdup(splited_line[1]);
+			count_elements++;
 		}
 		else if (ft_strcmp(splited_line[0], "WE") == 0 && splited_line[1])
 		{
 			// Check for the path with open
+			if (map_data->we_texture)
+				ft_error();
 			map_data->we_texture = ft_strdup(splited_line[1]);
+			count_elements++;
 		}
 		else if (ft_strcmp(splited_line[0], "EA") == 0 && splited_line[1])
 		{
 			// Check for the path with open
+			if (map_data->ea_texture)
+				ft_error();
 			map_data->ea_texture = ft_strdup(splited_line[1]);
+			count_elements++;
 		}
 		else if (ft_strcmp(splited_line[0], "F") == 0 && splited_line[1])
 		{
+			if (map_data->floor_color != -1)
+				ft_error();
 			map_data->floor_color = get_color(join_splited(splited_line));
+			count_elements++;
 		}
 		else if (ft_strcmp(splited_line[0], "C") == 0 && splited_line[1])
 		{
-			map_data->ceil_color = get_color(join_splited(splited_line));		
+			if (map_data->ceil_color != -1)
+				ft_error();
+			map_data->ceil_color = get_color(join_splited(splited_line));
+			count_elements++;
+		}
+		else
+		{
+			ft_error();
 		}
 		free_split(splited_line);
 		free(line);
 		line = get_next_line(fd);
 	}
+	// Start parsing the map
+	head = NULL;
+	while (line)
+	{
+		ft_lstadd_back(&head, ft_lstnew(check_line_map(line)));
+		free(line);
+		line = get_next_line(fd);
+	}
+	map_data->map.map = ft_lst_to_map(head);
 	printf("NO: %s\n", map_data->no_texture);
 	printf("SO: %s\n", map_data->so_texture);
 	printf("WE: %s\n", map_data->we_texture);
