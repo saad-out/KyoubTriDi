@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/06 10:23:07 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/06 10:44:46 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define TILE_SIZE 100
 
 /*   Includes   */
-// # include "../libs/ft_containers/ft_data_structres.h"
+# include "../libs/ft_containers/ft_data_structres.h"
 # include "../libs/libft/libft.h"
 # include "../libs/minilibx-linux/mlx.h"
 # include <errno.h>
@@ -104,6 +104,8 @@ void						check_extension(char *filename);
 char						*join_splited(char **splited_line);
 int							get_color(char *joined);
 int							ft_atoi_rgb(char **str);
+bool						is_valide_char_map(char c);
+char						*check_line_map(char *line);
 void						parse_map_file(char *file, t_map_data *map_data);
 /* --------   */
 /*   Mem   */
