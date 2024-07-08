@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 10:43:10 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/08 09:31:26 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/08 10:07:27 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ char	*check_line_map(char *line)
 	while (line[i] != '\0')
 	{
 		if (i == ft_strlen(line) - 1 && line[i] == '\n')
+		{
+			line[i] = '\0';
 			break ;
+		}
 		if (!is_valide_char_map(line[i]))
 			ft_error();
 		i++;

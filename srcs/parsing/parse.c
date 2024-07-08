@@ -68,11 +68,20 @@ char	**ft_lst_to_map(t_lst *head)
 	{
 		while (j < max_line_len(head))
 		{
-			map[i][j] = -1;
+			map[i][j] = '1';
 			j++;
 		}
 		i++;
 	}
+	// print the map:
+	puts("print the map: =====================");
+	// for (int k = 0; k < ft_lstsize(head); k++)
+	// {
+	// 	for (int l = 0; l < max_line_len(head); l++)
+	// 	{
+	// 		printf("%c", map[k][l]);
+	// 	}
+	// }
 	i = 0;
 	j = 0;
 	while (lst)
@@ -180,18 +189,13 @@ void	parse_map_file(char *file, t_map_data *map_data)
 	head = NULL;
 	while (line)
 	{
-		ft_lstadd_back(&head, ft_lstnew(check_line_map(line)));
+		char *tmp;
+		tmp = check_line_map(line);
+		printf("tmp: |%s|\n", tmp);
+		ft_lstadd_back(&head, ft_lstnew(tmp));
 		free(line);
 		line = get_next_line(fd);
 	}
 	map_data->map.map = ft_lst_to_map(head);
-	map_data->map.rows = ft_lstsize(head);
-	map_data->map.cols = max_line_len(head);
-	printf("NO: %s\n", map_data->no_texture);
-	printf("SO: %s\n", map_data->so_texture);
-	printf("WE: %s\n", map_data->we_texture);
-	printf("EA: %s\n", map_data->ea_texture);
-	printf("F: %d\n", map_data->floor_color);
-	printf("C: %d\n", map_data->ceil_color);
 	close(fd);
 }
