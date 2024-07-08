@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 10:43:10 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/08 10:07:27 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/08 15:02:15 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ char	*check_line_map(char *line)
 	int i;
 
 	i = 0;
-	skip_whitespace(&line);
 	while (line[i] != '\0')
 	{
 		if (i == ft_strlen(line) - 1 && line[i] == '\n')
@@ -37,5 +36,8 @@ char	*check_line_map(char *line)
 			ft_error();
 		i++;
 	}
+	i = ft_strlen(line) - 1;
+	while (i >= 0 && line[i] == ' ')
+		line[i--] = '\0';
 	return (ft_strdup(line));
 }

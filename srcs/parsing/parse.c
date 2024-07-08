@@ -59,46 +59,69 @@ char	**ft_lst_to_map(t_lst *head)
 	if (!map)
 		ft_error();
 	i = 0;
-	lst = head;
 	while (i < ft_lstsize(head))
 		map[i++] = (char *)malloc(sizeof(char) * max_line_len(head));
 	i = 0;
 	j = 0;
+	puts("Before print the map: =====================");
 	while (i < ft_lstsize(head))
 	{
+		j = 0;
 		while (j < max_line_len(head))
 		{
-			map[i][j] = '1';
+			map[i][j] = ' ';
 			j++;
 		}
 		i++;
 	}
+	puts("After print the map: =====================");
 	// print the map:
-	puts("print the map: =====================");
-	// for (int k = 0; k < ft_lstsize(head); k++)
-	// {
-	// 	for (int l = 0; l < max_line_len(head); l++)
-	// 	{
-	// 		printf("%c", map[k][l]);
-	// 	}
-	// }
 	i = 0;
 	j = 0;
-	while (lst)
+	lst = head;
+	while (i < ft_lstsize(head))
 	{
-		line = lst->content;
-		map[i][j] = line[j];
-		if (line[j] == '\0')
+		j = 0; 
+		while (j < max_line_len(head))
 		{
-			i++;
-			j = 0;
-		}
-		else
+			line = lst->content;
+			if (j < ft_strlen(line))
+				map[i][j] = line[j];
+			printf("%c", map[i][j]);
 			j++;
+		}
+		printf("\n");
 		lst = (t_lst *)lst->next;
+		i++;
 	}
+	printf("HELLO\n");
 	map[i] = NULL;
 	return (map);
+}
+
+void check_map(char **map, int nb_line)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (map[i])
+	{
+		printf("i:========= %d\n", i);
+		j = 0;
+		while (j < ft_strlen(map[i]))
+		{
+			printf("j: ============= %d\n", j);
+			if (map[i][j] == '0' || map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'W' || map[i][j] == 'E') {
+				if (i == 0 || i == nb_line - 1 || j == 0 || j == ft_strlen(map[i]) - 1)
+					ft_error();
+				if (map[i - 1][j] == ' ' || map[i + 1][j] == ' ' || map[i][j - 1] == ' ' || map[i][j + 1] == ' ')
+					ft_error();
+			}
+			j++;
+		}
+		i++;
+	}
 }
 
 void	parse_map_file(char *file, t_map_data *map_data)
@@ -197,5 +220,7 @@ void	parse_map_file(char *file, t_map_data *map_data)
 		line = get_next_line(fd);
 	}
 	map_data->map.map = ft_lst_to_map(head);
+	check_map(map_data->map.map, ft_lstsize(head));
+	ft_lstclear(&head, free);
 	close(fd);
 }
