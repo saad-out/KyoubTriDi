@@ -99,21 +99,19 @@ char	**ft_lst_to_map(t_lst *head)
 	return (map);
 }
 
-void check_map(char **map, int nb_line)
+void check_map(char **map, int nb_line, int col_len)
 {
 	int i;
 	int j;
 
 	i = 0;
-	while (map[i])
+	while (i < nb_line)
 	{
-		printf("i:========= %d\n", i);
 		j = 0;
-		while (j < ft_strlen(map[i]))
+		while (j < col_len)
 		{
-			printf("j: ============= %d\n", j);
 			if (map[i][j] == '0' || map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'W' || map[i][j] == 'E') {
-				if (i == 0 || i == nb_line - 1 || j == 0 || j == ft_strlen(map[i]) - 1)
+				if (i == 0 || i == nb_line - 1 || j == 0 || j == col_len - 1)
 					ft_error();
 				if (map[i - 1][j] == ' ' || map[i + 1][j] == ' ' || map[i][j - 1] == ' ' || map[i][j + 1] == ' ')
 					ft_error();
@@ -220,7 +218,7 @@ void	parse_map_file(char *file, t_map_data *map_data)
 		line = get_next_line(fd);
 	}
 	map_data->map.map = ft_lst_to_map(head);
-	check_map(map_data->map.map, ft_lstsize(head));
+	check_map(map_data->map.map, ft_lstsize(head), max_line_len(head));
 	ft_lstclear(&head, free);
 	close(fd);
 }
