@@ -64,6 +64,17 @@ char	**ft_lst_to_map(t_lst *head)
 		map[i++] = (char *)malloc(sizeof(char) * max_line_len(head));
 	i = 0;
 	j = 0;
+	while (i < ft_lstsize(head))
+	{
+		while (j < max_line_len(head))
+		{
+			map[i][j] = -1;
+			j++;
+		}
+		i++;
+	}
+	i = 0;
+	j = 0;
 	while (lst)
 	{
 		line = lst->content;
@@ -174,6 +185,8 @@ void	parse_map_file(char *file, t_map_data *map_data)
 		line = get_next_line(fd);
 	}
 	map_data->map.map = ft_lst_to_map(head);
+	map_data->map.rows = ft_lstsize(head);
+	map_data->map.cols = max_line_len(head);
 	printf("NO: %s\n", map_data->no_texture);
 	printf("SO: %s\n", map_data->so_texture);
 	printf("WE: %s\n", map_data->we_texture);

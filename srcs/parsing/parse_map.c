@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 10:43:10 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/06 11:17:06 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/08 09:31:26 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,5 @@ char	*check_line_map(char *line)
 			ft_error();
 		i++;
 	}
-	return (line);
+	return (ft_strdup(line));
 }
