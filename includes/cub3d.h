@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/06 10:44:46 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/09 09:41:08 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 # define CUB3D_H
 
 /*   Mcros   */
-# define WIDTH 640
-# define HEIGHT 480
+# define WIDTH 800
+# define HEIGHT 800
 # define MAP_NUM_ROWS 5
-# define MAP_NUM_COLS 5
+# define MAP_NUM_COLS 6
 # define TILE_SIZE 100
+# define PI 3.14159265
 
 /*   Includes   */
 # include "../libs/ft_containers/ft_data_structres.h"
@@ -40,6 +41,7 @@ typedef struct s_img		t_img;
 typedef struct s_player		t_player;
 typedef struct s_map_data	t_map_data;
 typedef struct s_map_grid	t_map_grid;
+typedef struct s_player		t_player;
 
 /*   Structs  */
 struct						s_img
@@ -60,6 +62,7 @@ struct						s_mlx
 
 struct						s_player
 {
+	int						radius;
 	int						x;
 	int						y;
 	int						turnDirection;
@@ -87,6 +90,7 @@ struct						s_map_data
 	char					*ea_texture;
 	t_map_grid				map;
 };
+
 
 /*   Prototypes   */
 void						ft_init(t_mlx *mlx);

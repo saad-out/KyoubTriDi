@@ -63,7 +63,7 @@ char	**ft_lst_to_map(t_lst *head)
 		map[i++] = (char *)malloc(sizeof(char) * max_line_len(head));
 	i = 0;
 	j = 0;
-	puts("Before print the map: =====================");
+	// puts("Before print the map: =====================");
 	while (i < ft_lstsize(head))
 	{
 		j = 0;
@@ -74,7 +74,7 @@ char	**ft_lst_to_map(t_lst *head)
 		}
 		i++;
 	}
-	puts("After print the map: =====================");
+	// puts("After print the map: =====================");
 	// print the map:
 	i = 0;
 	j = 0;
@@ -87,10 +87,10 @@ char	**ft_lst_to_map(t_lst *head)
 			line = lst->content;
 			if (j < ft_strlen(line))
 				map[i][j] = line[j];
-			printf("%c", map[i][j]);
+			// printf("%c", map[i][j]);
 			j++;
 		}
-		printf("\n");
+		// printf("\n");
 		lst = (t_lst *)lst->next;
 		i++;
 	}
@@ -141,7 +141,7 @@ void	parse_map_file(char *file, t_map_data *map_data)
 		splited_line = ft_split(line, ' ');
 		if (count_elements == 6 && splited_line[0] && splited_line[0][0] == '1')
 		{
-			puts("break =====================");
+			// puts("break =====================");
 			break ;
 		}
 		else if (splited_line[0] == NULL || splited_line[0][0] == '\n'
@@ -212,7 +212,7 @@ void	parse_map_file(char *file, t_map_data *map_data)
 	{
 		char *tmp;
 		tmp = check_line_map(line);
-		printf("tmp: |%s|\n", tmp);
+		// printf("tmp: |%s|\n", tmp);
 		ft_lstadd_back(&head, ft_lstnew(tmp));
 		free(line);
 		line = get_next_line(fd);
