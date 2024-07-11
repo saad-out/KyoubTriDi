@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/11 11:48:19 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/11 12:22:21 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,30 +109,63 @@ void ft_render_map(t_mlx *mlx, t_map_data *map_data)
 	}
 }
 
+bool is_wall(int x, int y, t_data *data)
+{
+	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
+		return (true);
+	int mapGridIndexX = floor(x / TILE_SIZE);
+	int mapGridIndexY = floor(y / TILE_SIZE);
+	if (mapGridIndexX < 0 || mapGridIndexX >= data->map_data->map.cols ||
+		mapGridIndexY < 0 || mapGridIndexY >= data->map_data->map.rows)
+		return (true);
+	return (data->map_data->map.map[mapGridIndexY][mapGridIndexX] == '1');
+}
 
 int key_press(int keycode, t_data *data)
 {
+	int next_x;
+	int next_y;
+	int movestep;
+
 	if (keycode == UP_ARROW)
 	{
 		printf("UP\n");
 		data->player->walkDirection = 1;
-		mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
-		data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
-		ft_render_map(data->mlx, data->map_data);
-		data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
-		ft_render_player(data->mlx, data->player);
- 		mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
+		movestep = data->player->walkDirection * data->player->walkSpeed;
+		next_x = data->player->x + cos(data->player->rotationAngle) * movestep;
+		next_y = data->player->y + sin(data->player->rotationAngle) * movestep;
+		if (!is_wall(next_x, next_y, data))
+		{
+			puts("UP redering...");
+			mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
+			data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
+			ft_render_map(data->mlx, data->map_data);
+			data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
+			data->player->x = next_x;
+			data->player->y = next_y;
+			ft_render_player(data->mlx, data->player);
+			mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
+		}
 	}
 	else if (keycode == DOWN_ARROW)
 	{
 		puts("DOWN");
 		data->player->walkDirection = -1;
-		mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
-		data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
-		ft_render_map(data->mlx, data->map_data);
-		data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
-		ft_render_player(data->mlx, data->player);
- 		mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
+		movestep = data->player->walkDirection * data->player->walkSpeed;
+		next_x = data->player->x + cos(data->player->rotationAngle) * movestep;
+		next_y = data->player->y + sin(data->player->rotationAngle) * movestep;
+		if (!is_wall(next_x, next_y, data))
+		{
+			printf("DOWN redering...\n");
+			mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
+			data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
+			ft_render_map(data->mlx, data->map_data);
+			data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
+			data->player->x = next_x;
+			data->player->y = next_y;
+			ft_render_player(data->mlx, data->player);
+			mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
+		}
 	}
 	else if (keycode == LEFT_ARROW)
 	{
@@ -155,6 +188,10 @@ int key_press(int keycode, t_data *data)
 		data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
 		ft_render_player(data->mlx, data->player);
  		mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
+	}
+	else if (keycode == ESC)
+	{
+		exit(0);
 	}
 	return (0);
 }
@@ -201,20 +238,23 @@ int	main(int ac, char **av)
 	map_data.ea_texture = NULL;
 	map_data.ceil_color = -1;
 	map_data.floor_color = -1;
+	// INIT:
+	map_data.map.rows = 21;
+	map_data.map.cols = 21;
 	parse_map_file(av[1], &map_data);
 	ft_init(&mlx);
 	// Render map:
 	ft_render_map(&mlx, &map_data);
 
 	// Render player:
-	player.x = WIDTH / 2;
-	player.y = HEIGHT / 2;
+	player.x = WIDTH / 8;
+	player.y = HEIGHT / 8 + 3;
 	player.radius = 7;
 	player.turnDirection = 0;
 	player.walkDirection = 0;
 	player.rotationAngle = PI / 2;
-	player.walkSpeed = 2;
-	player.turnSpeed = 2 * (PI / 180);
+	player.walkSpeed = 10;
+	player.turnSpeed = 10 * (PI / 180);
 	ft_render_player(&mlx, &player);
 	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win, mlx.img.img_ptr, 0, 0);
 	mlx_hook(mlx.win, 2, 1L << 0, key_press, &data);
