@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/09 09:41:08 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/11 11:16:27 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,21 @@
 /*   Mcros   */
 # define WIDTH 800
 # define HEIGHT 800
-# define MAP_NUM_ROWS 5
-# define MAP_NUM_COLS 6
-# define TILE_SIZE 100
+# define MAP_NUM_ROWS 21
+# define MAP_NUM_COLS 21
+# define TILE_SIZE 32
 # define PI 3.14159265
 
+/*   KEYS    */
+# define ESC 65307
+# define UP_ARROW 65362
+# define DOWN_ARROW 65364
+# define LEFT_ARROW 65361
+# define RIGHT_ARROW 65363
+
+/* Hooking events */
+# define ON_KEYDOWN 2
+# define ON_KEYUP 3
 /*   Includes   */
 # include "../libs/ft_containers/ft_data_structres.h"
 # include "../libs/libft/libft.h"
@@ -36,6 +46,7 @@
 # include <unistd.h>
 
 /*   Typedefs   */
+typedef struct s_data		t_data;
 typedef struct s_mlx		t_mlx;
 typedef struct s_img		t_img;
 typedef struct s_player		t_player;
@@ -44,6 +55,13 @@ typedef struct s_map_grid	t_map_grid;
 typedef struct s_player		t_player;
 
 /*   Structs  */
+struct						s_data
+{
+	t_mlx					*mlx;
+	t_map_data				*map_data;
+	t_player				*player;
+};
+
 struct						s_img
 {
 	void					*img_ptr;
@@ -77,7 +95,6 @@ struct						s_map_grid
 	int						rows;
 	int						cols;
 	char					**map;
-	t_player				player;
 };
 
 struct						s_map_data
@@ -90,7 +107,6 @@ struct						s_map_data
 	char					*ea_texture;
 	t_map_grid				map;
 };
-
 
 /*   Prototypes   */
 void						ft_init(t_mlx *mlx);
