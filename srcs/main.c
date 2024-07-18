@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/18 02:09:19 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/18 05:59:56 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,11 @@ void ft_draw_circle(t_mlx *mlx, int xc, int yc, int radius, int color) {
 void	ft_render_player(t_mlx *mlx, t_player *player)
 {
 	ft_draw_circle(mlx, player->x, player->y, player->radius, 0x00065535);
-	// ft_draw_line(mlx, player->x,
-	// 					player->y,
-	// 					player->x + cos(player->rotationAngle) * 20,
-	// 					player->y + sin(player->rotationAngle) * 20,
-	// 					0x00065535);
+	ft_draw_line(mlx, player->x,
+						player->y,
+						player->x + cos(player->rotationAngle) * 20,
+						player->y + sin(player->rotationAngle) * 20,
+						0x00FFFF00);
 	cast_rays(mlx, player);
 }
 
@@ -236,6 +236,15 @@ int key_realse(int keycode, t_data *data)
 	return (0);
 }
 
+t_data	*get_data(t_data *data)
+{
+	static t_data *tmp = NULL;
+
+	if (data)
+		tmp = data;
+	return (tmp);
+}
+
 int	main(int ac, char **av)
 {
 	if (ac != 2)
@@ -250,6 +259,9 @@ int	main(int ac, char **av)
 	data.mlx = &mlx;
 	data.map_data = &map_data;
 	data.player = &player;
+
+	get_data(&data);
+
 	// INIT:
 	map_data.so_texture = NULL;
 	map_data.no_texture = NULL;

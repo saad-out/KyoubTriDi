@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/18 02:12:47 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/18 05:51:49 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ typedef struct s_player		t_player;
 typedef struct s_map_data	t_map_data;
 typedef struct s_map_grid	t_map_grid;
 typedef struct s_player		t_player;
+typedef struct s_point		t_point;
+typedef struct s_ray		t_ray;
 
 /*   Structs  */
 struct						s_data
@@ -108,6 +110,20 @@ struct						s_map_data
 	t_map_grid				map;
 };
 
+struct						s_point
+{
+	double	x;
+	double	y;
+};
+
+struct						s_ray
+{
+	double	angle;
+	bool	facingUp;
+	bool	facingRight;
+};
+
+
 /*   Prototypes   */
 void						ft_init(t_mlx *mlx);
 void						my_mlx_pixel_put(t_img *img, int x, int y,
@@ -117,6 +133,9 @@ void						draw_square(t_img *img, int x, int y, int size,
 void						draw_map(t_mlx *mlx, t_map_data *map_data);
 void ft_draw_line(t_mlx *mlx, int x0, int y0, int x1, int y1, int color);
 void    					cast_rays(t_mlx *mlx, t_player *player);
+bool is_wall(int x, int y, t_data *data);
+
+t_data	*get_data(t_data *data);
 
 /*   Parsing   */
 void						ft_error(void);
