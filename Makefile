@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+         #
+#    By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/20 16:06:03 by klakbuic          #+#    #+#              #
-#    Updated: 2024/07/06 10:48:05 by klakbuic         ###   ########.fr        #
+#    Updated: 2024/07/17 04:30:16 by soutchak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ RENDERDIR    := render
 # sources files
 PARSE        := get_next_line.c  get_next_line_utils.c  parse.c  parse_elements.c  parse_map.c  parse_utils.c
 UTILS        := mem.c
-RENDER       := draw.c  init.c
+RENDER       := draw.c  init.c raycasting.c
 
 # All sources files
 SRCS         := $(foreach F,$(PARSE), $(SRCSDIR)/$(PARSEDIR)/$(F))  \

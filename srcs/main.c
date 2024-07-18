@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/11 12:22:21 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/18 02:09:19 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,33 @@ void ft_draw_line(t_mlx *mlx, int x0, int y0, int x1, int y1, int color) {
     int dy = -abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
     int err = dx + dy, e2; /* error value e_xy */
 
-    while (1) {
-        // Set pixel at current (x0, y0) to the specified color
+	while (1) {
+    if (x0 >= 0 && x0 < WIDTH && y0 >= 0 && y0 < HEIGHT) {
         int index = (y0 * mlx->img.line_length + x0 * (mlx->img.bpp / 8));
+        // printf("Drawing pixel at (%d, %d) with index %d\n", x0, y0, index);
         mlx->img.addr[index] = color;
         mlx->img.addr[index + 1] = color >> 8;
         mlx->img.addr[index + 2] = color >> 16;
-
-        if (x0 == x1 && y0 == y1) break;
-        e2 = 2 * err;
-        if (e2 >= dy) { err += dy; x0 += sx; }
-        if (e2 <= dx) { err += dx; y0 += sy; }
     }
+
+    if (x0 == x1 && y0 == y1) break;
+    e2 = 2 * err;
+    if (e2 >= dy) { err += dy; x0 += sx; }
+    if (e2 <= dx) { err += dx; y0 += sy; }
+	}
+
+    // while (1) {
+    //     // Set pixel at current (x0, y0) to the specified color
+    //     int index = (y0 * mlx->img.line_length + x0 * (mlx->img.bpp / 8));
+    //     mlx->img.addr[index] = color;
+    //     mlx->img.addr[index + 1] = color >> 8;
+    //     mlx->img.addr[index + 2] = color >> 16;
+
+    //     if (x0 == x1 && y0 == y1) break;
+    //     e2 = 2 * err;
+    //     if (e2 >= dy) { err += dy; x0 += sx; }
+    //     if (e2 <= dx) { err += dx; y0 += sy; }
+    // }
 }
 
 void ft_draw_circle(t_mlx *mlx, int xc, int yc, int radius, int color) {
@@ -89,8 +104,12 @@ void ft_draw_circle(t_mlx *mlx, int xc, int yc, int radius, int color) {
 void	ft_render_player(t_mlx *mlx, t_player *player)
 {
 	ft_draw_circle(mlx, player->x, player->y, player->radius, 0x00065535);
-	ft_draw_line(mlx, player->x, player->y, player->x + cos(player->rotationAngle) * 20,
-		player->y + sin(player->rotationAngle) * 20, 0x00065535);
+	// ft_draw_line(mlx, player->x,
+	// 					player->y,
+	// 					player->x + cos(player->rotationAngle) * 20,
+	// 					player->y + sin(player->rotationAngle) * 20,
+	// 					0x00065535);
+	cast_rays(mlx, player);
 }
 
 void ft_render_map(t_mlx *mlx, t_map_data *map_data)

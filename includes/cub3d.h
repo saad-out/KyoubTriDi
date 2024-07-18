@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/11 11:16:27 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/18 02:12:47 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ void						my_mlx_pixel_put(t_img *img, int x, int y,
 void						draw_square(t_img *img, int x, int y, int size,
 								int color);
 void						draw_map(t_mlx *mlx, t_map_data *map_data);
+void ft_draw_line(t_mlx *mlx, int x0, int y0, int x1, int y1, int color);
+void    					cast_rays(t_mlx *mlx, t_player *player);
 
 /*   Parsing   */
 void						ft_error(void);
