@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/18 11:41:20 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/18 15:54:57 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ void ft_draw_circle(t_mlx *mlx, int xc, int yc, int radius, int color) {
 void	ft_render_player(t_mlx *mlx, t_player *player)
 {
 	ft_draw_circle(mlx, player->x, player->y, player->radius, 0x00065535);
-	// ft_draw_line(mlx, player->x, player->y, player->x + cos(player->rotationAngle) * 20,
-	// 	player->y + sin(player->rotationAngle) * 20, 0x00065535);
+	ft_draw_line(mlx, player->x, player->y, player->x + cos(player->rotationAngle) * 20,
+		player->y + sin(player->rotationAngle) * 20, 0x00065535);
 }
 
 void ft_render_map(t_mlx *mlx, t_map_data *map_data)
@@ -128,15 +128,21 @@ float normalize_angle(float angle)
 		angle = TWO_PI + angle;
 	return (angle);
 }
-
+float distance_between_points(float x1, float y1, float x2, float y2)
+{
+	return (sqrtf((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
+}
 void cast_ray(t_data *data)
 {
+	bool found_horizontal_wall_hit = false;
 	int xintercept;
 	int yintercept;
 	int xstep;
 	int ystep;
 	int next_horizontal_touch_x;
 	int next_horizontal_touch_y;
+	int horz_wall_hit_x = 0;
+	int horz_wall_hit_y = 0;
 	
 	////////////////////////////////////////////
 	// Horizontal ray-grid intersection code: //
@@ -147,12 +153,14 @@ void cast_ray(t_data *data)
 	if (data->ray->is_facing_down)
 		yintercept += TILE_SIZE;
 	// Find the x-coordinate of the closest horizontal grid intersection:
-	xintercept = data->player->x + (yintercept - data->player->y) / tan(data->player->rotationAngle);
+	xintercept = data->player->x + (yintercept - data->player->y) / tan(data->ray->ray_angle);
+	
 	// Calculate the increment xstep and ystep:
 	ystep = TILE_SIZE;
 	if (data->ray->is_facing_up)
 		ystep *= -1;
-	xstep = TILE_SIZE / tan(data->player->rotationAngle);
+		
+	xstep = TILE_SIZE / tan(data->ray->ray_angle);
 	if (data->ray->is_facing_left && xstep > 0)
 		xstep *= -1;
 	if (data->ray->is_facing_right && xstep < 0)
@@ -164,13 +172,14 @@ void cast_ray(t_data *data)
 		next_horizontal_touch_y--;
 	// Increment xstep and ystep until we find a wall:
 	while (next_horizontal_touch_x >= 0 && next_horizontal_touch_x < WIDTH &&
-			next_horizontal_touch_y >= 0 && next_horizontal_touch_y < HEIGHT )
+			next_horizontal_touch_y >= 0 && next_horizontal_touch_y < HEIGHT)
 	{
 		if (is_wall(next_horizontal_touch_x, next_horizontal_touch_y, data))
 		{
-			data->ray->wall_hit_x = next_horizontal_touch_x;
-			data->ray->wall_hit_y = next_horizontal_touch_y;
-			break ;
+			found_horizontal_wall_hit = true;
+			horz_wall_hit_x = next_horizontal_touch_x;
+			horz_wall_hit_y = next_horizontal_touch_y;
+			break;
 		}
 		else
 		{
@@ -179,6 +188,86 @@ void cast_ray(t_data *data)
 		}
 	}
 	
+
+	////////////////////////////////////////////
+	// Vertical ray-grid intersection code: //
+	////////////////////////////////////////////
+	
+	bool found_vertical_wall_hit = false;
+	int next_vertical_touch_x;
+	int next_vertical_touch_y;
+	int vertical_wall_hit_x = 0;
+	int vertical_wall_hit_y = 0;
+	
+	
+	// Find the x-coordinate of the closest horizontal grid intersection:
+	xintercept = floor(data->player->x / TILE_SIZE) * TILE_SIZE;
+	if (data->ray->is_facing_right)
+		xintercept += TILE_SIZE;
+	// Find the y-coordinate of the closest horizontal grid intersection:
+	yintercept = data->player->y + (xintercept - data->player->x) * tan(data->ray->ray_angle);
+	
+	// Calculate the increment xstep and ystep:
+	xstep = TILE_SIZE;
+	if (data->ray->is_facing_left)
+		xstep *= -1;
+
+	ystep = TILE_SIZE * tan(data->ray->ray_angle);
+	if (data->ray->is_facing_up && ystep > 0)
+		ystep *= -1;
+	if (data->ray->is_facing_down && ystep < 0)
+		ystep *= -1;
+
+	// Increment xstep and ystep until we find a wall:
+	next_vertical_touch_x = xintercept;
+	next_vertical_touch_y = yintercept;
+	
+	if (data->ray->is_facing_left)
+		next_vertical_touch_x--;
+		
+	// Increment xstep and ystep until we find a wall:
+	while (next_vertical_touch_x >= 0 && next_vertical_touch_x < WIDTH &&
+			next_vertical_touch_y >= 0 && next_vertical_touch_y < HEIGHT)
+	{
+		if (is_wall(next_vertical_touch_x, next_vertical_touch_y, data))
+		{
+			found_vertical_wall_hit = true;
+			vertical_wall_hit_x = next_horizontal_touch_x;
+			vertical_wall_hit_y = next_horizontal_touch_y;
+			break;
+		}
+		else
+		{
+			next_vertical_touch_x += xstep;
+			next_vertical_touch_y += ystep;
+		}
+	}
+
+	// Calculate both horizontal and vertical distances and choose the smallest one:
+	float horizontal_hit_distance;
+	if (found_horizontal_wall_hit)
+		horizontal_hit_distance = distance_between_points(data->player->x, data->player->y, horz_wall_hit_x, horz_wall_hit_y);
+	else
+		horizontal_hit_distance = INT_MAX;
+	float vertical_hit_distance;
+	if (found_vertical_wall_hit)
+		vertical_hit_distance = distance_between_points(data->player->x, data->player->y, vertical_wall_hit_x, vertical_wall_hit_y);
+	else
+		vertical_hit_distance = INT_MAX;
+	
+	// Store the smallest of the two distances:
+	if (horizontal_hit_distance < vertical_hit_distance)
+	{
+		data->ray->wall_hit_x = horz_wall_hit_x;
+		data->ray->wall_hit_y = horz_wall_hit_y;
+		data->ray->distance = horizontal_hit_distance;
+	}
+	else
+	{
+		data->ray->wall_hit_x = vertical_wall_hit_x;
+		data->ray->wall_hit_y = vertical_wall_hit_y;
+		data->ray->distance = vertical_hit_distance;
+	}
 }
 
 void cast_all_rays(t_data *data)
@@ -223,11 +312,11 @@ int key_press(int keycode, t_data *data)
 			puts("UP redering...");
 			mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
 			data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
-			ft_render_map(data->mlx, data->map_data);
 			data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
 			data->player->x = next_x;
 			data->player->y = next_y;
 			cast_all_rays(data);
+			ft_render_map(data->mlx, data->map_data);
 			ft_render_player(data->mlx, data->player);
 			ft_render_ray(data->mlx, data);
 			mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
@@ -245,10 +334,10 @@ int key_press(int keycode, t_data *data)
 			printf("DOWN redering...\n");
 			mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
 			data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
-			ft_render_map(data->mlx, data->map_data);
 			data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
 			data->player->x = next_x;
 			data->player->y = next_y;
+			ft_render_map(data->mlx, data->map_data);
 			cast_all_rays(data);
 			ft_render_player(data->mlx, data->player);
 			ft_render_ray(data->mlx, data);
@@ -261,9 +350,9 @@ int key_press(int keycode, t_data *data)
 		data->player->turnDirection = -1;
 		mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
 		data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
-		ft_render_map(data->mlx, data->map_data);
 		data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
 		cast_all_rays(data);
+		ft_render_map(data->mlx, data->map_data);
 		ft_render_player(data->mlx, data->player);
 		ft_render_ray(data->mlx, data);
  		mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
@@ -274,9 +363,9 @@ int key_press(int keycode, t_data *data)
 		data->player->turnDirection = 1;
 		mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
 		data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
-		ft_render_map(data->mlx, data->map_data);
 		data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
 		cast_all_rays(data);
+		ft_render_map(data->mlx, data->map_data);
 		ft_render_player(data->mlx, data->player);
 		ft_render_ray(data->mlx, data);
  		mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
@@ -338,10 +427,8 @@ int	main(int ac, char **av)
 	map_data.map.cols = 21;
 	parse_map_file(av[1], &map_data);
 	ft_init(&mlx);
-	// Render map:
-	ft_render_map(&mlx, &map_data);
 
-	// Render player:
+	// INIT player:
 	player.x = WIDTH / 8;
 	player.y = HEIGHT / 8 + 3;
 	player.radius = 7;
@@ -351,13 +438,19 @@ int	main(int ac, char **av)
 	player.walkSpeed = 10;
 	player.turnSpeed = 10 * (PI / 180);
 
-	// Render ray:
-	ray.ray_angle = 0;
+	// INIT ray:
+	ray.ray_angle = normalize_angle(player.rotationAngle - (FOV_ANGLE / 2));
 	ray.wall_hit_x = 0;
 	ray.wall_hit_y = 0;
 	ray.distance = 0;
+	ray.is_facing_down = ray.ray_angle > 0 && ray.ray_angle < PI;
+	ray.is_facing_up = !ray.is_facing_down;
+	ray.is_facing_right = ray.ray_angle < 0.5 * PI || ray.ray_angle > 1.5 * PI;
+	ray.is_facing_left = !ray.is_facing_right;
+	
+	ft_render_map(&mlx, &map_data);
 	ft_render_player(&mlx, &player);
-	ft_render_ray(&mlx, &data);
+	// ft_render_ray(&mlx, &data);
 	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win, mlx.img.img_ptr, 0, 0);
 	mlx_hook(mlx.win, 2, 1L << 0, key_press, &data);
 	mlx_hook(mlx.win, 3, 1L << 1, key_realse, &data);
