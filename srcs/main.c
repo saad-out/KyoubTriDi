@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/18 11:09:43 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:41:20 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ void ft_draw_circle(t_mlx *mlx, int xc, int yc, int radius, int color) {
 void	ft_render_player(t_mlx *mlx, t_player *player)
 {
 	ft_draw_circle(mlx, player->x, player->y, player->radius, 0x00065535);
-	ft_draw_line(mlx, player->x, player->y, player->x + cos(player->rotationAngle) * 20,
-		player->y + sin(player->rotationAngle) * 20, 0x00065535);
+	// ft_draw_line(mlx, player->x, player->y, player->x + cos(player->rotationAngle) * 20,
+	// 	player->y + sin(player->rotationAngle) * 20, 0x00065535);
 }
 
 void ft_render_map(t_mlx *mlx, t_map_data *map_data)
@@ -121,6 +121,14 @@ bool is_wall(int x, int y, t_data *data)
 	return (data->map_data->map.map[mapGridIndexY][mapGridIndexX] == '1');
 }
 
+float normalize_angle(float angle)
+{
+	angle = remainder(angle, TWO_PI);
+	if (angle < 0)
+		angle = TWO_PI + angle;
+	return (angle);
+}
+
 void cast_ray(t_data *data)
 {
 	int xintercept;
@@ -130,7 +138,9 @@ void cast_ray(t_data *data)
 	int next_horizontal_touch_x;
 	int next_horizontal_touch_y;
 	
-	// Horizontal ray-grid intersection code:
+	////////////////////////////////////////////
+	// Horizontal ray-grid intersection code: //
+	////////////////////////////////////////////
 	
 	// Find the y-coordinate of the closest horizontal grid intersection:
 	yintercept = floor(data->player->y / TILE_SIZE) * TILE_SIZE;
@@ -174,11 +184,26 @@ void cast_ray(t_data *data)
 void cast_all_rays(t_data *data)
 {
 	int column_id;
-	float ray_angle;
 	t_ray *ray;
+
 	
-	ray_angle = data->player->rotationAngle - (FOV_ANGLE / 2);
 	column_id = 0;
+	// INIT: The ray object:
+	ray = data->ray;
+	ray->ray_angle = normalize_angle(data->player->rotationAngle - (FOV_ANGLE / 2));
+	ray->wall_hit_x = 0;
+	ray->wall_hit_y = 0;
+	ray->distance = 0;
+	ray->is_facing_down = ray->ray_angle > 0 && ray->ray_angle < PI;
+	ray->is_facing_up = !ray->is_facing_down;
+	ray->is_facing_right = ray->ray_angle < 0.5 * PI || ray->ray_angle > 1.5 * PI;
+	ray->is_facing_left = !ray->is_facing_right;
+	cast_ray(data);
+}
+
+void ft_render_ray(t_mlx *mlx, t_data *data)
+{
+	ft_draw_line(mlx, data->player->x, data->player->y, data->ray->wall_hit_x, data->ray->wall_hit_y, 0x000000FF);
 }
 int key_press(int keycode, t_data *data)
 {
@@ -202,7 +227,9 @@ int key_press(int keycode, t_data *data)
 			data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
 			data->player->x = next_x;
 			data->player->y = next_y;
+			cast_all_rays(data);
 			ft_render_player(data->mlx, data->player);
+			ft_render_ray(data->mlx, data);
 			mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
 		}
 	}
@@ -222,7 +249,9 @@ int key_press(int keycode, t_data *data)
 			data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
 			data->player->x = next_x;
 			data->player->y = next_y;
+			cast_all_rays(data);
 			ft_render_player(data->mlx, data->player);
+			ft_render_ray(data->mlx, data);
 			mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
 		}
 	}
@@ -234,7 +263,9 @@ int key_press(int keycode, t_data *data)
 		data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
 		ft_render_map(data->mlx, data->map_data);
 		data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
+		cast_all_rays(data);
 		ft_render_player(data->mlx, data->player);
+		ft_render_ray(data->mlx, data);
  		mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
 	}
 	else if (keycode == RIGHT_ARROW)
@@ -245,7 +276,9 @@ int key_press(int keycode, t_data *data)
 		data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
 		ft_render_map(data->mlx, data->map_data);
 		data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
+		cast_all_rays(data);
 		ft_render_player(data->mlx, data->player);
+		ft_render_ray(data->mlx, data);
  		mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
 	}
 	else if (keycode == ESC)
@@ -317,7 +350,14 @@ int	main(int ac, char **av)
 	player.rotationAngle = PI / 2;
 	player.walkSpeed = 10;
 	player.turnSpeed = 10 * (PI / 180);
+
+	// Render ray:
+	ray.ray_angle = 0;
+	ray.wall_hit_x = 0;
+	ray.wall_hit_y = 0;
+	ray.distance = 0;
 	ft_render_player(&mlx, &player);
+	ft_render_ray(&mlx, &data);
 	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win, mlx.img.img_ptr, 0, 0);
 	mlx_hook(mlx.win, 2, 1L << 0, key_press, &data);
 	mlx_hook(mlx.win, 3, 1L << 1, key_realse, &data);

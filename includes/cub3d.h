@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/18 10:10:46 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:17:42 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define MAP_NUM_COLS 21
 # define TILE_SIZE 32
 # define PI 3.14159265
+# define TWO_PI (PI * 2)
 # define FOV_ANGLE (60 * (PI / 180))
 # define WALL_STRIP_WIDTH 1
 # define NUM_RAYS (WIDTH / WALL_STRIP_WIDTH)
