@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/11 12:22:21 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:09:43 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,65 @@ bool is_wall(int x, int y, t_data *data)
 	return (data->map_data->map.map[mapGridIndexY][mapGridIndexX] == '1');
 }
 
+void cast_ray(t_data *data)
+{
+	int xintercept;
+	int yintercept;
+	int xstep;
+	int ystep;
+	int next_horizontal_touch_x;
+	int next_horizontal_touch_y;
+	
+	// Horizontal ray-grid intersection code:
+	
+	// Find the y-coordinate of the closest horizontal grid intersection:
+	yintercept = floor(data->player->y / TILE_SIZE) * TILE_SIZE;
+	if (data->ray->is_facing_down)
+		yintercept += TILE_SIZE;
+	// Find the x-coordinate of the closest horizontal grid intersection:
+	xintercept = data->player->x + (yintercept - data->player->y) / tan(data->player->rotationAngle);
+	// Calculate the increment xstep and ystep:
+	ystep = TILE_SIZE;
+	if (data->ray->is_facing_up)
+		ystep *= -1;
+	xstep = TILE_SIZE / tan(data->player->rotationAngle);
+	if (data->ray->is_facing_left && xstep > 0)
+		xstep *= -1;
+	if (data->ray->is_facing_right && xstep < 0)
+		xstep *= -1;
+	// Increment xstep and ystep until we find a wall:
+	next_horizontal_touch_x = xintercept;
+	next_horizontal_touch_y = yintercept;
+	if (data->ray->is_facing_up)
+		next_horizontal_touch_y--;
+	// Increment xstep and ystep until we find a wall:
+	while (next_horizontal_touch_x >= 0 && next_horizontal_touch_x < WIDTH &&
+			next_horizontal_touch_y >= 0 && next_horizontal_touch_y < HEIGHT )
+	{
+		if (is_wall(next_horizontal_touch_x, next_horizontal_touch_y, data))
+		{
+			data->ray->wall_hit_x = next_horizontal_touch_x;
+			data->ray->wall_hit_y = next_horizontal_touch_y;
+			break ;
+		}
+		else
+		{
+			next_horizontal_touch_x += xstep;
+			next_horizontal_touch_y += ystep;
+		}
+	}
+	
+}
+
+void cast_all_rays(t_data *data)
+{
+	int column_id;
+	float ray_angle;
+	t_ray *ray;
+	
+	ray_angle = data->player->rotationAngle - (FOV_ANGLE / 2);
+	column_id = 0;
+}
 int key_press(int keycode, t_data *data)
 {
 	int next_x;
@@ -227,10 +286,13 @@ int	main(int ac, char **av)
 	t_map_data map_data;
 	t_player player;
 	t_mlx mlx;
+	t_ray ray;
 	t_data data;
+
 	data.mlx = &mlx;
 	data.map_data = &map_data;
 	data.player = &player;
+	data.ray = &ray;
 	// INIT:
 	map_data.so_texture = NULL;
 	map_data.no_texture = NULL;

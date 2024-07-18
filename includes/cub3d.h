@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/11 11:16:27 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/18 10:10:46 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 # define MAP_NUM_COLS 21
 # define TILE_SIZE 32
 # define PI 3.14159265
+# define FOV_ANGLE (60 * (PI / 180))
+# define WALL_STRIP_WIDTH 1
+# define NUM_RAYS (WIDTH / WALL_STRIP_WIDTH)
 
 /*   KEYS    */
 # define ESC 65307
@@ -53,6 +56,7 @@ typedef struct s_player		t_player;
 typedef struct s_map_data	t_map_data;
 typedef struct s_map_grid	t_map_grid;
 typedef struct s_player		t_player;
+typedef struct s_ray		t_ray;
 
 /*   Structs  */
 struct						s_data
@@ -60,6 +64,7 @@ struct						s_data
 	t_mlx					*mlx;
 	t_map_data				*map_data;
 	t_player				*player;
+	t_ray					*ray;
 };
 
 struct						s_img
@@ -88,6 +93,18 @@ struct						s_player
 	float					rotationAngle;
 	float					walkSpeed;
 	float					turnSpeed;
+};
+
+struct						s_ray
+{
+	float					ray_angle;
+	float					wall_hit_x;
+	float					wall_hit_y;
+	float					distance;
+	bool					is_facing_down;
+	bool					is_facing_up;
+	bool					is_facing_right;
+	bool					is_facing_left;
 };
 
 struct						s_map_grid
