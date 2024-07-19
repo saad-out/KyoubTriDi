@@ -130,8 +130,9 @@ void cast_rays(t_mlx *mlx, t_player *player) {
     //3D raycasting
     for (int i = 0; i < NUM_RAYS; i++)
     {
+        double  correctedDistance = ray[i].distance * cos(ray[i].angle - player->rotationAngle);
         double  distProjPlane = (WIDTH / 2) / tan(FOV / 2);
-        double  wallStripHeight = (TILE_SIZE / ray[i].distance) * distProjPlane;
+        double  wallStripHeight = (TILE_SIZE / correctedDistance) * distProjPlane;
         ft_draw_line(mlx,
                         i,
                         0,
