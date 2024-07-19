@@ -133,12 +133,21 @@ void cast_rays(t_mlx *mlx, t_player *player) {
         double  correctedDistance = ray[i].distance * cos(ray[i].angle - player->rotationAngle);
         double  distProjPlane = (WIDTH / 2) / tan(FOV / 2);
         double  wallStripHeight = (TILE_SIZE / correctedDistance) * distProjPlane;
+
+        // draw ceiling
         ft_draw_line(mlx,
                         i,
                         0,
                         i,
-                        HEIGHT,
-                        0x00000000);
+                        (HEIGHT / 2) - (wallStripHeight / 2),
+                        0x0087CEFA);
+
+        // ft_draw_line(mlx,
+        //                 i,
+        //                 0,
+        //                 i,
+        //                 HEIGHT,
+        //                 0x00000000);
         double alpha = 1000 / correctedDistance;
         ft_draw_line(mlx,
                         i,
@@ -146,6 +155,14 @@ void cast_rays(t_mlx *mlx, t_player *player) {
                         i,
                         (HEIGHT / 2) + (wallStripHeight / 2),
                         0x00000080 + alpha);
+
+        // draw floor
+        ft_draw_line(mlx,
+                        i,
+                        (HEIGHT / 2) + (wallStripHeight / 2),
+                        i,
+                        HEIGHT,
+                        0x00FFFF00);
     }
 
     // Draw map
