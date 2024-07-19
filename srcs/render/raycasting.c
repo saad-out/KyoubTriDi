@@ -139,12 +139,13 @@ void cast_rays(t_mlx *mlx, t_player *player) {
                         i,
                         HEIGHT,
                         0x00000000);
+        double alpha = 1000 / correctedDistance;
         ft_draw_line(mlx,
                         i,
                         (HEIGHT / 2) - (wallStripHeight / 2),
                         i,
                         (HEIGHT / 2) + (wallStripHeight / 2),
-                        0x00000080);
+                        0x00000080 + alpha);
     }
 
     // Draw map
