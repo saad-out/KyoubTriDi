@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/18 05:51:49 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/19 02:39:41 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define MAP_NUM_COLS 21
 # define TILE_SIZE 32
 # define PI 3.14159265
+# define MINIMAP_SCALE 0.2
 
 /*   KEYS    */
 # define ESC 65307

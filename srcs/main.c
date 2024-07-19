@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/18 05:59:56 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/19 02:43:35 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,17 @@ void ft_draw_circle(t_mlx *mlx, int xc, int yc, int radius, int color) {
 
 void	ft_render_player(t_mlx *mlx, t_player *player)
 {
-	ft_draw_circle(mlx, player->x, player->y, player->radius, 0x00065535);
-	ft_draw_line(mlx, player->x,
-						player->y,
-						player->x + cos(player->rotationAngle) * 20,
-						player->y + sin(player->rotationAngle) * 20,
-						0x00FFFF00);
+	ft_draw_circle(mlx,
+					player->x * MINIMAP_SCALE,
+					player->y * MINIMAP_SCALE,
+					player->radius * MINIMAP_SCALE,
+					0x00065535);
+	ft_draw_line(mlx,
+					player->x * MINIMAP_SCALE,
+					player->y * MINIMAP_SCALE,
+					(player->x + cos(player->rotationAngle) * 20) * MINIMAP_SCALE,
+					(player->y + sin(player->rotationAngle) * 20) * MINIMAP_SCALE,
+					0x00FFFF00);
 	cast_rays(mlx, player);
 }
 
@@ -119,11 +124,17 @@ void ft_render_map(t_mlx *mlx, t_map_data *map_data)
 		for (int j = 0; j < MAP_NUM_COLS; j++)
 		{
 			if (map_data->map.map[i][j] == '1')
-				ft_draw_square(mlx, j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE,
-					0x00FF0000);
+				ft_draw_square(mlx,
+								j * TILE_SIZE * MINIMAP_SCALE,
+								i * TILE_SIZE * MINIMAP_SCALE,
+								TILE_SIZE * MINIMAP_SCALE,
+								0x00FF0000);
 			else if (map_data->map.map[i][j] == '0')
-				ft_draw_square(mlx, j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE,
-					0x00FFFFFF);
+				ft_draw_square(mlx,
+								j * TILE_SIZE * MINIMAP_SCALE,
+								i * TILE_SIZE * MINIMAP_SCALE,
+								TILE_SIZE * MINIMAP_SCALE,
+								0x00FFFFFF);
 		}
 	}
 }

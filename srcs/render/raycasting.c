@@ -6,14 +6,14 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 04:14:03 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/18 07:03:59 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/19 02:44:38 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
 #define FOV (60 * (PI / 180)) // 60 degrees in radians
-#define NUM_RAYS (WIDTH / 10)
+#define NUM_RAYS (WIDTH)
 
 double  normalizeAngle(double angle)
 {
@@ -25,19 +25,6 @@ double  normalizeAngle(double angle)
     return new;
 }
 
-// Function to return the point with the smallest coordinates
-// t_point min_point(t_point a, t_point b) {
-//     t_point min;
-
-//     if ((a.x < b.x) || (a.x == b.x && a.y < b.y)) {
-//         min = a;
-//     } else {
-//         min = b;
-//     }
-
-//     return min;
-// }
-
 double distance(t_point a, t_point b) {
     return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
 }
@@ -48,6 +35,10 @@ t_point min_point(t_point a, t_point b, t_player *player) {
     p.y = player->y;
     double dist_a = distance(p, a);
     double dist_b = distance(p, b);
+    if (dist_a < dist_b)
+        printf("****** distance: %f\n", dist_a);
+    else
+        printf("****** distance: %f\n", dist_b);
     return dist_a < dist_b ? a : b;
 }
 
@@ -156,7 +147,12 @@ void cast_rays(t_mlx *mlx, t_player *player) {
         t_point verInter = ver_intersection_distance(ray[i], player);
         t_point min = min_point(horInter, verInter, player);
         printf("============ (%2.f,%2.f) (%2.f,%2.f) MIN is =>(%2.f,%2.f)\n", horInter.x, horInter.y, verInter.x, verInter.y, min.x, min.y);
-        ft_draw_line(mlx, player->x, player->y, min.x, min.y, 0x00000000);
+        ft_draw_line(mlx,
+                        player->x * MINIMAP_SCALE,
+                        player->y * MINIMAP_SCALE,
+                        min.x * MINIMAP_SCALE,
+                        min.y * MINIMAP_SCALE,
+                        0x00000000);
         
         double ray_x = player->x + cos(rayangle) * 50;
         double ray_y = player->y + sin(rayangle) * 50;
