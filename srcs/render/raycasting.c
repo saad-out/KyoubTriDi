@@ -6,41 +6,11 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 04:14:03 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/19 02:44:38 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/19 02:34:238 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-
-#define FOV (60 * (PI / 180)) // 60 degrees in radians
-#define NUM_RAYS (WIDTH)
-
-double  normalizeAngle(double angle)
-{
-    double new;
-
-    new = fmod(angle, 2 * PI);
-    if (new < 0)
-        new += 2 * PI;
-    return new;
-}
-
-double distance(t_point a, t_point b) {
-    return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
-}
-
-t_point min_point(t_point a, t_point b, t_player *player) {
-    t_point p;
-    p.x = player->x;
-    p.y = player->y;
-    double dist_a = distance(p, a);
-    double dist_b = distance(p, b);
-    if (dist_a < dist_b)
-        printf("****** distance: %f\n", dist_a);
-    else
-        printf("****** distance: %f\n", dist_b);
-    return dist_a < dist_b ? a : b;
-}
 
 t_point ver_intersection_distance(t_ray ray, t_player *player)
 {
@@ -127,9 +97,8 @@ void cast_rays(t_mlx *mlx, t_player *player) {
     // printf("Player Angle: %f, Initial Ray Angle: %f\n", player->rotationAngle, rayangle);
     // printf("Angle Increment: %f\n", angle_inc);
 
+    // calculate rays' distances
     for (int i = 0; i < NUM_RAYS; i++) {
-    // for (int i = 0; i < 1; i++) {
-        // ray[i].angle = normalizeAngle(rayangle);
         rayangle = normalizeAngle(rayangle);
         ray[i].angle = rayangle;
         if (ray[i].angle > PI)
@@ -147,33 +116,58 @@ void cast_rays(t_mlx *mlx, t_player *player) {
         t_point verInter = ver_intersection_distance(ray[i], player);
         t_point min = min_point(horInter, verInter, player);
         printf("============ (%2.f,%2.f) (%2.f,%2.f) MIN is =>(%2.f,%2.f)\n", horInter.x, horInter.y, verInter.x, verInter.y, min.x, min.y);
+
+        ray[i].intersection = min;
+        t_point tmp;
+        tmp.x = player->x;
+        tmp.y = player->y;
+        ray[i].distance = distance(tmp, min);
+        printf("****** distanceAA: %f\n", ray[i].distance);
+
+        rayangle += angle_inc;
+    }
+
+    //3D raycasting
+    for (int i = 0; i < NUM_RAYS; i++)
+    {
+        double  distProjPlane = (WIDTH / 2) / tan(FOV / 2);
+        double  wallStripHeight = (TILE_SIZE / ray[i].distance) * distProjPlane;
+        ft_draw_line(mlx,
+                        i,
+                        0,
+                        i,
+                        HEIGHT,
+                        0x00000000);
+        ft_draw_line(mlx,
+                        i,
+                        (HEIGHT / 2) - (wallStripHeight / 2),
+                        i,
+                        (HEIGHT / 2) + (wallStripHeight / 2),
+                        0x00000080);
+    }
+
+    // Draw map
+    t_data *data = get_data(NULL);
+	ft_render_map(data->mlx, data->map_data);
+    for (int i = 0; i < NUM_RAYS; i++)
+    {
+        ft_draw_circle(mlx,
+                        player->x * MINIMAP_SCALE,
+                        player->y * MINIMAP_SCALE,
+                        player->radius * MINIMAP_SCALE,
+                        0x00065535);
         ft_draw_line(mlx,
                         player->x * MINIMAP_SCALE,
                         player->y * MINIMAP_SCALE,
-                        min.x * MINIMAP_SCALE,
-                        min.y * MINIMAP_SCALE,
+                        (player->x + cos(player->rotationAngle) * 20) * MINIMAP_SCALE,
+                        (player->y + sin(player->rotationAngle) * 20) * MINIMAP_SCALE,
+                        0x00FFFF00);
+        ft_draw_line(mlx,
+                        player->x * MINIMAP_SCALE,
+                        player->y * MINIMAP_SCALE,
+                        ray[i].intersection.x * MINIMAP_SCALE,
+                        ray[i].intersection.y * MINIMAP_SCALE,
                         0x00000000);
-        
-        double ray_x = player->x + cos(rayangle) * 50;
-        double ray_y = player->y + sin(rayangle) * 50;
-    
-        double sideYhor = floor(player->y / TILE_SIZE) * TILE_SIZE;
-        double sideXhor = player->x + ((player->y - sideYhor) / tan(rayangle));
-        double deltaYhor = TILE_SIZE;
-        double deltaXhor = deltaYhor / tan(rayangle);
-
-        double sideXver = floor(player->x / TILE_SIZE) * TILE_SIZE;
-        // double sideYver = floor(player->y / TILE_SIZE) * TILE_SIZE;
-        double deltaXver = TILE_SIZE;
-        double deltaYver = deltaXver * tan(rayangle);
-
-        // printf("Ray %d: angle %f, end point (%f, %f)\n", i, rayangle, ray_x, ray_y);
-        // printf("==> sideY: %f sideX: %f deltaY: %f deltaX: %f\n\n", sideYhor, sideXhor, deltaYhor, deltaXhor);
-
-        // ft_draw_line(mlx, player->x, player->y, ray_x, ray_y, 0x00000080);
-
-        rayangle += angle_inc;
-        // rayangle = normalizeAngle(rayangle);
     }
 }
 

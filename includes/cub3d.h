@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/19 02:39:41 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/19 04:39:06 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@
 # define MAP_NUM_COLS 21
 # define TILE_SIZE 32
 # define PI 3.14159265
-# define MINIMAP_SCALE 0.2
+# define MINIMAP_SCALE 0.4
+#define FOV (60 * (PI / 180)) // 60 degrees in radians
+#define NUM_RAYS (WIDTH)
 
 /*   KEYS    */
 # define ESC 65307
@@ -122,6 +124,8 @@ struct						s_ray
 	double	angle;
 	bool	facingUp;
 	bool	facingRight;
+	t_point	intersection;
+	double	distance;
 };
 
 
@@ -137,6 +141,10 @@ void    					cast_rays(t_mlx *mlx, t_player *player);
 bool is_wall(int x, int y, t_data *data);
 
 t_data	*get_data(t_data *data);
+t_point min_point(t_point a, t_point b, t_player *player);
+double distance(t_point a, t_point b);
+double  normalizeAngle(double angle);
+void ft_render_map(t_mlx *mlx, t_map_data *map_data);
 
 /*   Parsing   */
 void						ft_error(void);
