@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/19 04:39:06 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/20 06:09:08 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,17 @@
 # define HEIGHT 800
 # define MAP_NUM_ROWS 21
 # define MAP_NUM_COLS 21
-# define TILE_SIZE 32
+# define TILE_SIZE 64
+# define TEXT_SIZE 64
 # define PI 3.14159265
-# define MINIMAP_SCALE 0.4
-#define FOV (60 * (PI / 180)) // 60 degrees in radians
-#define NUM_RAYS (WIDTH)
+# define MINIMAP_SCALE 0.2
+# define FOV (60 * (PI / 180)) // 60 degrees in radians
+# define NUM_RAYS (WIDTH)
+
+# define NO "textures/wall_1.xpm"
+# define SO "textures/wall_2.xpm"
+# define WE "textures/wall_3.xpm"
+# define EA "textures/wall_4.xpm"
 
 /*   KEYS    */
 # define ESC 65307
@@ -124,6 +130,7 @@ struct						s_ray
 	double	angle;
 	bool	facingUp;
 	bool	facingRight;
+	bool	wasHitVertical;
 	t_point	intersection;
 	double	distance;
 };
@@ -145,6 +152,7 @@ t_point min_point(t_point a, t_point b, t_player *player);
 double distance(t_point a, t_point b);
 double  normalizeAngle(double angle);
 void ft_render_map(t_mlx *mlx, t_map_data *map_data);
+bool equal_points(t_point a, t_point b);
 
 /*   Parsing   */
 void						ft_error(void);
