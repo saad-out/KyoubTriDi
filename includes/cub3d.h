@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/19 04:39:06 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/20 11:59:09 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,16 @@
 /*   Mcros   */
 # define WIDTH 800
 # define HEIGHT 800
-# define MAP_NUM_ROWS 21
+# define MAP_NUM_ROWS 19
 # define MAP_NUM_COLS 21
 # define TILE_SIZE 32
 # define PI 3.14159265
 # define MINIMAP_SCALE 0.4
-#define FOV (60 * (PI / 180)) // 60 degrees in radians
-#define NUM_RAYS (WIDTH)
-
+# define FOV (60 * (PI / 180)) // 60 degrees in radians
+# define WALL_STRIP_WIDTH 1
+# define NUM_RAYS (WIDTH / WALL_STRIP_WIDTH)
+# define TEX_WIDTH 32
+# define TEX_HEIGHT 32
 /*   KEYS    */
 # define ESC 65307
 # define UP_ARROW 65362
@@ -34,6 +36,7 @@
 /* Hooking events */
 # define ON_KEYDOWN 2
 # define ON_KEYUP 3
+
 /*   Includes   */
 # include "../libs/ft_containers/ft_data_structres.h"
 # include "../libs/libft/libft.h"
@@ -115,36 +118,36 @@ struct						s_map_data
 
 struct						s_point
 {
-	double	x;
-	double	y;
+	double					x;
+	double					y;
 };
 
 struct						s_ray
 {
-	double	angle;
-	bool	facingUp;
-	bool	facingRight;
-	t_point	intersection;
-	double	distance;
+	double					angle;
+	bool					facingUp;
+	bool					facingRight;
+	t_point					intersection;
+	double					distance;
 };
 
-
 /*   Prototypes   */
-void						ft_init(t_mlx *mlx);
+void						ft_init_mlx(t_mlx *mlx);
 void						my_mlx_pixel_put(t_img *img, int x, int y,
 								int color);
 void						draw_square(t_img *img, int x, int y, int size,
 								int color);
 void						draw_map(t_mlx *mlx, t_map_data *map_data);
-void ft_draw_line(t_mlx *mlx, int x0, int y0, int x1, int y1, int color);
-void    					cast_rays(t_mlx *mlx, t_player *player);
-bool is_wall(int x, int y, t_data *data);
+void						ft_draw_line(t_mlx *mlx, int x0, int y0, int x1,
+								int y1, int color);
+void						cast_rays(t_mlx *mlx, t_player *player);
+bool						is_wall(int x, int y, t_data *data);
 
-t_data	*get_data(t_data *data);
-t_point min_point(t_point a, t_point b, t_player *player);
-double distance(t_point a, t_point b);
-double  normalizeAngle(double angle);
-void ft_render_map(t_mlx *mlx, t_map_data *map_data);
+t_data						*get_data(t_data *data);
+t_point						min_point(t_point a, t_point b, t_player *player);
+double						distance(t_point a, t_point b);
+double						normalizeAngle(double angle);
+void						ft_render_map(t_mlx *mlx, t_map_data *map_data);
 
 /*   Parsing   */
 void						ft_error(void);

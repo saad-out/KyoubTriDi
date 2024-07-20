@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:43:36 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/06 09:02:51 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/20 11:58:54 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-void	ft_init(t_mlx *mlx)
+void	ft_init_mlx(t_mlx *mlx)
 {
 	mlx->mlx_ptr = mlx_init();
 	if (NULL == mlx->mlx_ptr)

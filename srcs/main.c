@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/19 04:36:40 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/20 12:01:05 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,9 @@ void	ft_render_player(t_mlx *mlx, t_player *player)
 
 void ft_render_map(t_mlx *mlx, t_map_data *map_data)
 {
-		for (int i = 0; i < MAP_NUM_ROWS; i++)
+		for (int i = 0; i < map_data->map.rows; i++)
 	{
-		for (int j = 0; j < MAP_NUM_COLS; j++)
+		for (int j = 0; j < map_data->map.cols; j++)
 		{
 			if (map_data->map.map[i][j] == '1')
 				ft_draw_square(mlx,
@@ -237,7 +237,7 @@ int	main(int ac, char **av)
 	if (ac != 2)
 	{
 		printf("Error\nInvalid number of arguments\n");
-		return (1);
+		return (EXIT_FAILURE);
 	}
 	t_map_data map_data;
 	t_player player;
@@ -257,10 +257,8 @@ int	main(int ac, char **av)
 	map_data.ceil_color = -1;
 	map_data.floor_color = -1;
 	// INIT:
-	map_data.map.rows = 21;
-	map_data.map.cols = 21;
 	parse_map_file(av[1], &map_data);
-	ft_init(&mlx);
+	ft_init_mlx(&mlx);
 	// Render map:
 	ft_render_map(&mlx, &map_data);
 

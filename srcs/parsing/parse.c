@@ -81,7 +81,7 @@ char	**ft_lst_to_map(t_lst *head)
 	lst = head;
 	while (i < ft_lstsize(head))
 	{
-		j = 0; 
+		j = 0;
 		while (j < max_line_len(head))
 		{
 			line = lst->content;
@@ -99,10 +99,10 @@ char	**ft_lst_to_map(t_lst *head)
 	return (map);
 }
 
-void check_map(char **map, int nb_line, int col_len)
+void	check_map(char **map, int nb_line, int col_len)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (i < nb_line)
@@ -110,16 +110,95 @@ void check_map(char **map, int nb_line, int col_len)
 		j = 0;
 		while (j < col_len)
 		{
-			if (map[i][j] == '0' || map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'W' || map[i][j] == 'E') {
+			if (map[i][j] == '0' || map[i][j] == 'N' || map[i][j] == 'S'
+				|| map[i][j] == 'W' || map[i][j] == 'E')
+			{
 				if (i == 0 || i == nb_line - 1 || j == 0 || j == col_len - 1)
 					ft_error();
-				if (map[i - 1][j] == ' ' || map[i + 1][j] == ' ' || map[i][j - 1] == ' ' || map[i][j + 1] == ' ')
+				if (map[i - 1][j] == ' ' || map[i + 1][j] == ' ' || map[i][j
+					- 1] == ' ' || map[i][j + 1] == ' ')
 					ft_error();
 			}
 			j++;
 		}
 		i++;
 	}
+}
+
+void	check_extension_textures(char *filename)
+{
+	int	len;
+
+	len = ft_strlen(filename);
+	if (len < 4 || ft_strcmp(filename + len - 4, ".xpm") != 0)
+		ft_error();
+}
+
+void	is_path_exists(char *path)
+{
+	int	fd;
+
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+		ft_error();
+}
+
+bool	is_empty_line(char final_char_line)
+{
+	if (final_char_line == '\n' || final_char_line == '\0')
+		return (true);
+	return (false);
+}
+
+void	check_identifier_value(char *value, char *identifier)
+{
+	if (ft_strcmp(identifier, "F") == 0)
+	{
+		if (value != -1)
+			ft_error();
+	}
+	else if (ft_strcmp(identifier, "C") == 0)
+	{
+		if (value != -1)
+			ft_error();
+	}
+	else
+	{
+		if (value)
+			ft_error();
+		check_extension_textures(value);
+		is_path_exists(value);
+	}
+}
+
+void	parse_elements(char *identifier, char *value, t_map_data *map_data)
+{
+	if (ft_strcmp(identifier, "NO") == 0)
+	{
+		check_identifier_value(map_data->no_texture, identifier);
+		map_data->no_texture = ft_strdup(value);
+	}
+	else if (ft_strcmp(identifier, "SO") == 0)
+	{
+		check_identifier_value(map_data->so_texture, identifier);
+		map_data->so_texture = ft_strdup(value);
+	}
+	else if (ft_strcmp(identifier, "WE") == 0)
+	{
+		check_identifier_value(map_data->we_texture, identifier);
+		map_data->we_texture = ft_strdup(value);
+	}
+	else if (ft_strcmp(identifier, "EA") == 0)
+	{
+		check_identifier_value(map_data->ea_texture, identifier);
+		map_data->ea_texture = ft_strdup(value);
+	}
+	else if (ft_strcmp(identifier, "F") == 0)
+		check_identifier_value(map_data->floor_color, identifier);
+	else if (ft_strcmp(identifier, "C") == 0)
+		check_identifier_value(map_data->ceil_color, identifier);
+	else
+		ft_error();
 }
 
 void	parse_map_file(char *file, t_map_data *map_data)
@@ -129,6 +208,7 @@ void	parse_map_file(char *file, t_map_data *map_data)
 	char	**splited_line;
 	int		count_elements;
 	t_lst	*head;
+		char *tmp;
 
 	check_extension(file);
 	fd = open(file, O_RDONLY);
@@ -144,8 +224,7 @@ void	parse_map_file(char *file, t_map_data *map_data)
 			// puts("break =====================");
 			break ;
 		}
-		else if (splited_line[0] == NULL || splited_line[0][0] == '\n'
-			|| splited_line[0][0] == '\0')
+		else if (splited_line[0] == NULL || is_empty_line(splited_line[0][0]))
 		{
 			free_split(splited_line);
 			free(line);
@@ -208,17 +287,21 @@ void	parse_map_file(char *file, t_map_data *map_data)
 	}
 	// Start parsing the map
 	head = NULL;
+	map_data->map.rows = 0;
 	while (line)
 	{
-		char *tmp;
 		tmp = check_line_map(line);
 		// printf("tmp: |%s|\n", tmp);
 		ft_lstadd_back(&head, ft_lstnew(tmp));
 		free(line);
 		line = get_next_line(fd);
+		map_data->map.rows++;
 	}
 	map_data->map.map = ft_lst_to_map(head);
 	check_map(map_data->map.map, ft_lstsize(head), max_line_len(head));
+	map_data->map.cols = max_line_len(head);
+	printf("================== rows: %d\n", map_data->map.rows);
+	printf("================== cols: %d\n", map_data->map.cols);
 	ft_lstclear(&head, free);
 	close(fd);
 }
