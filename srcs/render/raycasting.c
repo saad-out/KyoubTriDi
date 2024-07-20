@@ -192,7 +192,22 @@ void cast_rays(t_mlx *mlx, t_player *player) {
             int texelY = distaceFromTop * ((double)TILE_SIZE / wallStripHeight);
             int index = texelY * TILE_SIZE + texelX;
             // printf("\t===> texelX: %d texelY: %d    - index: %d\n", texelX, texelY, index);
-            int  color = get_texture_color(texelX, texelY, data->map_data->no_texture_img);
+            t_img   texture;
+            if (ray[i].wasHitVertical)
+            {
+                if (ray[i].facingRight)
+                    texture = data->map_data->ea_texture_img;
+                else
+                    texture = data->map_data->we_texture_img;
+            }
+            else
+            {
+                if (ray[i].facingUp)
+                    texture = data->map_data->no_texture_img;
+                else
+                    texture = data->map_data->so_texture_img;
+            }
+            int  color = get_texture_color(texelX, texelY, texture);
             my_mlx_pixel_put(&mlx->img, i, y, color);
         }
                 /// TEXTURE MAPPING
