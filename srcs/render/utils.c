@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 02:55:56 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/19 02:57:01 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/20 05:27:23 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,8 @@ t_point min_point(t_point a, t_point b, t_player *player) {
     else
         printf("****** distance: %f\n", dist_b);
     return dist_a < dist_b ? a : b;
+}
+
+bool equal_points(t_point a, t_point b) {
+    return a.x == b.x && a.y == b.y;
 }

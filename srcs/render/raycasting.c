@@ -89,6 +89,7 @@ t_point hor_intersection_distance(t_ray ray, t_player *player)
 }
 
 void cast_rays(t_mlx *mlx, t_player *player) {
+    t_data *data = get_data(NULL);
     double rayangle = player->rotationAngle - FOV / 2;
     double angle_inc = FOV / (double)NUM_RAYS;
 
@@ -110,19 +111,24 @@ void cast_rays(t_mlx *mlx, t_player *player) {
         else
             ray[i].facingRight = false;
 
-        printf(" ===========> Ray facingUp: %d facingRight: %d ==========>\n", ray[i].facingUp, ray[i].facingRight);
+        // printf(" ===========> Ray facingUp: %d facingRight: %d ==========>\n", ray[i].facingUp, ray[i].facingRight);
 
         t_point horInter = hor_intersection_distance(ray[i], player);
         t_point verInter = ver_intersection_distance(ray[i], player);
         t_point min = min_point(horInter, verInter, player);
-        printf("============ (%2.f,%2.f) (%2.f,%2.f) MIN is =>(%2.f,%2.f)\n", horInter.x, horInter.y, verInter.x, verInter.y, min.x, min.y);
+        // check if the ray hit a vertical wall or a horizontal wall
+        if (equal_points(min, verInter))
+            ray[i].wasHitVertical = true;
+        else
+            ray[i].wasHitVertical = false;
+        // printf("============ (%2.f,%2.f) (%2.f,%2.f) MIN is =>(%2.f,%2.f)\n", horInter.x, horInter.y, verInter.x, verInter.y, min.x, min.y);
 
         ray[i].intersection = min;
         t_point tmp;
         tmp.x = player->x;
         tmp.y = player->y;
         ray[i].distance = distance(tmp, min);
-        printf("****** distanceAA: %f\n", ray[i].distance);
+        // printf("****** distanceAA: %f\n", ray[i].distance);
 
         rayangle += angle_inc;
     }
@@ -131,25 +137,55 @@ void cast_rays(t_mlx *mlx, t_player *player) {
     for (int i = 0; i < NUM_RAYS; i++)
     {
         double  correctedDistance = ray[i].distance * cos(ray[i].angle - player->rotationAngle);
-        double  distProjPlane = (WIDTH / 2) / tan(FOV / 2);
-        double  wallStripHeight = (TILE_SIZE / correctedDistance) * distProjPlane;
+        double  distProjPlane = ((double)WIDTH / 2) / tan(FOV / 2);
+        double  wallStripHeight = ((double)TILE_SIZE / correctedDistance) * distProjPlane;
+
+        // printf("=====> wall strip height: %f\n", wallStripHeight);
+
+        // draw ceiling
         ft_draw_line(mlx,
                         i,
                         0,
                         i,
-                        HEIGHT,
-                        0x00000000);
+                        (HEIGHT / 2) - (wallStripHeight / 2),
+                        0x0087CEFA);
+
         double alpha = 1000 / correctedDistance;
         ft_draw_line(mlx,
                         i,
                         (HEIGHT / 2) - (wallStripHeight / 2),
                         i,
                         (HEIGHT / 2) + (wallStripHeight / 2),
-                        0x00000080 + alpha);
+                        0x00000080);
+
+
+                /// TEXTURE MAPPING
+        // int texelX;
+        // if (ray[i].wasHitVertical)
+        //     texelX = (int)ray[i].intersection.y % TILE_SIZE;
+        // else
+        //     texelX = (int)ray[i].intersection.x % TILE_SIZE;
+        // double wallTop = (HEIGHT / 2) - (wallStripHeight / 2);
+        // double wallBottom = (HEIGHT / 2) + (wallStripHeight / 2);
+        // for (int y = (int)wallTop; y < (int)wallBottom; y++)
+        // {
+        //     int texelY = (y - wallTop) * ((double)TILE_SIZE / wallStripHeight);
+        //     int index = texelY * TILE_SIZE + texelX;
+        //     int color = data->map_data->no_texture[index];
+        //     my_mlx_pixel_put(&mlx->img, i, y, color);
+        // }
+                /// TEXTURE MAPPING
+
+        // draw floor
+        ft_draw_line(mlx,
+                        i,
+                        (HEIGHT / 2) + (wallStripHeight / 2),
+                        i,
+                        HEIGHT,
+                        0x00DEB887);
     }
 
     // Draw map
-    t_data *data = get_data(NULL);
 	ft_render_map(data->mlx, data->map_data);
     for (int i = 0; i < NUM_RAYS; i++)
     {

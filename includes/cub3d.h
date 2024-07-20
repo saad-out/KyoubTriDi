@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/20 11:59:09 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/20 19:42:19 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,18 @@
 # define HEIGHT 800
 # define MAP_NUM_ROWS 19
 # define MAP_NUM_COLS 21
-# define TILE_SIZE 32
+# define TILE_SIZE 64
+# define TEXT_SIZE 64
 # define PI 3.14159265
-# define MINIMAP_SCALE 0.4
+# define MINIMAP_SCALE 0.2
 # define FOV (60 * (PI / 180)) // 60 degrees in radians
-# define WALL_STRIP_WIDTH 1
-# define NUM_RAYS (WIDTH / WALL_STRIP_WIDTH)
-# define TEX_WIDTH 32
-# define TEX_HEIGHT 32
+# define NUM_RAYS (WIDTH)
+
+# define NO "textures/wall_1.xpm"
+# define SO "textures/wall_2.xpm"
+# define WE "textures/wall_3.xpm"
+# define EA "textures/wall_4.xpm"
+
 /*   KEYS    */
 # define ESC 65307
 # define UP_ARROW 65362
@@ -124,11 +128,12 @@ struct						s_point
 
 struct						s_ray
 {
-	double					angle;
-	bool					facingUp;
-	bool					facingRight;
-	t_point					intersection;
-	double					distance;
+	double	angle;
+	bool	facingUp;
+	bool	facingRight;
+	bool	wasHitVertical;
+	t_point	intersection;
+	double	distance;
 };
 
 /*   Prototypes   */
@@ -143,11 +148,12 @@ void						ft_draw_line(t_mlx *mlx, int x0, int y0, int x1,
 void						cast_rays(t_mlx *mlx, t_player *player);
 bool						is_wall(int x, int y, t_data *data);
 
-t_data						*get_data(t_data *data);
-t_point						min_point(t_point a, t_point b, t_player *player);
-double						distance(t_point a, t_point b);
-double						normalizeAngle(double angle);
-void						ft_render_map(t_mlx *mlx, t_map_data *map_data);
+t_data	*get_data(t_data *data);
+t_point min_point(t_point a, t_point b, t_player *player);
+double distance(t_point a, t_point b);
+double  normalizeAngle(double angle);
+void ft_render_map(t_mlx *mlx, t_map_data *map_data);
+bool equal_points(t_point a, t_point b);
 
 /*   Parsing   */
 void						ft_error(void);

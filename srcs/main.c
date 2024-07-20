@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/20 12:01:05 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/20 19:41:40 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,6 +232,19 @@ t_data	*get_data(t_data *data)
 	return (tmp);
 }
 
+void	load_textures(t_map_data *map_data, t_mlx *mlx)
+{
+	int	width;
+	int	height;
+
+	printf("Loading textures\n");
+	map_data->no_texture = mlx_xpm_file_to_image(mlx->mlx_ptr, NO, &width, &height);
+	map_data->so_texture = mlx_xpm_file_to_image(mlx->mlx_ptr, SO, &width, &height);
+	map_data->we_texture = mlx_xpm_file_to_image(mlx->mlx_ptr, WE, &width, &height);
+	map_data->ea_texture = mlx_xpm_file_to_image(mlx->mlx_ptr, EA, &width, &height);
+	printf("Done loading textures\n");
+}
+
 int	main(int ac, char **av)
 {
 	if (ac != 2)
@@ -259,6 +272,7 @@ int	main(int ac, char **av)
 	// INIT:
 	parse_map_file(av[1], &map_data);
 	ft_init_mlx(&mlx);
+	load_textures(&map_data, &mlx);
 	// Render map:
 	ft_render_map(&mlx, &map_data);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 12:08:19 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/06 09:02:48 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/20 06:05:57 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 {
 	char	*dst;
 
-	printf("line-lenght: %d\n", img->line_length);
+	if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT) {
+        return;
+    }
+
 
 	dst = img->addr + (y * img->line_length + x * (img->bpp / 8));
 	*(unsigned int *)dst = color;
