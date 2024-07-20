@@ -88,6 +88,16 @@ t_point hor_intersection_distance(t_ray ray, t_player *player)
     return point;
 }
 
+int    get_texture_color(int x, int y, t_img texture)
+{
+    int color;
+    int *addr;
+
+    addr = (int *)texture.addr;
+    color = addr[y * TEXT_SIZE + x];
+    return (color);
+}
+
 void cast_rays(t_mlx *mlx, t_player *player) {
     t_data *data = get_data(NULL);
     double rayangle = player->rotationAngle - FOV / 2;
@@ -151,29 +161,40 @@ void cast_rays(t_mlx *mlx, t_player *player) {
                         0x0087CEFA);
 
         double alpha = 1000 / correctedDistance;
-        ft_draw_line(mlx,
-                        i,
-                        (HEIGHT / 2) - (wallStripHeight / 2),
-                        i,
-                        (HEIGHT / 2) + (wallStripHeight / 2),
-                        0x00000080);
+        // ft_draw_line(mlx,
+        //                 i,
+        //                 (HEIGHT / 2) - (wallStripHeight / 2),
+        //                 i,
+        //                 (HEIGHT / 2) + (wallStripHeight / 2),
+        //                 0x00000080);
 
 
                 /// TEXTURE MAPPING
-        // int texelX;
-        // if (ray[i].wasHitVertical)
-        //     texelX = (int)ray[i].intersection.y % TILE_SIZE;
-        // else
-        //     texelX = (int)ray[i].intersection.x % TILE_SIZE;
+        int texelX;
+        if (ray[i].wasHitVertical)
+            texelX = (int)ray[i].intersection.y % TILE_SIZE;
+        else
+            texelX = (int)ray[i].intersection.x % TILE_SIZE;
         // double wallTop = (HEIGHT / 2) - (wallStripHeight / 2);
         // double wallBottom = (HEIGHT / 2) + (wallStripHeight / 2);
-        // for (int y = (int)wallTop; y < (int)wallBottom; y++)
-        // {
-        //     int texelY = (y - wallTop) * ((double)TILE_SIZE / wallStripHeight);
-        //     int index = texelY * TILE_SIZE + texelX;
-        //     int color = data->map_data->no_texture[index];
-        //     my_mlx_pixel_put(&mlx->img, i, y, color);
-        // }
+        int wallTop = (HEIGHT / 2) - (wallStripHeight / 2);
+        int wallBottom = (HEIGHT / 2) + (wallStripHeight / 2);
+
+        if (wallTop < 0)
+            wallTop = 0;
+        if (wallBottom > HEIGHT)
+            wallBottom = HEIGHT;
+
+        // printf("================ x: %d  - wallTop: %d wallBottom: %d\n", i, wallTop, wallBottom);
+        for (int y = (int)wallTop; y < (int)wallBottom; y++)
+        {
+            int distaceFromTop = y + (wallStripHeight / 2) - (HEIGHT / 2);
+            int texelY = distaceFromTop * ((double)TILE_SIZE / wallStripHeight);
+            int index = texelY * TILE_SIZE + texelX;
+            // printf("\t===> texelX: %d texelY: %d    - index: %d\n", texelX, texelY, index);
+            int  color = get_texture_color(texelX, texelY, data->map_data->no_texture_img);
+            my_mlx_pixel_put(&mlx->img, i, y, color);
+        }
                 /// TEXTURE MAPPING
 
         // draw floor

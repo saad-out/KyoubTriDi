@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/20 19:42:19 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/20 23:17:22 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define CUB3D_H
 
 /*   Mcros   */
-# define WIDTH 800
+# define WIDTH 1200
 # define HEIGHT 800
 # define MAP_NUM_ROWS 19
 # define MAP_NUM_COLS 21
@@ -25,7 +25,7 @@
 # define FOV (60 * (PI / 180)) // 60 degrees in radians
 # define NUM_RAYS (WIDTH)
 
-# define NO "textures/wall_1.xpm"
+# define NO "textures/bluestone.xpm"
 # define SO "textures/wall_2.xpm"
 # define WE "textures/wall_3.xpm"
 # define EA "textures/wall_4.xpm"
@@ -117,6 +117,10 @@ struct						s_map_data
 	char					*so_texture;
 	char					*we_texture;
 	char					*ea_texture;
+	t_img					no_texture_img;
+	t_img					so_texture_img;
+	t_img					we_texture_img;
+	t_img					ea_texture_img;
 	t_map_grid				map;
 };
 

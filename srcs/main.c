@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/20 19:41:40 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/21 00:00:26 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,9 +239,33 @@ void	load_textures(t_map_data *map_data, t_mlx *mlx)
 
 	printf("Loading textures\n");
 	map_data->no_texture = mlx_xpm_file_to_image(mlx->mlx_ptr, NO, &width, &height);
+	map_data->no_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, NO, &width, &height);
+	map_data->no_texture_img.addr = mlx_get_data_addr(map_data->no_texture_img.img_ptr, &map_data->no_texture_img.bpp, &map_data->no_texture_img.line_length, &map_data->no_texture_img.endian);
+
+	// // Calculate the number of pixels
+    // int num_pixels = width * height;
+    // int bytes_per_pixel = map_data->no_texture_img.bpp / 8;
+
+    // // Print pixel data
+    // for (int i = 0; i < num_pixels; i++) {
+    //     int pixel_offset = i * bytes_per_pixel;
+    //     unsigned int color = *(unsigned int *)(map_data->no_texture_img.addr + pixel_offset);
+    //     printf("NO[%d]: %#x\n", i, color);
+    // }
+	// sleep(5);
+
 	map_data->so_texture = mlx_xpm_file_to_image(mlx->mlx_ptr, SO, &width, &height);
+	map_data->so_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, SO, &width, &height);
+	map_data->so_texture_img.addr = mlx_get_data_addr(map_data->so_texture_img.img_ptr, &map_data->so_texture_img.bpp, &map_data->so_texture_img.line_length, &map_data->so_texture_img.endian);
+
 	map_data->we_texture = mlx_xpm_file_to_image(mlx->mlx_ptr, WE, &width, &height);
+	map_data->we_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, WE, &width, &height);
+	map_data->we_texture_img.addr = mlx_get_data_addr(map_data->we_texture_img.img_ptr, &map_data->we_texture_img.bpp, &map_data->we_texture_img.line_length, &map_data->we_texture_img.endian);
+
 	map_data->ea_texture = mlx_xpm_file_to_image(mlx->mlx_ptr, EA, &width, &height);
+	map_data->ea_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, EA, &width, &height);
+	map_data->ea_texture_img.addr = mlx_get_data_addr(map_data->ea_texture_img.img_ptr, &map_data->ea_texture_img.bpp, &map_data->ea_texture_img.line_length, &map_data->ea_texture_img.endian);
+
 	printf("Done loading textures\n");
 }
 
@@ -278,7 +302,7 @@ int	main(int ac, char **av)
 
 	// Render player:
 	player.x = WIDTH / 8;
-	player.y = HEIGHT / 8 + 3;
+	player.y = HEIGHT / 5 + 30;
 	player.radius = 7;
 	player.turnDirection = 0;
 	player.walkDirection = 0;
