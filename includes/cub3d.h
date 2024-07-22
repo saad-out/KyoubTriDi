@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/20 23:17:22 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/22 05:58:54 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 # define CUB3D_H
 
 /*   Mcros   */
-# define WIDTH 1200
-# define HEIGHT 800
-# define MAP_NUM_ROWS 19
-# define MAP_NUM_COLS 21
-# define TILE_SIZE 64
+# define WIDTH 1000
+# define HEIGHT 1000
+// # define MAP_NUM_ROWS 19
+// # define MAP_NUM_COLS 21
+# define TILE_SIZE 32
 # define TEXT_SIZE 64
 # define PI 3.14159265
 # define MINIMAP_SCALE 0.2
 # define FOV (60 * (PI / 180)) // 60 degrees in radians
 # define NUM_RAYS (WIDTH)
 
-# define NO "textures/bluestone.xpm"
+# define NO "textures/wall_1.xpm"
 # define SO "textures/wall_2.xpm"
 # define WE "textures/wall_3.xpm"
 # define EA "textures/wall_4.xpm"
@@ -126,8 +126,8 @@ struct						s_map_data
 
 struct						s_point
 {
-	double					x;
-	double					y;
+	double	x;
+	double	y;
 };
 
 struct						s_ray
@@ -146,6 +146,7 @@ void						my_mlx_pixel_put(t_img *img, int x, int y,
 								int color);
 void						draw_square(t_img *img, int x, int y, int size,
 								int color);
+void ft_draw_circle(t_mlx *mlx, int xc, int yc, int radius, int color);
 void						draw_map(t_mlx *mlx, t_map_data *map_data);
 void						ft_draw_line(t_mlx *mlx, int x0, int y0, int x1,
 								int y1, int color);
@@ -158,6 +159,8 @@ double distance(t_point a, t_point b);
 double  normalizeAngle(double angle);
 void ft_render_map(t_mlx *mlx, t_map_data *map_data);
 bool equal_points(t_point a, t_point b);
+void	set_ray_angle(t_ray	*ray);
+void	set_texture(t_ray ray, t_data *data, t_img *texture);
 
 /*   Parsing   */
 void						ft_error(void);

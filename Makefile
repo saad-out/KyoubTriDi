@@ -6,7 +6,7 @@
 #    By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/20 16:06:03 by klakbuic          #+#    #+#              #
-#    Updated: 2024/07/19 02:58:09 by soutchak         ###   ########.fr        #
+#    Updated: 2024/07/22 05:29:57 by soutchak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ RENDERDIR    := render
 # sources files
 PARSE        := get_next_line.c  get_next_line_utils.c  parse.c  parse_elements.c  parse_map.c  parse_utils.c
 UTILS        := mem.c
-RENDER       := draw.c  init.c raycasting.c utils.c
+RENDER       := draw.c  init.c raycasting.c utils.c raycasting_utils.c
 
 # All sources files
 SRCS         := $(foreach F,$(PARSE), $(SRCSDIR)/$(PARSEDIR)/$(F))  \
