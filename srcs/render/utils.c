@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 02:55:56 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/22 05:43:23 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/24 05:25:47 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,11 @@ t_point min_point(t_point a, t_point b, t_player *player) {
     p.y = player->y;
     double dist_a = distance(p, a);
     double dist_b = distance(p, b);
+    // printf("=======> diffeence : %f\n", dist_a - dist_b);
     // if (dist_a < dist_b)
-    //     printf("****** distance: %f\n", dist_a);
+    //     printf("****** distance hor: %f\n", dist_a);
     // else
-    //     printf("****** distance: %f\n", dist_b);
+    //     printf("****** distance ver: %f\n", dist_b);
     return dist_a < dist_b ? a : b;
 }
 

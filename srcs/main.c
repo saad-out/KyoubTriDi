@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/21 00:00:26 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/24 05:19:53 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void ft_draw_circle(t_mlx *mlx, int xc, int yc, int radius, int color) {
 
 void	ft_render_player(t_mlx *mlx, t_player *player)
 {
+	//printf("===> player.x: %d, player.y: %d\n", player->x, player->y);
 	cast_rays(mlx, player);
 }
 
@@ -115,15 +116,23 @@ void ft_render_map(t_mlx *mlx, t_map_data *map_data)
 	}
 }
 
-bool is_wall(int x, int y, t_data *data)
+// bool is_wall(int x, int y, t_data *data)
+bool is_wall(double x, double y, t_data *data)
 {
-	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
+	if (x < 0 || x > data->map_data->map.cols * TILE_SIZE || y < 0 || y > data->map_data->map.rows * TILE_SIZE)
+	{
+		// printf("======> SATISFYING BOUNDARY x: %d, y: %d\n", x, y);
+		// return (false);
 		return (true);
-	int mapGridIndexX = floor(x / TILE_SIZE);
-	int mapGridIndexY = floor(y / TILE_SIZE);
-	if (mapGridIndexX < 0 || mapGridIndexX >= data->map_data->map.cols ||
-		mapGridIndexY < 0 || mapGridIndexY >= data->map_data->map.rows)
-		return (true);
+	}
+	int mapGridIndexX = floor((double)x / (double)TILE_SIZE);
+	int mapGridIndexY = floor((double)y / (double)TILE_SIZE);
+	if (mapGridIndexX < 0 || mapGridIndexX >= data->map_data->map.cols * TILE_SIZE ||
+		mapGridIndexY < 0 || mapGridIndexY >= data->map_data->map.rows * TILE_SIZE)
+		{
+			//printf("met wall\n");
+			return (true);
+		}
 	return (data->map_data->map.map[mapGridIndexY][mapGridIndexX] == '1');
 }
 
@@ -140,6 +149,7 @@ int key_press(int keycode, t_data *data)
 		movestep = data->player->walkDirection * data->player->walkSpeed;
 		next_x = data->player->x + cos(data->player->rotationAngle) * movestep;
 		next_y = data->player->y + sin(data->player->rotationAngle) * movestep;
+		//printf("next_x: %d, next_y: %d\n", next_x, next_y);
 		if (!is_wall(next_x, next_y, data))
 		{
 			puts("UP redering...");
@@ -152,6 +162,8 @@ int key_press(int keycode, t_data *data)
 			ft_render_player(data->mlx, data->player);
 			mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
 		}
+		else
+            printf("%s\n", "\033[0;31mIT'S A WAAAAL\033[0m");
 	}
 	else if (keycode == DOWN_ARROW)
 	{
@@ -160,6 +172,7 @@ int key_press(int keycode, t_data *data)
 		movestep = data->player->walkDirection * data->player->walkSpeed;
 		next_x = data->player->x + cos(data->player->rotationAngle) * movestep;
 		next_y = data->player->y + sin(data->player->rotationAngle) * movestep;
+		//printf("next_x: %d, next_y: %d\n", next_x, next_y);
 		if (!is_wall(next_x, next_y, data))
 		{
 			printf("DOWN redering...\n");
@@ -172,6 +185,8 @@ int key_press(int keycode, t_data *data)
 			ft_render_player(data->mlx, data->player);
 			mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
 		}
+		else
+            printf("%s\n", "\033[0;31mIT'S A WAAAAL\033[0m");
 	}
 	else if (keycode == LEFT_ARROW)
 	{
@@ -239,7 +254,7 @@ void	load_textures(t_map_data *map_data, t_mlx *mlx)
 
 	printf("Loading textures\n");
 	map_data->no_texture = mlx_xpm_file_to_image(mlx->mlx_ptr, NO, &width, &height);
-	map_data->no_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, NO, &width, &height);
+	map_data->no_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, NO, &map_data->no_texture_img.width, &map_data->no_texture_img.height);
 	map_data->no_texture_img.addr = mlx_get_data_addr(map_data->no_texture_img.img_ptr, &map_data->no_texture_img.bpp, &map_data->no_texture_img.line_length, &map_data->no_texture_img.endian);
 
 	// // Calculate the number of pixels
@@ -255,15 +270,15 @@ void	load_textures(t_map_data *map_data, t_mlx *mlx)
 	// sleep(5);
 
 	map_data->so_texture = mlx_xpm_file_to_image(mlx->mlx_ptr, SO, &width, &height);
-	map_data->so_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, SO, &width, &height);
+	map_data->so_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, SO, &map_data->so_texture_img.width, &map_data->so_texture_img.height);
 	map_data->so_texture_img.addr = mlx_get_data_addr(map_data->so_texture_img.img_ptr, &map_data->so_texture_img.bpp, &map_data->so_texture_img.line_length, &map_data->so_texture_img.endian);
 
 	map_data->we_texture = mlx_xpm_file_to_image(mlx->mlx_ptr, WE, &width, &height);
-	map_data->we_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, WE, &width, &height);
+	map_data->we_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, WE, &map_data->we_texture_img.width, &map_data->we_texture_img.height);
 	map_data->we_texture_img.addr = mlx_get_data_addr(map_data->we_texture_img.img_ptr, &map_data->we_texture_img.bpp, &map_data->we_texture_img.line_length, &map_data->we_texture_img.endian);
 
 	map_data->ea_texture = mlx_xpm_file_to_image(mlx->mlx_ptr, EA, &width, &height);
-	map_data->ea_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, EA, &width, &height);
+	map_data->ea_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, EA, &map_data->ea_texture_img.width, &map_data->ea_texture_img.height);
 	map_data->ea_texture_img.addr = mlx_get_data_addr(map_data->ea_texture_img.img_ptr, &map_data->ea_texture_img.bpp, &map_data->ea_texture_img.line_length, &map_data->ea_texture_img.endian);
 
 	printf("Done loading textures\n");
@@ -303,11 +318,15 @@ int	main(int ac, char **av)
 	// Render player:
 	player.x = WIDTH / 8;
 	player.y = HEIGHT / 5 + 30;
+	player.x = 2 * TILE_SIZE;
+	player.y = 2 * TILE_SIZE;
+
 	player.radius = 7;
 	player.turnDirection = 0;
 	player.walkDirection = 0;
 	player.rotationAngle = PI / 2;
-	player.walkSpeed = 10;
+	player.walkSpeed = 10 * (TILE_SIZE / 100);
+	// player.walkSpeed = 10;
 	player.turnSpeed = 10 * (PI / 180);
 	ft_render_player(&mlx, &player);
 	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win, mlx.img.img_ptr, 0, 0);

@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/22 05:58:54 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/24 05:41:13 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,28 @@
 # define CUB3D_H
 
 /*   Mcros   */
-# define WIDTH 1000
-# define HEIGHT 1000
+# define WIDTH 800
+# define HEIGHT 600
 // # define MAP_NUM_ROWS 19
 // # define MAP_NUM_COLS 21
-# define TILE_SIZE 32
-# define TEXT_SIZE 64
+# define TILE_SIZE 512
+// # define TILE_SIZE 64
+# define TEXT_SIZE 512
 # define PI 3.14159265
-# define MINIMAP_SCALE 0.2
+# define MINIMAP_SCALE 0.02
 # define FOV (60 * (PI / 180)) // 60 degrees in radians
 # define NUM_RAYS (WIDTH)
 
-# define NO "textures/wall_1.xpm"
-# define SO "textures/wall_2.xpm"
-# define WE "textures/wall_3.xpm"
-# define EA "textures/wall_4.xpm"
+# define NO "textures/7it4.xpm"
+# define SO "textures/1370.xpm"
+# define WE "textures/7it2.xpm"
+# define EA "textures/7it3.xpm"
+
+/* PRINTF COLORS */
+# define RED "\033[0;31m"
+# define GREEN "\033[0;32m"
+# define YELLOW "\033[0;33m"
+# define RESET "\033[0m"
 
 /*   KEYS    */
 # define ESC 65307
@@ -81,6 +88,8 @@ struct						s_img
 	int						bpp;
 	int						line_length;
 	int						endian;
+	int						width;
+	int						height;	
 };
 
 struct						s_mlx
@@ -93,8 +102,10 @@ struct						s_mlx
 struct						s_player
 {
 	int						radius;
-	int						x;
-	int						y;
+	// int						x;
+	// int						y;
+	double						x;
+	double						y;
 	int						turnDirection;
 	int						walkDirection;
 	float					rotationAngle;
@@ -138,6 +149,7 @@ struct						s_ray
 	bool	wasHitVertical;
 	t_point	intersection;
 	double	distance;
+	double	textureOffset;
 };
 
 /*   Prototypes   */
@@ -151,7 +163,8 @@ void						draw_map(t_mlx *mlx, t_map_data *map_data);
 void						ft_draw_line(t_mlx *mlx, int x0, int y0, int x1,
 								int y1, int color);
 void						cast_rays(t_mlx *mlx, t_player *player);
-bool						is_wall(int x, int y, t_data *data);
+// bool						is_wall(int x, int y, t_data *data);
+bool						is_wall(double x, double y, t_data *data);
 
 t_data	*get_data(t_data *data);
 t_point min_point(t_point a, t_point b, t_player *player);

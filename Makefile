@@ -6,7 +6,7 @@
 #    By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/20 16:06:03 by klakbuic          #+#    #+#              #
-#    Updated: 2024/07/22 05:29:57 by soutchak         ###   ########.fr        #
+#    Updated: 2024/07/23 07:18:10 by soutchak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ OBJS         := $(patsubst srcs/%.c, obj/%.o,$(SRCS))
 
 all: $(NAME)
 
-$(NAME): $(OBJSDIR) $(OBJS)
+$(NAME): $(OBJSDIR) $(OBJS) $(HEADER)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -I $(HEADER) -o $(NAME)
 
 $(OBJS) : $(OBJSDIR)/%.o : $(SRCSDIR)/%.c

@@ -20,6 +20,7 @@ t_point ver_intersection_distance(t_ray ray, t_player *player)
     double  xStep;
     double  yStep;
 
+    t_data *data = get_data(NULL);
     // find vertical (y/x)(inter/step) values
     xIntercept = floor(player->x / TILE_SIZE) * TILE_SIZE;
     if (ray.facingRight)
@@ -37,7 +38,8 @@ t_point ver_intersection_distance(t_ray ray, t_player *player)
     point.y = yIntercept;
     if (!ray.facingRight)
         point.x--;
-    while ((point.x > 0 && point.x < WIDTH) && (point.y > 0 && point.y < HEIGHT))
+    // while ((point.x > 0 && point.x < WIDTH) && (point.y > 0 && point.y < HEIGHT))
+    while ((point.x > 0 && point.x < data->map_data->map.cols * TILE_SIZE) && (point.y > 0 && point.y < data->map_data->map.rows * TILE_SIZE))
     {
         if (is_wall(point.x, point.y, get_data(NULL)))
             break ;
@@ -58,6 +60,7 @@ t_point hor_intersection_distance(t_ray ray, t_player *player)
     double  xStep;
     double  yStep;
 
+    t_data *data = get_data(NULL);
     // find horizontal (y/x)(inter/step) values
     yIntercept = floor(player->y / TILE_SIZE) * TILE_SIZE;
     if (!ray.facingUp)
@@ -75,7 +78,7 @@ t_point hor_intersection_distance(t_ray ray, t_player *player)
     point.y = yIntercept;
     if (ray.facingUp)
         point.y--;
-    while ((point.x > 0 && point.x < WIDTH) && (point.y > 0 && point.y < HEIGHT))
+    while ((point.x > 0 && point.x < data->map_data->map.cols * TILE_SIZE) && (point.y > 0 && point.y < data->map_data->map.rows * TILE_SIZE))
     {
         if (is_wall(point.x, point.y, get_data(NULL)))
             break ;
@@ -94,8 +97,14 @@ int    get_texture_color(int x, int y, t_img texture)
     int *addr;
 
     addr = (int *)texture.addr;
-    color = addr[y * TEXT_SIZE + x];
+    color = addr[y * texture.width + x];
     return (color);
+}
+
+int is_same(double a, double b)
+{
+    double EPSILON = 0.001;
+    return (fabs(a - b) < EPSILON);
 }
 
 void cast_rays(t_mlx *mlx, t_player *player) {
@@ -114,13 +123,10 @@ void cast_rays(t_mlx *mlx, t_player *player) {
         // find horizontal and vertical intersection points
         t_point horInter = hor_intersection_distance(ray[i], player);
         t_point verInter = ver_intersection_distance(ray[i], player);
+        // printf("horX: %f horY: %f verX: %f verY: %f\n", horInter.x, horInter.y, verInter.x, verInter.y);
 
         // find the closest intersection point
         t_point min = min_point(horInter, verInter, player);
-        if (equal_points(min, verInter))
-            ray[i].wasHitVertical = true;
-        else
-            ray[i].wasHitVertical = false;
         ray[i].intersection = min;
 
         // set distance
@@ -128,6 +134,20 @@ void cast_rays(t_mlx *mlx, t_player *player) {
         tmp.x = player->x;
         tmp.y = player->y;
         ray[i].distance = distance(tmp, min);
+        
+        if (equal_points(min, verInter))
+        {
+            // print VER in green
+            // printf(GREEN"horx: %.2f hory: %.2f verx: %.2f very: %.2f difference: (%f) => VER\n\n"RESET, horInter.x, horInter.y, verInter.x, verInter.y, ray[i].distance);
+            ray[i].wasHitVertical = true;
+        }
+        else
+        {
+            // print HOR in red
+            // printf(RED"horx: %.2f hory: %.2f verx: %.2f very: %.2f difference: (%f) => HOR\n\n"RESET, horInter.x, horInter.y, verInter.x, verInter.y, ray[i].distance);
+            ray[i].wasHitVertical = false;
+        }
+
 
         // increment angle
         rayangle += angle_inc;
@@ -162,21 +182,30 @@ void cast_rays(t_mlx *mlx, t_player *player) {
                         0x0087CEFA);
 
                 /// TEXTURE MAPPING
+
+            
         int texelX;
         if (ray[i].wasHitVertical)
-            texelX = (int)ray[i].intersection.y % TEXT_SIZE;
+            texelX = (int)ray[i].intersection.y % TILE_SIZE;
         else
-            texelX = (int)ray[i].intersection.x % TEXT_SIZE;
+            texelX = (int)ray[i].intersection.x % TILE_SIZE;
+
+        // Scale texelX to the texture width
+        texelX = (texelX * texture.width) / TILE_SIZE;
 
         for (int y = wallTop; y < wallBottom; y++)
         {
-            int distaceFromTop = y + (wallStripHeight / 2) - (HEIGHT / 2);
-            int texelY = distaceFromTop * ((double)TEXT_SIZE / wallStripHeight);
-            int index = texelY * TEXT_SIZE + texelX;
-            int  color = get_texture_color(texelX, texelY, texture);
+            int distanceFromTop = y + (wallStripHeight / 2) - (HEIGHT / 2);
+            // int texelY = distanceFromTop * ((double)texture.height / wallStripHeight);
+            int texelY = (1LL* distanceFromTop * texture.height + wallStripHeight/2)/ wallStripHeight;
+
+            // Ensure texelY stays within the texture height bounds
+            texelY = texelY % texture.height;
+
+            int color = get_texture_color(texelX, texelY, texture);
             my_mlx_pixel_put(&mlx->img, i, y, color);
         }
-                /// TEXTURE MAPPING
+        // TEXTURE MAPPING
 
         // draw floor
         ft_draw_line(mlx,
