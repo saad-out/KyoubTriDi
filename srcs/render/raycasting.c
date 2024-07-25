@@ -37,11 +37,11 @@ t_point ver_intersection_distance(t_ray ray, t_player *player)
     point.x = xIntercept;
     point.y = yIntercept;
     if (!ray.facingRight)
-        point.x--;
-    // while ((point.x > 0 && point.x < WIDTH) && (point.y > 0 && point.y < HEIGHT))
+        point.x -= EPSILON;
+        // point.x--;
     while ((point.x > 0 && point.x < data->map_data->map.cols * TILE_SIZE) && (point.y > 0 && point.y < data->map_data->map.rows * TILE_SIZE))
     {
-        if (is_wall(point.x, point.y, get_data(NULL)))
+        if (is_wall(point.x, point.y, get_data(NULL), 3))
             break ;
         else
         {
@@ -49,6 +49,14 @@ t_point ver_intersection_distance(t_ray ray, t_player *player)
             point.y += yStep;
         }
     }
+    if (point.x < 0)
+        point.x = 0;
+    else if (point.x > data->map_data->map.cols * TILE_SIZE)
+        point.x = (data->map_data->map.cols * TILE_SIZE) - 1;
+    if (point.y < 0)
+        point.y = 0;
+    else if (point.y > data->map_data->map.rows * TILE_SIZE)
+        point.y = (data->map_data->map.rows * TILE_SIZE) - 1;
     return (point);
 }
 
@@ -77,10 +85,11 @@ t_point hor_intersection_distance(t_ray ray, t_player *player)
     point.x = xIntercept;
     point.y = yIntercept;
     if (ray.facingUp)
-        point.y--;
+        point.y -= EPSILON;
+        // point.y--;
     while ((point.x > 0 && point.x < data->map_data->map.cols * TILE_SIZE) && (point.y > 0 && point.y < data->map_data->map.rows * TILE_SIZE))
     {
-        if (is_wall(point.x, point.y, get_data(NULL)))
+        if (is_wall(point.x, point.y, get_data(NULL), 4))
             break ;
         else
         {
@@ -88,6 +97,14 @@ t_point hor_intersection_distance(t_ray ray, t_player *player)
             point.y += yStep;
         }
     }
+    if (point.x < 0)
+        point.x = 0;
+    else if (point.x > data->map_data->map.cols * TILE_SIZE)
+        point.x = (data->map_data->map.cols * TILE_SIZE) - 1;
+    if (point.y < 0)
+        point.y = 0;
+    else if (point.y > data->map_data->map.rows * TILE_SIZE)
+        point.y = (data->map_data->map.rows * TILE_SIZE) - 1;
     return point;
 }
 
@@ -103,7 +120,6 @@ int    get_texture_color(int x, int y, t_img texture)
 
 int is_same(double a, double b)
 {
-    double EPSILON = 0.001;
     return (fabs(a - b) < EPSILON);
 }
 
@@ -134,17 +150,19 @@ void cast_rays(t_mlx *mlx, t_player *player) {
         tmp.x = player->x;
         tmp.y = player->y;
         ray[i].distance = distance(tmp, min);
-        
+        double j, k;
+        j = (player->x - horInter.x) * (player->x - horInter.x) + (player->y - horInter.y) * (player->y - horInter.y);
+        k = (player->x - verInter.x) * (player->x - verInter.x) + (player->y - verInter.y) * (player->y - verInter.y);
         if (equal_points(min, verInter))
         {
             // print VER in green
-            // printf(GREEN"horx: %.2f hory: %.2f verx: %.2f very: %.2f difference: (%f) => VER\n\n"RESET, horInter.x, horInter.y, verInter.x, verInter.y, ray[i].distance);
+            printf(GREEN"ray[%d] p(%.2f , %.2f) hor: (%.2f , %.2f) ver: (%.2f, %.2f) distance: (%f) => VER ----zaml>> hordist: %f, verdist: %f\n\n"RESET, i, player->x, player->y, horInter.x, horInter.y, verInter.x, verInter.y, ray[i].distance, j, k);
             ray[i].wasHitVertical = true;
         }
         else
         {
             // print HOR in red
-            // printf(RED"horx: %.2f hory: %.2f verx: %.2f very: %.2f difference: (%f) => HOR\n\n"RESET, horInter.x, horInter.y, verInter.x, verInter.y, ray[i].distance);
+            printf(RED"ray[%d] p(%.2f , %.2f) hor: (%.2f , %.2f) ver: (%.2f, %.2f) distance: (%f) => HOR ----zaml>> hordist: %f, verdist: %f\n\n"RESET, i, player->x, player->y, horInter.x, horInter.y, verInter.x, verInter.y, ray[i].distance, j, k);
             ray[i].wasHitVertical = false;
         }
 

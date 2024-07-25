@@ -116,25 +116,62 @@ void ft_render_map(t_mlx *mlx, t_map_data *map_data)
 	}
 }
 
-// bool is_wall(int x, int y, t_data *data)
-bool is_wall(double x, double y, t_data *data)
+bool is_wall(double x, double y, t_data *data, int flag)
 {
-	if (x < 0 || x > data->map_data->map.cols * TILE_SIZE || y < 0 || y > data->map_data->map.rows * TILE_SIZE)
+	int	mapX, mapY;
+
+	mapY = (int)floor((double)y / (double)TILE_SIZE);
+	mapX = (int)floor((double)x / (double)TILE_SIZE);
+	if ((mapY < 0 || mapY >= data->map_data->map.rows) || (mapX < 0 || mapX >= data->map_data->map.cols))
 	{
-		// printf("======> SATISFYING BOUNDARY x: %d, y: %d\n", x, y);
-		// return (false);
+		printf("========> EDGE\n");
 		return (true);
 	}
-	int mapGridIndexX = floor((double)x / (double)TILE_SIZE);
-	int mapGridIndexY = floor((double)y / (double)TILE_SIZE);
-	if (mapGridIndexX < 0 || mapGridIndexX >= data->map_data->map.cols * TILE_SIZE ||
-		mapGridIndexY < 0 || mapGridIndexY >= data->map_data->map.rows * TILE_SIZE)
-		{
-			//printf("met wall\n");
-			return (true);
-		}
-	return (data->map_data->map.map[mapGridIndexY][mapGridIndexX] == '1');
+	if (data->map_data->map.map[mapY][mapX] == '1')
+	{
+		printf("=====> (%.2f , %.2f) => map[%d][%d] == 1\n", x, y, mapY, mapX);
+		return (true);
+	}
+	else
+	{
+		printf("=====> (%.2f , %.2f) => map[%d][%d] == 0\n", x, y, mapY, mapX);
+		return (false);
+	}
 }
+
+// bool is_wall(int x, int y, t_data *data)
+// bool is_wall(double x, double y, t_data *data, int flag)
+// {
+// 	if (x < 0 || x > data->map_data->map.cols * TILE_SIZE || y < 0 || y > data->map_data->map.rows * TILE_SIZE)
+// 	{
+// 		printf("======> SATISFYING BOUNDARY x: %d, y: %d\n", x, y);
+// 		// return (false);
+// 		return (true);
+// 	}
+// 	// double tmpx = (x / (double)TILE_SIZE);
+// 	// double tmpy = (y / (double)TILE_SIZE);
+// 	// if (fabs(tmpx - round(tmpx)) < EPSILON)
+// 	// 	tmpx = round(tmpx);
+// 	// if (fabs(tmpy - round(tmpy)) < EPSILON)
+// 	// 	tmpy = round(tmpy);
+// 	// int mapGridIndexX = floor(tmpx);
+// 	// int mapGridIndexY = floor(tmpy);
+
+// 	int mapGridIndexX = floor(x / (double)TILE_SIZE); // x: 4
+// 	int mapGridIndexY = floor(y / (double)TILE_SIZE);
+// 	if (mapGridIndexX < 0 || mapGridIndexX >= data->map_data->map.cols ||
+// 		mapGridIndexY < 0 || mapGridIndexY >= data->map_data->map.rows)
+// 		{
+// 			printf("hna\n");
+// 			return (true);
+// 		}
+// 	if (data->map_data->map.map[mapGridIndexY][mapGridIndexX] == '1')
+// 	{
+// 		printf("(%.2f , %.2f) mapY: %d mapX: %d (%d)\n", x, y, mapGridIndexY, mapGridIndexX, flag);
+// 		return (true);
+// 	}
+// 	return (false);
+// }
 
 int key_press(int keycode, t_data *data)
 {
@@ -150,7 +187,7 @@ int key_press(int keycode, t_data *data)
 		next_x = data->player->x + cos(data->player->rotationAngle) * movestep;
 		next_y = data->player->y + sin(data->player->rotationAngle) * movestep;
 		//printf("next_x: %d, next_y: %d\n", next_x, next_y);
-		if (!is_wall(next_x, next_y, data))
+		if (!is_wall(next_x, next_y, data, 0))
 		{
 			puts("UP redering...");
 			mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
@@ -173,7 +210,7 @@ int key_press(int keycode, t_data *data)
 		next_x = data->player->x + cos(data->player->rotationAngle) * movestep;
 		next_y = data->player->y + sin(data->player->rotationAngle) * movestep;
 		//printf("next_x: %d, next_y: %d\n", next_x, next_y);
-		if (!is_wall(next_x, next_y, data))
+		if (!is_wall(next_x, next_y, data, 1))
 		{
 			printf("DOWN redering...\n");
 			mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);

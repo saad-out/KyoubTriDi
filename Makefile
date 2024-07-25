@@ -18,7 +18,8 @@ DEBUG        = -g3 -fsanitize=address
 CFLAGS       = -Wall -Wextra $(DEBUG) #-Werror
 
 # libs
-MLX          = libs/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm
+# MLX          = libs/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm
+MLX := -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 LIBFT        = libs/libft/libft.a
 CONTAINERS   = libs/ft_containers/containersft.a
 LIBS         = $(MLX) $(LIBFT) $(CONTAINERS)

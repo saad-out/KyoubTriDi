@@ -26,9 +26,9 @@
 # define FOV (60 * (PI / 180)) // 60 degrees in radians
 # define NUM_RAYS (WIDTH)
 
-# define NO "textures/7it4.xpm"
-# define SO "textures/1370.xpm"
-# define WE "textures/7it2.xpm"
+# define NO "textures/pornhub.xpm"
+# define SO "textures/7it2.xpm"
+# define WE "textures/7itakhor.xpm"
 # define EA "textures/7it3.xpm"
 
 /* PRINTF COLORS */
@@ -48,10 +48,14 @@
 # define ON_KEYDOWN 2
 # define ON_KEYUP 3
 
+#define EPSILON 0.00001L
+
 /*   Includes   */
 # include "../libs/ft_containers/ft_data_structres.h"
 # include "../libs/libft/libft.h"
-# include "../libs/minilibx-linux/mlx.h"
+// # include "../libs/minilibx-linux/mlx.h"
+// # include "../libs/minilibx-linux/mlx.h"
+#include <mlx.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -164,7 +168,7 @@ void						ft_draw_line(t_mlx *mlx, int x0, int y0, int x1,
 								int y1, int color);
 void						cast_rays(t_mlx *mlx, t_player *player);
 // bool						is_wall(int x, int y, t_data *data);
-bool						is_wall(double x, double y, t_data *data);
+bool						is_wall(double x, double y, t_data *data, int flag);
 
 t_data	*get_data(t_data *data);
 t_point min_point(t_point a, t_point b, t_player *player);
