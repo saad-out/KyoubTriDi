@@ -62,24 +62,52 @@ void render_image(t_data *data)
 	mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
 }
 
+void	handle_collision(double *nx, double *ny, double dx, double dy, t_data *data)
+{
+	t_player	*player;
+
+	player = data->player;
+	if (!cannot_move(player->x + dx, player->y + dy, data))
+	{
+		*nx = player->x + dx;
+		*ny = player->y + dy;
+	}
+	else if (!cannot_move(player->x + dx, player->y, data))
+	{
+		*nx = player->x + dx;
+		*ny = player->y;
+	}
+	else if (!cannot_move(player->x, player->y + dy, data))
+	{
+		*nx = player->x;
+		*ny = player->y + dy;
+	}
+	else
+	{
+		printf(RED"Error asat\n"RESET);
+		*nx = player->x;
+		*ny = player->y;
+	}
+}
+
 void move_player(t_data *data)
 {
 	t_player *player;
 	double movestep;
 	double next_y;
 	double next_x;
+	double	xstep;
+	double	ystep;
 	
 	player = data->player;
 	movestep = player->walkDirection * player->walkSpeed;
 	player->rotationAngle += player->turnDirection * player->turnSpeed;
-	next_x = player->x + cos(player->rotationAngle + player->horMove) * movestep;
-	next_y = player->y + sin(data->player->rotationAngle + player->horMove) * movestep;
-	if (!cannot_move(next_x, next_y, data))
-	{
-		data->player->x = next_x;
-		data->player->y = next_y;
-		render_image(data);
-	}
+	xstep = cos(player->rotationAngle + player->horMove) * movestep;
+	ystep = sin(data->player->rotationAngle + player->horMove) * movestep;
+	handle_collision(&next_x, &next_y, xstep, ystep, data);
+	data->player->x = next_x;
+	data->player->y = next_y;
+	render_image(data);
 }
 
 t_data	*get_data(t_data *data)
