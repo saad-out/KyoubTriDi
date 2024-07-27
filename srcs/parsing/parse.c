@@ -164,10 +164,9 @@ void	read_new_line(char **splited, char **line, int fd)
 	*line = get_next_line(fd);
 }
 
-void	parsing_map(t_map_data *map_data, int fd)
+void	parsing_map(t_map_data *map_data, int fd, char *line)
 {
 	t_lst	*head;
-	char	*line;
 	char	*tmp;
 
 	head = NULL;
@@ -245,6 +244,6 @@ void	parse_map_file(char *file, t_map_data *map_data)
 	if (elemts != 6 || !line)
 		ft_error();
 	// Start parsing the map:
-	parsing_map(map_data, fd);
+	parsing_map(map_data, fd, line);
 	close(fd);
 }
