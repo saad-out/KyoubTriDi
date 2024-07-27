@@ -60,8 +60,7 @@
 # include "../libs/ft_containers/ft_data_structres.h"
 # include "../libs/libft/libft.h"
 // # include "../libs/minilibx-linux/mlx.h"
-# include "../libs/minilibx-linux/mlx.h"
-// #include <mlx.h>
+#include <mlx.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -182,6 +181,7 @@ void						ft_draw_line(t_mlx *mlx, int x0, int y0, int x1,
 void						cast_rays(t_mlx *mlx, t_player *player);
 bool						is_wall_1(double x, double y, t_data *data);
 bool						is_wall_2(double x, double y, t_data *data);
+void    					cast_ray(t_player *player, t_ray *ray, double rayangle);
 
 t_data						*get_data(t_data *data);
 t_point						min_point(t_point a, t_point b, t_player *player);
@@ -189,8 +189,8 @@ double						distance(t_point a, t_point b);
 double						normalizeAngle(double angle);
 void						ft_render_map(t_mlx *mlx, t_map_data *map_data);
 bool						equal_points(t_point a, t_point b);
-void						set_ray_angle(t_ray *ray);
-void						set_texture(t_ray ray, t_data *data,
+void						set_ray_angle(t_ray *ray, double rayangle);
+void						set_texture(t_ray *ray, t_data *data,
 								t_img *texture);
 void						move_player(t_data *data);
 /*   Hooks   */
