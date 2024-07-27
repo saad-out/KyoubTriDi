@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/24 05:41:13 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/27 13:27:21 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@
 // # define TILE_SIZE 64
 # define TEXT_SIZE 512
 # define PI 3.14159265
+# define PI_2 (PI / 2)
 # define MINIMAP_SCALE 0.02
 # define FOV (60 * (PI / 180)) // 60 degrees in radians
 # define NUM_RAYS (WIDTH)
 
-# define NO "textures/pornhub.xpm"
+# define NO "textures/7it5.xpm"
 # define SO "textures/7it2.xpm"
 # define WE "textures/7itakhor.xpm"
 # define EA "textures/7it3.xpm"
@@ -43,20 +44,24 @@
 # define DOWN_ARROW 65364
 # define LEFT_ARROW 65361
 # define RIGHT_ARROW 65363
+# define W 119
+# define A 97
+# define S 115
+# define D 100
 
 /* Hooking events */
 # define ON_KEYDOWN 2
 # define ON_KEYUP 3
 
-#define EPSILON 0.00001L
-#define ALPHA 1
+# define EPSILON 0.00001L
+# define ALPHA 1
 
 /*   Includes   */
 # include "../libs/ft_containers/ft_data_structres.h"
 # include "../libs/libft/libft.h"
 // # include "../libs/minilibx-linux/mlx.h"
-// # include "../libs/minilibx-linux/mlx.h"
-#include <mlx.h>
+# include "../libs/minilibx-linux/mlx.h"
+// #include <mlx.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -94,7 +99,7 @@ struct						s_img
 	int						line_length;
 	int						endian;
 	int						width;
-	int						height;	
+	int						height;
 };
 
 struct						s_mlx
@@ -109,13 +114,14 @@ struct						s_player
 	int						radius;
 	// int						x;
 	// int						y;
-	double						x;
-	double						y;
+	double					x;
+	double					y;
 	int						turnDirection;
 	int						walkDirection;
 	float					rotationAngle;
 	float					walkSpeed;
 	float					turnSpeed;
+	float					horMove;
 };
 
 struct						s_map_grid
@@ -142,19 +148,19 @@ struct						s_map_data
 
 struct						s_point
 {
-	double	x;
-	double	y;
+	double					x;
+	double					y;
 };
 
 struct						s_ray
 {
-	double	angle;
-	bool	facingUp;
-	bool	facingRight;
-	bool	wasHitVertical;
-	t_point	intersection;
-	double	distance;
-	double	textureOffset;
+	double					angle;
+	bool					facingUp;
+	bool					facingRight;
+	bool					wasHitVertical;
+	t_point					intersection;
+	double					distance;
+	double					textureOffset;
 };
 
 /*   Prototypes   */
@@ -163,7 +169,8 @@ void						my_mlx_pixel_put(t_img *img, int x, int y,
 								int color);
 void						draw_square(t_img *img, int x, int y, int size,
 								int color);
-void ft_draw_circle(t_mlx *mlx, int xc, int yc, int radius, int color);
+void						ft_draw_circle(t_mlx *mlx, int xc, int yc,
+								int radius, int color);
 void						draw_map(t_mlx *mlx, t_map_data *map_data);
 void						ft_draw_line(t_mlx *mlx, int x0, int y0, int x1,
 								int y1, int color);
@@ -172,14 +179,15 @@ void						cast_rays(t_mlx *mlx, t_player *player);
 bool						is_wall_1(double x, double y, t_data *data);
 bool						is_wall_2(double x, double y, t_data *data);
 
-t_data	*get_data(t_data *data);
-t_point min_point(t_point a, t_point b, t_player *player);
-double distance(t_point a, t_point b);
-double  normalizeAngle(double angle);
-void ft_render_map(t_mlx *mlx, t_map_data *map_data);
-bool equal_points(t_point a, t_point b);
-void	set_ray_angle(t_ray	*ray);
-void	set_texture(t_ray ray, t_data *data, t_img *texture);
+t_data						*get_data(t_data *data);
+t_point						min_point(t_point a, t_point b, t_player *player);
+double						distance(t_point a, t_point b);
+double						normalizeAngle(double angle);
+void						ft_render_map(t_mlx *mlx, t_map_data *map_data);
+bool						equal_points(t_point a, t_point b);
+void						set_ray_angle(t_ray *ray);
+void						set_texture(t_ray ray, t_data *data,
+								t_img *texture);
 
 /*   Parsing   */
 void						ft_error(void);
@@ -190,6 +198,7 @@ char						*join_splited(char **splited_line);
 int							get_color(char *joined);
 int							ft_atoi_rgb(char **str);
 bool						is_valide_char_map(char c);
+void						check_path(char *path);
 char						*check_line_map(char *line);
 void						parse_map_file(char *file, t_map_data *map_data);
 /* --------   */

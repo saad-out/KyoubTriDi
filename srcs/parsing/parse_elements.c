@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 10:09:48 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/06 17:08:26 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/27 12:22:21 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,21 @@ int	get_color(char *joined)
 	// 	ft_error();
 	// }
 	return (t << 24 | r << 16 | g << 8 | b);
+}
+
+void check_path(char *path)
+{
+	int i;
+	int fd;
+
+	i = 0;
+	while (path[i] && path[i] != '\n')
+		i++;
+	path[i] = '\0';
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+	{
+		ft_error();
+	}
+	close(fd);
 }

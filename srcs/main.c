@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/24 05:19:53 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/27 15:10:04 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,110 +162,89 @@ bool is_wall_1(double x, double y, t_data *data)
 		return (false);
 }
 
+void render_image(t_data *data)
+{
+	mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
+	data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
+	ft_render_map(data->mlx, data->map_data);
+	ft_render_player(data->mlx, data->player);
+	mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
+}
+
+void move_player(t_data *data)
+{
+	t_player *player;
+	double movestep;
+	double next_y;
+	double next_x;
+	
+	player = data->player;
+	movestep = player->walkDirection * player->walkSpeed;
+	player->rotationAngle += player->turnDirection * player->turnSpeed;
+	next_x = player->x + cos(player->rotationAngle + player->horMove) * movestep;
+	next_y = player->y + sin(data->player->rotationAngle + player->horMove) * movestep;
+	if (!cannot_move(next_x, next_y, data))
+	{
+		data->player->x = next_x;
+		data->player->y = next_y;
+		render_image(data);
+	}
+}
+
+
 int key_press(int keycode, t_data *data)
 {
-	// int next_x;
-	// int next_y;
 	int movestep;
 	float next_y, next_x;
 
-	if (keycode == UP_ARROW)
+	if (keycode == UP_ARROW || keycode == W)
 	{
-		printf("UP\n");
 		data->player->walkDirection = 1;
-		movestep = data->player->walkDirection * data->player->walkSpeed;
-		next_x = data->player->x + cos(data->player->rotationAngle) * movestep;
-		next_y = data->player->y + sin(data->player->rotationAngle) * movestep;
-		// if (!is_wall_1(next_x, next_y, data))
-		if (!cannot_move(next_x, next_y, data))
-		{
-			puts("UP redering...");
-			mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
-			data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
-			ft_render_map(data->mlx, data->map_data);
-			data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
-			data->player->x = next_x;
-			data->player->y = next_y;
-			printf("nx: %f ny: %f\n", data->player->x, data->player->y);
-			ft_render_player(data->mlx, data->player);
-			mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
-		}
-		else
-            printf("%s\n", "\033[0;31mIT'S A WAAAAL\033[0m");
-		printf(GREEN"Angle: %f Nplayer(%f, %f) movestep: %d\n\n"RESET, data->player->rotationAngle, next_x, next_y, movestep);
 	}
-	else if (keycode == DOWN_ARROW)
+	else if (keycode == DOWN_ARROW || keycode == S)
 	{
-		puts("DOWN");
 		data->player->walkDirection = -1;
-		movestep = data->player->walkDirection * data->player->walkSpeed;
-		next_x = data->player->x + cos(data->player->rotationAngle) * movestep;
-		next_y = data->player->y + sin(data->player->rotationAngle) * movestep;
-		// if (!is_wall_1(next_x, next_y, data))
-		if (!cannot_move(next_x, next_y, data))
-		{
-			printf("DOWN redering...\n");
-			mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
-			data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
-			ft_render_map(data->mlx, data->map_data);
-			data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
-			data->player->x = next_x;
-			data->player->y = next_y;
-			ft_render_player(data->mlx, data->player);
-			mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
-		}
-		else
-            printf("%s\n", "\033[0;31mIT'S A WAAAAL\033[0m");
-		printf(GREEN"Angle: %f Nplayer(%f, %f) movestep: %d\n\n"RESET, data->player->rotationAngle, next_x, next_y, movestep);
 	}
 	else if (keycode == LEFT_ARROW)
 	{
-		puts("LEFT");
 		data->player->turnDirection = -1;
-		mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
-		data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
-		ft_render_map(data->mlx, data->map_data);
-		data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
-		ft_render_player(data->mlx, data->player);
- 		mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
-		// printf(GREEN"Angle: %f Nplayer(%f, %f) movestep: %d\n\n"RESET, data->player->rotationAngle, next_x, next_y, movestep);
 	}
 	else if (keycode == RIGHT_ARROW)
 	{
-		puts("RIGHT");
 		data->player->turnDirection = 1;
-		mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
-		data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
-		ft_render_map(data->mlx, data->map_data);
-		data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
-		ft_render_player(data->mlx, data->player);
- 		mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
-		// printf(GREEN"Angle: %f Nplayer(%f, %f) movestep: %d\n\n"RESET, data->player->rotationAngle, next_x, next_y, movestep);
+	}
+	 else if (keycode == A)
+	{
+		data->player->walkDirection = -1; // Move left
+		data->player->horMove = PI_2;
+	}
+	else if (keycode == D)
+	{
+		data->player->walkDirection = 1; // Move right
+		data->player->horMove = PI_2;
 	}
 	else if (keycode == ESC)
 	{
 		exit(0);
 	}
+	move_player(data);
 	return (0);
 }
 
 int key_realse(int keycode, t_data *data)
 {
-	if (keycode == UP_ARROW)
+	if (keycode == UP_ARROW || keycode == DOWN_ARROW || keycode == W || keycode == S)
 	{
 		data->player->walkDirection = 0;
 	}
-	else if (keycode == DOWN_ARROW)
-	{
-		data->player->walkDirection = 0;
-	}
-	else if (keycode == LEFT_ARROW)
+	else if (keycode == LEFT_ARROW || keycode == RIGHT_ARROW)
 	{
 		data->player->turnDirection = 0;
+		data->player->horMove = 0;
 	}
-	else if (keycode == RIGHT_ARROW)
+	else if (keycode == A || keycode == D)
 	{
-		data->player->turnDirection = 0;
+		data->player->horMove = 0;
 	}
 	return (0);
 }
@@ -285,10 +264,10 @@ void	load_textures(t_map_data *map_data, t_mlx *mlx)
 	int	height;
 
 	printf("Loading textures\n");
-	map_data->no_texture = mlx_xpm_file_to_image(mlx->mlx_ptr, NO, &width, &height);
-	map_data->no_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, NO, &map_data->no_texture_img.width, &map_data->no_texture_img.height);
-	map_data->no_texture_img.addr = mlx_get_data_addr(map_data->no_texture_img.img_ptr, &map_data->no_texture_img.bpp, &map_data->no_texture_img.line_length, &map_data->no_texture_img.endian);
-
+	printf("NO: |%s|\n", map_data->no_texture);
+	printf("SO: |%s|\n", map_data->so_texture);
+	printf("WE: |%s|\n", map_data->we_texture);
+	printf("EA: |%s|\n", map_data->ea_texture);
 	// // Calculate the number of pixels
     // int num_pixels = width * height;
     // int bytes_per_pixel = map_data->no_texture_img.bpp / 8;
@@ -300,18 +279,22 @@ void	load_textures(t_map_data *map_data, t_mlx *mlx)
     //     printf("NO[%d]: %#x\n", i, color);
     // }
 	// sleep(5);
+	
+	map_data->no_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, map_data->no_texture, &map_data->no_texture_img.width, &map_data->no_texture_img.height);
+	map_data->no_texture_img.addr = mlx_get_data_addr(map_data->no_texture_img.img_ptr, &map_data->no_texture_img.bpp, &map_data->no_texture_img.line_length, &map_data->no_texture_img.endian);
+	printf(" ===================== 1111111 =====================\n");
 
-	map_data->so_texture = mlx_xpm_file_to_image(mlx->mlx_ptr, SO, &width, &height);
-	map_data->so_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, SO, &map_data->so_texture_img.width, &map_data->so_texture_img.height);
+	map_data->so_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, map_data->so_texture, &map_data->so_texture_img.width, &map_data->so_texture_img.height);
 	map_data->so_texture_img.addr = mlx_get_data_addr(map_data->so_texture_img.img_ptr, &map_data->so_texture_img.bpp, &map_data->so_texture_img.line_length, &map_data->so_texture_img.endian);
+	printf(" ===================== 222222 =====================\n");
 
-	map_data->we_texture = mlx_xpm_file_to_image(mlx->mlx_ptr, WE, &width, &height);
-	map_data->we_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, WE, &map_data->we_texture_img.width, &map_data->we_texture_img.height);
+	map_data->we_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, map_data->we_texture, &map_data->we_texture_img.width, &map_data->we_texture_img.height);
 	map_data->we_texture_img.addr = mlx_get_data_addr(map_data->we_texture_img.img_ptr, &map_data->we_texture_img.bpp, &map_data->we_texture_img.line_length, &map_data->we_texture_img.endian);
+	printf(" ===================== 333333 =====================\n");
 
-	map_data->ea_texture = mlx_xpm_file_to_image(mlx->mlx_ptr, EA, &width, &height);
-	map_data->ea_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, EA, &map_data->ea_texture_img.width, &map_data->ea_texture_img.height);
+	map_data->ea_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, map_data->ea_texture, &map_data->ea_texture_img.width, &map_data->ea_texture_img.height);
 	map_data->ea_texture_img.addr = mlx_get_data_addr(map_data->ea_texture_img.img_ptr, &map_data->ea_texture_img.bpp, &map_data->ea_texture_img.line_length, &map_data->ea_texture_img.endian);
+	printf(" ===================== 44444 =====================\n");
 
 	printf("Done loading textures\n");
 }
@@ -357,6 +340,7 @@ int	main(int ac, char **av)
 	player.turnDirection = 0;
 	player.walkDirection = 0;
 	player.rotationAngle = PI / 2;
+	player.horMove = 0;
 	// player.walkSpeed = 10 * (TILE_SIZE / 100);
 	player.walkSpeed = 0.15 * TILE_SIZE;
 	// player.walkSpeed = 10;
