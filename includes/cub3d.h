@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/27 13:27:21 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/27 15:57:39 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,10 +164,15 @@ struct						s_ray
 };
 
 /*   Prototypes   */
+void						ft_init_data(t_data *data);
 void						ft_init_mlx(t_mlx *mlx);
+void						ft_init_player_position(t_player *player,
+								t_map_data *map_data);
 void						my_mlx_pixel_put(t_img *img, int x, int y,
 								int color);
 void						draw_square(t_img *img, int x, int y, int size,
+								int color);
+void						ft_draw_square(t_mlx *mlx, int x, int y, int size,
 								int color);
 void						ft_draw_circle(t_mlx *mlx, int xc, int yc,
 								int radius, int color);
@@ -175,7 +180,6 @@ void						draw_map(t_mlx *mlx, t_map_data *map_data);
 void						ft_draw_line(t_mlx *mlx, int x0, int y0, int x1,
 								int y1, int color);
 void						cast_rays(t_mlx *mlx, t_player *player);
-// bool						is_wall(int x, int y, t_data *data);
 bool						is_wall_1(double x, double y, t_data *data);
 bool						is_wall_2(double x, double y, t_data *data);
 
@@ -188,7 +192,10 @@ bool						equal_points(t_point a, t_point b);
 void						set_ray_angle(t_ray *ray);
 void						set_texture(t_ray ray, t_data *data,
 								t_img *texture);
-
+void						move_player(t_data *data);
+/*   Hooks   */
+int							key_press(int keycode, t_data *data);
+int							key_realse(int keycode, t_data *data);
 /*   Parsing   */
 void						ft_error(void);
 void						skip_digits(char **line);

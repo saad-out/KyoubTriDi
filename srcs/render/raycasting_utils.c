@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 05:27:19 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/23 06:41:19 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/27 15:15:40 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,38 @@ void	set_texture(t_ray ray, t_data *data, t_img *texture)
 			*texture = data->map_data->so_texture_img;
 		}
 	}
+}
+
+bool is_wall_1(double x, double y, t_data *data)
+{
+	int	mapX, mapY;
+
+	mapY = (int)floor((double)y / (double)(TILE_SIZE + EPSILON));
+	mapX = (int)floor((double)x / (double)(TILE_SIZE + EPSILON));
+	if ((mapY < 0 || mapY >= data->map_data->map.rows) || (mapX < 0 || mapX >= data->map_data->map.cols))
+	{
+		printf("========> EDGE\n");
+		return (true);
+	}
+	if (data->map_data->map.map[mapY][mapX] == '1')
+		return (true);
+	else
+		return (false);
+}
+
+bool is_wall_2(double x, double y, t_data *data)
+{
+	int	mapX, mapY;
+
+	mapY = (int)floor((double)y / (double)TILE_SIZE);
+	mapX = (int)floor((double)x / (double)TILE_SIZE);
+	if ((mapY < 0 || mapY >= data->map_data->map.rows) || (mapX < 0 || mapX >= data->map_data->map.cols))
+	{
+		printf("========> EDGE\n");
+		return (true);
+	}
+	if (data->map_data->map.map[mapY][mapX] == '1')
+		return (true);
+	else
+		return (false);
 }

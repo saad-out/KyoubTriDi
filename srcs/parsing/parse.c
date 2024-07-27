@@ -134,15 +134,6 @@ void	check_extension_textures(char *filename)
 		ft_error();
 }
 
-void	is_path_exists(char *path)
-{
-	int	fd;
-
-	fd = open(path, O_RDONLY);
-	if (fd < 0)
-		ft_error();
-}
-
 bool	is_empty_line(char final_char_line)
 {
 	if (final_char_line == '\n' || final_char_line == '\0')
@@ -150,162 +141,40 @@ bool	is_empty_line(char final_char_line)
 	return (false);
 }
 
-void	check_identifier_value(char *value, char *identifier)
+void	add_path(char **identifier, char *path, int *elemts)
 {
-	if (ft_strcmp(identifier, "F") == 0)
-	{
-		if (value != -1)
-			ft_error();
-	}
-	else if (ft_strcmp(identifier, "C") == 0)
-	{
-		if (value != -1)
-			ft_error();
-	}
-	else
-	{
-		if (value)
-			ft_error();
-		check_extension_textures(value);
-		is_path_exists(value);
-	}
-}
-
-void	parse_elements(char *identifier, char *value, t_map_data *map_data)
-{
-	if (ft_strcmp(identifier, "NO") == 0)
-	{
-		check_identifier_value(map_data->no_texture, identifier);
-		map_data->no_texture = ft_strdup(value);
-	}
-	else if (ft_strcmp(identifier, "SO") == 0)
-	{
-		check_identifier_value(map_data->so_texture, identifier);
-		map_data->so_texture = ft_strdup(value);
-	}
-	else if (ft_strcmp(identifier, "WE") == 0)
-	{
-		check_identifier_value(map_data->we_texture, identifier);
-		map_data->we_texture = ft_strdup(value);
-	}
-	else if (ft_strcmp(identifier, "EA") == 0)
-	{
-		check_identifier_value(map_data->ea_texture, identifier);
-		map_data->ea_texture = ft_strdup(value);
-	}
-	// else if (ft_strcmp(identifier, "F") == 0)
-	// 	check_identifier_value(map_data->floor_color, identifier);
-	// else if (ft_strcmp(identifier, "C") == 0)
-	// 	check_identifier_value(map_data->ceil_color, identifier);
-	else
-		ft_error();
-}
-void	add_path(char **identifier, char *path, int *count_elements)
-{
-	// check_path(path);
+	check_path(path);
 	if (*identifier)
 		ft_error();
 	*identifier = ft_strdup(path);
-	(*count_elements)++;
+	(*elemts)++;
+}
+void	add_color(int *color, char *joined, int *elemts)
+{
+	if (*color != -1)
+		ft_error();
+	*color = get_color(joined);
+	(*elemts)++;
 }
 
-void	parse_map_file(char *file, t_map_data *map_data)
+void	read_new_line(char **splited, char **line, int fd)
 {
-	int		fd;
-	char	*line;
-	char	**splited_line;
-	int		count_elements;
+	free_split(splited);
+	free(*line);
+	*line = get_next_line(fd);
+}
+
+void	parsing_map(t_map_data *map_data, int fd)
+{
 	t_lst	*head;
+	char	*line;
 	char	*tmp;
 
-	check_extension(file);
-	fd = open(file, O_RDONLY);
-	if (fd < 0)
-		ft_error();
-	count_elements = 0;
-	line = get_next_line(fd);
-	while (line)
-	{
-		splited_line = ft_split(line, ' ');
-		if (count_elements == 6 && splited_line[0] && splited_line[0][0] == '1')
-		{
-			// puts("break =====================");
-			break ;
-		}
-		else if (splited_line[0] == NULL || is_empty_line(splited_line[0][0]))
-		{
-			free_split(splited_line);
-			free(line);
-			line = get_next_line(fd);
-			continue ;
-		}
-		else if (ft_strcmp(splited_line[0], "NO") == 0 && splited_line[1])
-		{
-			// add_path(&map_data->no_texture, splited_line[1], &count_elements);
-			check_path(splited_line[1]);
-			if (map_data->no_texture)
-				ft_error();
-			map_data->no_texture = ft_strdup(splited_line[1]);
-			count_elements++;
-		}
-		else if (ft_strcmp(splited_line[0], "SO") == 0 && splited_line[1])
-		{
-			// add_path(&map_data->so_texture, splited_line[1], &count_elements);
-			check_path(splited_line[1]);
-			if (map_data->so_texture)
-				ft_error();
-			map_data->so_texture = ft_strdup(splited_line[1]);
-			count_elements++;
-		}
-		else if (ft_strcmp(splited_line[0], "WE") == 0 && splited_line[1])
-		{
-			// add_path(&map_data->we_texture, splited_line[1], &count_elements);
-			check_path(splited_line[1]);
-			if (map_data->we_texture)
-				ft_error();
-			map_data->we_texture = ft_strdup(splited_line[1]);
-			count_elements++;
-		}
-		else if (ft_strcmp(splited_line[0], "EA") == 0 && splited_line[1])
-		{
-			// add_path(&map_data->ea_texture, splited_line[1], &count_elements);
-			check_path(splited_line[1]);
-			if (map_data->ea_texture)
-				ft_error();
-			map_data->ea_texture = ft_strdup(splited_line[1]);
-			count_elements++;
-		}
-		else if (ft_strcmp(splited_line[0], "F") == 0 && splited_line[1])
-		{
-			if (map_data->floor_color != -1)
-				ft_error();
-			map_data->floor_color = get_color(join_splited(splited_line));
-			count_elements++;
-		}
-		else if (ft_strcmp(splited_line[0], "C") == 0 && splited_line[1])
-		{
-			if (map_data->ceil_color != -1)
-				ft_error();
-			map_data->ceil_color = get_color(join_splited(splited_line));
-			count_elements++;
-		}
-		else
-		{
-			ft_error();
-		}
-		free_split(splited_line);
-		free(line);
-		line = get_next_line(fd);
-	}
-	if (count_elements != 6 || !line)
-		ft_error();
-	// Start parsing the map
 	head = NULL;
 	map_data->map.rows = 0;
 	while (line)
 	{
 		tmp = check_line_map(line);
-		// printf("tmp: |%s|\n", tmp);
 		ft_lstadd_back(&head, ft_lstnew(tmp));
 		free(line);
 		line = get_next_line(fd);
@@ -314,10 +183,68 @@ void	parse_map_file(char *file, t_map_data *map_data)
 	map_data->map.map = ft_lst_to_map(head);
 	check_map(map_data->map.map, ft_lstsize(head), max_line_len(head));
 	map_data->map.cols = max_line_len(head);
-	printf("================ we: %s\n", map_data->we_texture);
-	printf("================ ea: %s\n", map_data->ea_texture);
-	printf("================ no: %s\n", map_data->no_texture);
-	printf("================ so: %s\n", map_data->so_texture);
 	ft_lstclear(&head, free);
+}
+
+void	parse_map_file(char *file, t_map_data *map_data)
+{
+	int		fd;
+	char	*line;
+	char	**splited;
+	int		elemts;
+
+	check_extension(file);
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+		ft_error();
+	elemts = 0;
+	line = get_next_line(fd);
+	while (line)
+	{
+		splited = ft_split(line, ' ');
+		if (elemts == 6 && splited[0] && splited[0][0] == '1')
+		{
+			break ;
+		}
+		else if (splited[0] == NULL || is_empty_line(splited[0][0]))
+		{
+			read_new_line(splited, &line, fd);
+			continue ;
+		}
+		else if (ft_strcmp(splited[0], "NO") == 0 && splited[1])
+		{
+			add_path(&map_data->no_texture, splited[1], &elemts);
+		}
+		else if (ft_strcmp(splited[0], "SO") == 0 && splited[1])
+		{
+			add_path(&map_data->so_texture, splited[1], &elemts);
+		}
+		else if (ft_strcmp(splited[0], "WE") == 0 && splited[1])
+		{
+			add_path(&map_data->we_texture, splited[1], &elemts);
+		}
+		else if (ft_strcmp(splited[0], "EA") == 0 && splited[1])
+		{
+			add_path(&map_data->ea_texture, splited[1], &elemts);
+		}
+		else if (ft_strcmp(splited[0], "F") == 0 && splited[1])
+		{
+			add_color(&map_data->floor_color, join_splited(splited),
+				&elemts);
+		}
+		else if (ft_strcmp(splited[0], "C") == 0 && splited[1])
+		{
+			add_color(&map_data->ceil_color, join_splited(splited), &elemts);
+		}
+		else
+		{
+			ft_error();
+		}
+		read_new_line(splited, &line, fd);
+	}
+	if (elemts != 6 || !line)
+		ft_error();
+	// Start parsing the map:
+	parsing_map(map_data, fd);
 	close(fd);
 }
