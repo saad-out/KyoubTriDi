@@ -90,7 +90,7 @@ void ft_draw_circle(t_mlx *mlx, int xc, int yc, int radius, int color) {
 
 void	ft_render_player(t_mlx *mlx, t_player *player)
 {
-	//printf("===> player.x: %d, player.y: %d\n", player->x, player->y);
+	// printf("===> player.x: %f, player.y: %f\n", player->x, player->y);
 	cast_rays(mlx, player);
 }
 
@@ -116,7 +116,19 @@ void ft_render_map(t_mlx *mlx, t_map_data *map_data)
 	}
 }
 
-bool is_wall(double x, double y, t_data *data, int flag)
+bool	cannot_move(double x, double y, t_data *data)
+{
+	int	playerSize = 30;
+
+	return (
+		is_wall_1(x - playerSize, y - playerSize, data) ||
+		is_wall_1(x + playerSize, y - playerSize, data) ||
+		is_wall_1(x - playerSize, y + playerSize, data) ||
+		is_wall_1(x + playerSize, y + playerSize, data)
+	);
+}
+
+bool is_wall_2(double x, double y, t_data *data)
 {
 	int	mapX, mapY;
 
@@ -128,56 +140,34 @@ bool is_wall(double x, double y, t_data *data, int flag)
 		return (true);
 	}
 	if (data->map_data->map.map[mapY][mapX] == '1')
-	{
-		printf("=====> (%.2f , %.2f) => map[%d][%d] == 1\n", x, y, mapY, mapX);
 		return (true);
-	}
 	else
-	{
-		printf("=====> (%.2f , %.2f) => map[%d][%d] == 0\n", x, y, mapY, mapX);
 		return (false);
-	}
 }
 
-// bool is_wall(int x, int y, t_data *data)
-// bool is_wall(double x, double y, t_data *data, int flag)
-// {
-// 	if (x < 0 || x > data->map_data->map.cols * TILE_SIZE || y < 0 || y > data->map_data->map.rows * TILE_SIZE)
-// 	{
-// 		printf("======> SATISFYING BOUNDARY x: %d, y: %d\n", x, y);
-// 		// return (false);
-// 		return (true);
-// 	}
-// 	// double tmpx = (x / (double)TILE_SIZE);
-// 	// double tmpy = (y / (double)TILE_SIZE);
-// 	// if (fabs(tmpx - round(tmpx)) < EPSILON)
-// 	// 	tmpx = round(tmpx);
-// 	// if (fabs(tmpy - round(tmpy)) < EPSILON)
-// 	// 	tmpy = round(tmpy);
-// 	// int mapGridIndexX = floor(tmpx);
-// 	// int mapGridIndexY = floor(tmpy);
+bool is_wall_1(double x, double y, t_data *data)
+{
+	int	mapX, mapY;
 
-// 	int mapGridIndexX = floor(x / (double)TILE_SIZE); // x: 4
-// 	int mapGridIndexY = floor(y / (double)TILE_SIZE);
-// 	if (mapGridIndexX < 0 || mapGridIndexX >= data->map_data->map.cols ||
-// 		mapGridIndexY < 0 || mapGridIndexY >= data->map_data->map.rows)
-// 		{
-// 			printf("hna\n");
-// 			return (true);
-// 		}
-// 	if (data->map_data->map.map[mapGridIndexY][mapGridIndexX] == '1')
-// 	{
-// 		printf("(%.2f , %.2f) mapY: %d mapX: %d (%d)\n", x, y, mapGridIndexY, mapGridIndexX, flag);
-// 		return (true);
-// 	}
-// 	return (false);
-// }
+	mapY = (int)floor((double)y / (double)(TILE_SIZE + EPSILON));
+	mapX = (int)floor((double)x / (double)(TILE_SIZE + EPSILON));
+	if ((mapY < 0 || mapY >= data->map_data->map.rows) || (mapX < 0 || mapX >= data->map_data->map.cols))
+	{
+		printf("========> EDGE\n");
+		return (true);
+	}
+	if (data->map_data->map.map[mapY][mapX] == '1')
+		return (true);
+	else
+		return (false);
+}
 
 int key_press(int keycode, t_data *data)
 {
-	int next_x;
-	int next_y;
+	// int next_x;
+	// int next_y;
 	int movestep;
+	float next_y, next_x;
 
 	if (keycode == UP_ARROW)
 	{
@@ -186,8 +176,8 @@ int key_press(int keycode, t_data *data)
 		movestep = data->player->walkDirection * data->player->walkSpeed;
 		next_x = data->player->x + cos(data->player->rotationAngle) * movestep;
 		next_y = data->player->y + sin(data->player->rotationAngle) * movestep;
-		//printf("next_x: %d, next_y: %d\n", next_x, next_y);
-		if (!is_wall(next_x, next_y, data, 0))
+		// if (!is_wall_1(next_x, next_y, data))
+		if (!cannot_move(next_x, next_y, data))
 		{
 			puts("UP redering...");
 			mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
@@ -196,11 +186,13 @@ int key_press(int keycode, t_data *data)
 			data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
 			data->player->x = next_x;
 			data->player->y = next_y;
+			printf("nx: %f ny: %f\n", data->player->x, data->player->y);
 			ft_render_player(data->mlx, data->player);
 			mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
 		}
 		else
             printf("%s\n", "\033[0;31mIT'S A WAAAAL\033[0m");
+		printf(GREEN"Angle: %f Nplayer(%f, %f) movestep: %d\n\n"RESET, data->player->rotationAngle, next_x, next_y, movestep);
 	}
 	else if (keycode == DOWN_ARROW)
 	{
@@ -209,8 +201,8 @@ int key_press(int keycode, t_data *data)
 		movestep = data->player->walkDirection * data->player->walkSpeed;
 		next_x = data->player->x + cos(data->player->rotationAngle) * movestep;
 		next_y = data->player->y + sin(data->player->rotationAngle) * movestep;
-		//printf("next_x: %d, next_y: %d\n", next_x, next_y);
-		if (!is_wall(next_x, next_y, data, 1))
+		// if (!is_wall_1(next_x, next_y, data))
+		if (!cannot_move(next_x, next_y, data))
 		{
 			printf("DOWN redering...\n");
 			mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
@@ -224,6 +216,7 @@ int key_press(int keycode, t_data *data)
 		}
 		else
             printf("%s\n", "\033[0;31mIT'S A WAAAAL\033[0m");
+		printf(GREEN"Angle: %f Nplayer(%f, %f) movestep: %d\n\n"RESET, data->player->rotationAngle, next_x, next_y, movestep);
 	}
 	else if (keycode == LEFT_ARROW)
 	{
@@ -235,6 +228,7 @@ int key_press(int keycode, t_data *data)
 		data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
 		ft_render_player(data->mlx, data->player);
  		mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
+		// printf(GREEN"Angle: %f Nplayer(%f, %f) movestep: %d\n\n"RESET, data->player->rotationAngle, next_x, next_y, movestep);
 	}
 	else if (keycode == RIGHT_ARROW)
 	{
@@ -246,6 +240,7 @@ int key_press(int keycode, t_data *data)
 		data->player->rotationAngle += data->player->turnDirection * data->player->turnSpeed;
 		ft_render_player(data->mlx, data->player);
  		mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
+		// printf(GREEN"Angle: %f Nplayer(%f, %f) movestep: %d\n\n"RESET, data->player->rotationAngle, next_x, next_y, movestep);
 	}
 	else if (keycode == ESC)
 	{
@@ -362,7 +357,8 @@ int	main(int ac, char **av)
 	player.turnDirection = 0;
 	player.walkDirection = 0;
 	player.rotationAngle = PI / 2;
-	player.walkSpeed = 10 * (TILE_SIZE / 100);
+	// player.walkSpeed = 10 * (TILE_SIZE / 100);
+	player.walkSpeed = 0.15 * TILE_SIZE;
 	// player.walkSpeed = 10;
 	player.turnSpeed = 10 * (PI / 180);
 	ft_render_player(&mlx, &player);

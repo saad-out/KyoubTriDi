@@ -49,6 +49,7 @@
 # define ON_KEYUP 3
 
 #define EPSILON 0.00001L
+#define ALPHA 1
 
 /*   Includes   */
 # include "../libs/ft_containers/ft_data_structres.h"
@@ -168,7 +169,8 @@ void						ft_draw_line(t_mlx *mlx, int x0, int y0, int x1,
 								int y1, int color);
 void						cast_rays(t_mlx *mlx, t_player *player);
 // bool						is_wall(int x, int y, t_data *data);
-bool						is_wall(double x, double y, t_data *data, int flag);
+bool						is_wall_1(double x, double y, t_data *data);
+bool						is_wall_2(double x, double y, t_data *data);
 
 t_data	*get_data(t_data *data);
 t_point min_point(t_point a, t_point b, t_player *player);

@@ -41,7 +41,7 @@ t_point ver_intersection_distance(t_ray ray, t_player *player)
         // point.x--;
     while ((point.x > 0 && point.x < data->map_data->map.cols * TILE_SIZE) && (point.y > 0 && point.y < data->map_data->map.rows * TILE_SIZE))
     {
-        if (is_wall(point.x, point.y, get_data(NULL), 3))
+        if (is_wall_2(point.x, point.y, get_data(NULL)))
             break ;
         else
         {
@@ -89,7 +89,7 @@ t_point hor_intersection_distance(t_ray ray, t_player *player)
         // point.y--;
     while ((point.x > 0 && point.x < data->map_data->map.cols * TILE_SIZE) && (point.y > 0 && point.y < data->map_data->map.rows * TILE_SIZE))
     {
-        if (is_wall(point.x, point.y, get_data(NULL), 4))
+        if (is_wall_2(point.x, point.y, get_data(NULL)))
             break ;
         else
         {
@@ -139,7 +139,7 @@ void cast_rays(t_mlx *mlx, t_player *player) {
         // find horizontal and vertical intersection points
         t_point horInter = hor_intersection_distance(ray[i], player);
         t_point verInter = ver_intersection_distance(ray[i], player);
-        // printf("horX: %f horY: %f verX: %f verY: %f\n", horInter.x, horInter.y, verInter.x, verInter.y);
+        // printf("ra[%d] horX: %f horY: %f verX: %f verY: %f\n", i, horInter.x, horInter.y, verInter.x, verInter.y);
 
         // find the closest intersection point
         t_point min = min_point(horInter, verInter, player);
@@ -156,13 +156,13 @@ void cast_rays(t_mlx *mlx, t_player *player) {
         if (equal_points(min, verInter))
         {
             // print VER in green
-            printf(GREEN"ray[%d] p(%.2f , %.2f) hor: (%.2f , %.2f) ver: (%.2f, %.2f) distance: (%f) => VER ----zaml>> hordist: %f, verdist: %f\n\n"RESET, i, player->x, player->y, horInter.x, horInter.y, verInter.x, verInter.y, ray[i].distance, j, k);
+            // printf(GREEN"ray[%d] p(%.2f , %.2f) hor: (%.2f , %.2f) ver: (%.2f, %.2f) distance: (%f) => VER ----zaml>> hordist: %f, verdist: %f\n\n"RESET, i, player->x, player->y, horInter.x, horInter.y, verInter.x, verInter.y, ray[i].distance, j, k);
             ray[i].wasHitVertical = true;
         }
         else
         {
             // print HOR in red
-            printf(RED"ray[%d] p(%.2f , %.2f) hor: (%.2f , %.2f) ver: (%.2f, %.2f) distance: (%f) => HOR ----zaml>> hordist: %f, verdist: %f\n\n"RESET, i, player->x, player->y, horInter.x, horInter.y, verInter.x, verInter.y, ray[i].distance, j, k);
+            // printf(RED"ray[%d] p(%.2f , %.2f) hor: (%.2f , %.2f) ver: (%.2f, %.2f) distance: (%f) => HOR ----zaml>> hordist: %f, verdist: %f\n\n"RESET, i, player->x, player->y, horInter.x, horInter.y, verInter.x, verInter.y, ray[i].distance, j, k);
             ray[i].wasHitVertical = false;
         }
 
@@ -171,6 +171,7 @@ void cast_rays(t_mlx *mlx, t_player *player) {
         rayangle += angle_inc;
     }
 
+
     //3D raycasting
     for (int i = 0; i < NUM_RAYS; i++)
     {
@@ -178,6 +179,8 @@ void cast_rays(t_mlx *mlx, t_player *player) {
         double  correctedDistance = ray[i].distance * cos(ray[i].angle - player->rotationAngle);
         double  distProjPlane = ((double)WIDTH / 2) / tan(FOV / 2);
         double  wallStripHeight = ((double)TILE_SIZE / correctedDistance) * distProjPlane;
+
+        // printf("ht: %f\n", wallStripHeight);
 
         // set texture
         t_img   texture;
@@ -188,10 +191,11 @@ void cast_rays(t_mlx *mlx, t_player *player) {
         int wallBottom = (HEIGHT / 2) + (wallStripHeight / 2);
         if (wallTop < 0)
             wallTop = 0;
-        if (wallBottom > HEIGHT)
+        if (wallBottom < 0 || wallBottom > HEIGHT)
             wallBottom = HEIGHT;
 
         // draw ceiling
+        // printf("%d ceil 0 -> %d\n", i, wallTop);
         ft_draw_line(mlx,
                         i,
                         0,
@@ -211,14 +215,16 @@ void cast_rays(t_mlx *mlx, t_player *player) {
         // Scale texelX to the texture width
         texelX = (texelX * texture.width) / TILE_SIZE;
 
+        // printf("%d text %d -> %d\n", i, wallTop, wallBottom);
         for (int y = wallTop; y < wallBottom; y++)
         {
             int distanceFromTop = y + (wallStripHeight / 2) - (HEIGHT / 2);
-            // int texelY = distanceFromTop * ((double)texture.height / wallStripHeight);
             int texelY = (1LL* distanceFromTop * texture.height + wallStripHeight/2)/ wallStripHeight;
 
             // Ensure texelY stays within the texture height bounds
             texelY = texelY % texture.height;
+            // if (y % 4 == 0)
+            //     printf(YELLOW"diTop = %d texelY: %d => (%d,%d)\n"RESET, distanceFromTop, (1LL* distanceFromTop * texture.height + wallStripHeight/2)/ wallStripHeight, texelX, texelY);
 
             int color = get_texture_color(texelX, texelY, texture);
             my_mlx_pixel_put(&mlx->img, i, y, color);
@@ -226,13 +232,17 @@ void cast_rays(t_mlx *mlx, t_player *player) {
         // TEXTURE MAPPING
 
         // draw floor
+        // printf("floor %d (%d, %d)\n", i, wallBottom, HEIGHT);
         ft_draw_line(mlx,
                         i,
                         wallBottom,
                         i,
                         HEIGHT,
                         0x00DEB887);
+        // printf("safe %d\n\n", i);
     }
+
+    printf("map\n");
 
     // Draw map
 	ft_render_map(data->mlx, data->map_data);
@@ -241,12 +251,12 @@ void cast_rays(t_mlx *mlx, t_player *player) {
                     player->y * MINIMAP_SCALE,
                     player->radius * MINIMAP_SCALE,
                     0x00065535);
-    ft_draw_line(mlx,
-                    player->x * MINIMAP_SCALE,
-                    player->y * MINIMAP_SCALE,
-                    (player->x + cos(player->rotationAngle) * 20) * MINIMAP_SCALE,
-                    (player->y + sin(player->rotationAngle) * 20) * MINIMAP_SCALE,
-                    0x00FFFF00);
+    // ft_draw_line(mlx,
+    //                 player->x * MINIMAP_SCALE,
+    //                 player->y * MINIMAP_SCALE,
+    //                 (player->x + cos(player->rotationAngle) * 2000) * MINIMAP_SCALE,
+    //                 (player->y + sin(player->rotationAngle) * 2000) * MINIMAP_SCALE,
+    //                 0x00000000);
     for (int i = 0; i < NUM_RAYS; i++)
     {
         ft_draw_line(mlx,
