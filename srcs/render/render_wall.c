@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_wall.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:56:18 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/28 14:39:00 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/28 15:59:36 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	draw_wall(t_data *data, t_ray *ray)
 
 void	draw_minimap(t_data *data, t_player *player)
 {
-	ft_render_map(data->mlx, data->map_data);
+	ft_render_map(data->mlx, data->map_data, player);
 	ft_draw_circle(
 		data->mlx,
 		player->x * MINIMAP_SCALE,

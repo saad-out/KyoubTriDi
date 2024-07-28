@@ -6,34 +6,94 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/27 15:57:14 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/28 15:58:37 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-
-void ft_render_map(t_mlx *mlx, t_map_data *map_data)
+void ft_render_map(t_mlx *mlx, t_map_data *map_data, t_player *player)
 {
-		for (int i = 0; i < map_data->map.rows; i++)
+	double player_x;
+	double player_y;
+	double start_x;
+	double start_y;
+	double end_x;
+	double end_y;
+	int view_distance = 5;
+	
+	player_x = player->x / TILE_SIZE;
+	player_y = player->y / TILE_SIZE;
+
+	start_x = player_x - view_distance;
+	start_y = player_y - view_distance;
+	end_x = player_x + view_distance;
+	end_y = player_y + view_distance;
+	
+	while (start_x < 0)
 	{
-		for (int j = 0; j < map_data->map.cols; j++)
+		start_x++;
+		end_x++;
+	}
+	while (start_y < 0)
+	{
+		start_y++;
+		end_y++;
+	}
+	while (end_x > map_data->map.cols)
+	{
+		end_x--;
+		start_x--;
+	}
+	while (end_y > map_data->map.rows)
+	{
+		end_y--;
+		start_y--;
+	}
+	int offsety = 0;
+	for (int i = start_y; i < end_y; i++)
+	{
+		int offsetx = 0;
+		for (int j = start_x; j < end_x; j++)
 		{
 			if (map_data->map.map[i][j] == '1')
 				ft_draw_square(mlx,
-								j * TILE_SIZE * MINIMAP_SCALE,
-								i * TILE_SIZE * MINIMAP_SCALE,
+								offsetx * TILE_SIZE * MINIMAP_SCALE,
+								offsety * TILE_SIZE * MINIMAP_SCALE,
 								TILE_SIZE * MINIMAP_SCALE,
 								0x00FF0000);
 			else
 				ft_draw_square(mlx,
-								j * TILE_SIZE * MINIMAP_SCALE,
-								i * TILE_SIZE * MINIMAP_SCALE,
+								offsetx * TILE_SIZE * MINIMAP_SCALE,
+								offsety * TILE_SIZE * MINIMAP_SCALE,
 								TILE_SIZE * MINIMAP_SCALE,
 								0x00FFFFFF);
+			offsetx++;
 		}
+		offsety++;
 	}
 }
+// void ft_render_map(t_mlx *mlx, t_map_data *map_data)
+// {
+// 		for (int i = 0; i < map_data->map.rows; i++)
+// 	{
+// 		for (int j = 0; j < map_data->map.cols; j++)
+// 		{
+// 			if (map_data->map.map[i][j] == '1')
+// 				ft_draw_square(mlx,
+// 								j * TILE_SIZE * MINIMAP_SCALE,
+// 								i * TILE_SIZE * MINIMAP_SCALE,
+// 								TILE_SIZE * MINIMAP_SCALE,
+// 								0x00FF0000);
+// 			else
+// 				ft_draw_square(mlx,
+// 								j * TILE_SIZE * MINIMAP_SCALE,
+// 								i * TILE_SIZE * MINIMAP_SCALE,
+// 								TILE_SIZE * MINIMAP_SCALE,
+// 								0x00FFFFFF);
+// 		}
+// 	}
+// }
 
 bool	cannot_move(double x, double y, t_data *data)
 {
@@ -51,7 +111,7 @@ void render_image(t_data *data)
 {
 	mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
 	data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
-	ft_render_map(data->mlx, data->map_data);
+	ft_render_map(data->mlx, data->map_data, data->player);
 	raycasting(data);
 	mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
 }
@@ -171,7 +231,7 @@ int	main(int ac, char **av)
 	parse_map_file(av[1], &map_data);
 	ft_init_player_position(&player, &map_data);
 	load_textures(&map_data, &mlx);
-	ft_render_map(&mlx, &map_data);
+	ft_render_map(&mlx, &map_data, &player);
 	raycasting(&data);
 	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win, mlx.img.img_ptr, 0, 0);
 	mlx_hook(mlx.win, 2, 1L << 0, key_press, &data);
