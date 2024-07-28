@@ -85,7 +85,8 @@ void	ft_init_data(t_data *data)
 	map_data->ceil_color = -1;
 	map_data->floor_color = -1;
 
-	player->radius = 7;
+	// player->radius = 7;
+	player->radius = 100;
 	player->turnDirection = 0;
 	player->walkDirection = 0;
 	player->horMove = 0;

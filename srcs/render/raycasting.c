@@ -215,6 +215,22 @@ void    draw_wallStrip(t_mlx *mlx, t_player *player, t_ray *ray, int i)
 
 }
 
+void    draw_minimap(t_data *data, t_player *player)
+{
+	ft_render_map(data->mlx, data->map_data);
+    ft_draw_circle(data->mlx,
+                    player->x * MINIMAP_SCALE,
+                    player->y * MINIMAP_SCALE,
+                    player->radius * MINIMAP_SCALE,
+                    0x00065535);
+    ft_draw_line(data->mlx,
+                    player->x * MINIMAP_SCALE,
+                    player->y * MINIMAP_SCALE,
+                    (player->x + cos(player->rotationAngle) * TILE_SIZE) * MINIMAP_SCALE,
+                    (player->y + sin(player->rotationAngle) * TILE_SIZE) * MINIMAP_SCALE,
+                    0x00000000);
+}
+
 void cast_rays(t_mlx *mlx, t_player *player) {
     t_data *data = get_data(NULL);
     double rayangle = player->rotationAngle - FOV / 2;
@@ -238,20 +254,6 @@ void cast_rays(t_mlx *mlx, t_player *player) {
         draw_wallStrip(mlx, player, &ray[i], i);
 
     // Draw map
-	ft_render_map(data->mlx, data->map_data);
-    ft_draw_circle(mlx,
-                    player->x * MINIMAP_SCALE,
-                    player->y * MINIMAP_SCALE,
-                    player->radius * MINIMAP_SCALE,
-                    0x00065535);
-    for (int i = 0; i < NUM_RAYS; i++)
-    {
-        ft_draw_line(mlx,
-                        player->x * MINIMAP_SCALE,
-                        player->y * MINIMAP_SCALE,
-                        ray[i].intersection.x * MINIMAP_SCALE,
-                        ray[i].intersection.y * MINIMAP_SCALE,
-                        0x00000000);
-    }
+    draw_minimap(data, player);
 }
 
