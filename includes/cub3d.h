@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/28 11:54:41 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/28 14:38:03 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,23 +185,28 @@ void						ft_draw_line(t_mlx *mlx, int x0, int y0, int x1,
 void						raycasting(t_data *data);
 bool						is_wall_1(double x, double y, t_data *data);
 bool						is_wall_2(double x, double y, t_data *data);
-void    					cast_ray(t_player *player, t_ray *ray, double rayangle);
+void    					cast_ray(t_data *data, t_player *player, t_ray *ray, double rayangle);
+void						compute_ver_intercept(t_player *player, t_ray *ray, double *xI, double *yI);
+void						compute_ver_step(t_ray *ray, double *xS, double *yS);
+void						point_adjustment(t_point *point, t_data *data);
+t_point 					ver_intersection_distance(t_ray *ray, t_player *player, t_data *data);
+t_point 					hor_intersection_distance(t_ray *ray, t_player *player, t_data *data);
 
 t_data						*get_data(t_data *data);
 t_point						min_point(t_point a, t_point b, t_player *player);
 double						distance(t_point a, t_point b);
-double						normalizeAngle(double angle);
+double						normalize_angle(double angle);
 void						ft_render_map(t_mlx *mlx, t_map_data *map_data);
 bool						equal_points(t_point a, t_point b);
 void						set_ray_angle(t_ray *ray, double rayangle);
 void						set_texture(t_ray *ray, t_data *data,
 								t_img *texture);
 void						move_player(t_data *data);
-void						draw_wallStrip(t_data *data, t_ray *ray);
+void						draw_wall(t_data *data, t_ray *ray);
 void    					draw_minimap(t_data *data, t_player *player);
 void						draw_floor(t_data *data, int column, int wallBottom);
 void						draw_wall_texture(t_data *data, t_ray *ray);
-int							get_texelY(t_ray *ray, int y, t_img *texture);
+int							get_texel_y(t_ray *ray, int y, t_img *texture);
 void						draw_ceiling(t_data *data, int column, int wallTop);
 double						get_wall_height(t_data *data, t_ray *ray);
 int 						is_same(double a, double b);

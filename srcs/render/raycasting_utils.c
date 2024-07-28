@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 05:27:19 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/28 11:55:32 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/28 14:43:44 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,29 +43,33 @@ void	set_texture(t_ray *ray, t_data *data, t_img *texture)
 	}
 }
 
-bool is_wall_1(double x, double y, t_data *data)
+bool	is_wall_1(double x, double y, t_data *data)
 {
-	int	mapX, mapY;
+	int	map_x;
+	int	map_y;
 
-	mapY = (int)floor((double)y / (double)(TILE_SIZE + EPSILON));
-	mapX = (int)floor((double)x / (double)(TILE_SIZE + EPSILON));
-	if ((mapY < 0 || mapY >= data->map_data->map.rows) || (mapX < 0 || mapX >= data->map_data->map.cols))
+	map_y = (int)floor((double)y / (double)(TILE_SIZE + EPSILON));
+	map_x = (int)floor((double)x / (double)(TILE_SIZE + EPSILON));
+	if ((map_y < 0 || map_y >= data->map_data->map.rows) || \
+		(map_x < 0 || map_x >= data->map_data->map.cols))
 		return (true);
-	if (data->map_data->map.map[mapY][mapX] == '1')
+	if (data->map_data->map.map[map_y][map_x] == '1')
 		return (true);
 	else
 		return (false);
 }
 
-bool is_wall_2(double x, double y, t_data *data)
+bool	is_wall_2(double x, double y, t_data *data)
 {
-	int	mapX, mapY;
+	int	map_x;
+	int	map_y;
 
-	mapY = (int)floor((double)y / (double)TILE_SIZE);
-	mapX = (int)floor((double)x / (double)TILE_SIZE);
-	if ((mapY < 0 || mapY >= data->map_data->map.rows) || (mapX < 0 || mapX >= data->map_data->map.cols))
+	map_y = (int)floor((double)y / (double)TILE_SIZE);
+	map_x = (int)floor((double)x / (double)TILE_SIZE);
+	if ((map_y < 0 || map_y >= data->map_data->map.rows) || \
+		(map_x < 0 || map_x >= data->map_data->map.cols))
 		return (true);
-	if (data->map_data->map.map[mapY][mapX] == '1')
+	if (data->map_data->map.map[map_y][map_x] == '1')
 		return (true);
 	else
 		return (false);
@@ -73,10 +77,11 @@ bool is_wall_2(double x, double y, t_data *data)
 
 double	get_wall_height(t_data *data, t_ray *ray)
 {
-	double	correctedDistance;
-	double	distProjPlane;
+	double	corrected_distance;
+	double	dist_proj_plane;
 
-	correctedDistance = ray->distance * cos(ray->angle - data->player->rotationAngle);
-	distProjPlane = ((double)WIDTH / 2) / tan(FOV / 2);
-	return (((double)TILE_SIZE / correctedDistance) * distProjPlane);
+	corrected_distance = ray->distance * \
+			cos(ray->angle - data->player->rotationAngle);
+	dist_proj_plane = ((double)WIDTH / 2) / tan(FOV / 2);
+	return (((double)TILE_SIZE / corrected_distance) * dist_proj_plane);
 }
