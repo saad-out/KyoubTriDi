@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/27 15:57:39 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/28 11:54:41 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,10 @@ struct						s_ray
 	t_point					intersection;
 	double					distance;
 	double					textureOffset;
+	double					wallStripHeight;
+	int						column;
+	int						wallTop;
+	int						wallBottom;
 };
 
 /*   Prototypes   */
@@ -178,7 +182,7 @@ void						ft_draw_circle(t_mlx *mlx, int xc, int yc,
 void						draw_map(t_mlx *mlx, t_map_data *map_data);
 void						ft_draw_line(t_mlx *mlx, int x0, int y0, int x1,
 								int y1, int color);
-void						cast_rays(t_mlx *mlx, t_player *player);
+void						raycasting(t_data *data);
 bool						is_wall_1(double x, double y, t_data *data);
 bool						is_wall_2(double x, double y, t_data *data);
 void    					cast_ray(t_player *player, t_ray *ray, double rayangle);
@@ -193,6 +197,14 @@ void						set_ray_angle(t_ray *ray, double rayangle);
 void						set_texture(t_ray *ray, t_data *data,
 								t_img *texture);
 void						move_player(t_data *data);
+void						draw_wallStrip(t_data *data, t_ray *ray);
+void    					draw_minimap(t_data *data, t_player *player);
+void						draw_floor(t_data *data, int column, int wallBottom);
+void						draw_wall_texture(t_data *data, t_ray *ray);
+int							get_texelY(t_ray *ray, int y, t_img *texture);
+void						draw_ceiling(t_data *data, int column, int wallTop);
+double						get_wall_height(t_data *data, t_ray *ray);
+int 						is_same(double a, double b);
 /*   Hooks   */
 int							key_press(int keycode, t_data *data);
 int							key_realse(int keycode, t_data *data);

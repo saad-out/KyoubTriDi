@@ -6,40 +6,40 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 02:55:56 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/24 05:25:47 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/28 11:54:53 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-double  normalizeAngle(double angle)
+double	normalizeAngle(double angle)
 {
-    double new;
+	double	new;
 
-    new = fmod(angle, 2 * PI);
-    if (new < 0)
-        new += 2 * PI;
-    return new;
+	new = fmod(angle, 2 * PI);
+	if (new < 0)
+		new += 2 * PI;
+	return new;
 }
 
 double distance(t_point a, t_point b) {
-    return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
+	return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
 }
 
 t_point min_point(t_point a, t_point b, t_player *player) {
-    t_point p;
-    p.x = player->x;
-    p.y = player->y;
-    double dist_a = distance(p, a);
-    double dist_b = distance(p, b);
-    // printf("=======> diffeence : %f\n", dist_a - dist_b);
-    // if (dist_a < dist_b)
-    //     printf("****** distance hor: %f\n", dist_a);
-    // else
-    //     printf("****** distance ver: %f\n", dist_b);
-    return dist_a < dist_b ? a : b;
+	t_point p;
+	p.x = player->x;
+	p.y = player->y;
+	double dist_a = distance(p, a);
+	double dist_b = distance(p, b);
+	return dist_a < dist_b ? a : b;
 }
 
 bool equal_points(t_point a, t_point b) {
-    return a.x == b.x && a.y == b.y;
+	return a.x == b.x && a.y == b.y;
+}
+
+int is_same(double a, double b)
+{
+	return (fabs(a - b) < EPSILON);
 }

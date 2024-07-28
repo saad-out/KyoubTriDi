@@ -13,12 +13,6 @@
 #include "../includes/cub3d.h"
 
 
-void	ft_render_player(t_mlx *mlx, t_player *player)
-{
-	// printf("===> player.x: %f, player.y: %f\n", player->x, player->y);
-	cast_rays(mlx, player);
-}
-
 void ft_render_map(t_mlx *mlx, t_map_data *map_data)
 {
 		for (int i = 0; i < map_data->map.rows; i++)
@@ -31,7 +25,7 @@ void ft_render_map(t_mlx *mlx, t_map_data *map_data)
 								i * TILE_SIZE * MINIMAP_SCALE,
 								TILE_SIZE * MINIMAP_SCALE,
 								0x00FF0000);
-			else if (map_data->map.map[i][j] == '0')
+			else
 				ft_draw_square(mlx,
 								j * TILE_SIZE * MINIMAP_SCALE,
 								i * TILE_SIZE * MINIMAP_SCALE,
@@ -58,7 +52,7 @@ void render_image(t_data *data)
 	mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
 	data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
 	ft_render_map(data->mlx, data->map_data);
-	ft_render_player(data->mlx, data->player);
+	raycasting(data);
 	mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
 }
 
@@ -178,7 +172,7 @@ int	main(int ac, char **av)
 	ft_init_player_position(&player, &map_data);
 	load_textures(&map_data, &mlx);
 	ft_render_map(&mlx, &map_data);
-	ft_render_player(&mlx, &player);
+	raycasting(&data);
 	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win, mlx.img.img_ptr, 0, 0);
 	mlx_hook(mlx.win, 2, 1L << 0, key_press, &data);
 	mlx_hook(mlx.win, 3, 1L << 1, key_realse, &data);
