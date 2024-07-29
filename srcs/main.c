@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/28 15:58:37 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/29 09:41:14 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,14 @@ void ft_render_map(t_mlx *mlx, t_map_data *map_data, t_player *player)
 {
 	double player_x;
 	double player_y;
-	double start_x;
-	double start_y;
-	double end_x;
-	double end_y;
+	int		start_x;
+	int		start_y;
+	int		end_x;
+	int		end_y;
+	int		imran_x;
+	int		imran_y;
 	int view_distance = 5;
+	
 	
 	player_x = player->x / TILE_SIZE;
 	player_y = player->y / TILE_SIZE;
@@ -51,27 +54,52 @@ void ft_render_map(t_mlx *mlx, t_map_data *map_data, t_player *player)
 		start_y--;
 	}
 	int offsety = 0;
+	//printf(RED"px=%d, py=%d", player_x, player_y);
 	for (int i = start_y; i < end_y; i++)
 	{
 		int offsetx = 0;
 		for (int j = start_x; j < end_x; j++)
 		{
+			printf("");
 			if (map_data->map.map[i][j] == '1')
 				ft_draw_square(mlx,
-								offsetx * TILE_SIZE * MINIMAP_SCALE,
-								offsety * TILE_SIZE * MINIMAP_SCALE,
-								TILE_SIZE * MINIMAP_SCALE,
+								offsetx * (int)(TILE_SIZE * MINIMAP_SCALE),
+								offsety * (int)(TILE_SIZE * MINIMAP_SCALE),
+								(int)(TILE_SIZE * MINIMAP_SCALE),
 								0x00FF0000);
 			else
 				ft_draw_square(mlx,
-								offsetx * TILE_SIZE * MINIMAP_SCALE,
-								offsety * TILE_SIZE * MINIMAP_SCALE,
-								TILE_SIZE * MINIMAP_SCALE,
+								offsetx * (int)(TILE_SIZE * MINIMAP_SCALE),
+								offsety * (int)(TILE_SIZE * MINIMAP_SCALE),
+								(int)(TILE_SIZE * MINIMAP_SCALE),
 								0x00FFFFFF);
+			
+			if (i == (int)player_y && j == (int)player_x)
+			{
+				imran_x = offsetx;
+				imran_y = offsety;
+			}
 			offsetx++;
 		}
 		offsety++;
 	}
+	int posx, posy;
+	posx = (imran_x + player_x - (int)player_x) * TILE_SIZE;
+	posy = (imran_y + player_y - (int)player_y) * TILE_SIZE;
+	ft_draw_circle(
+		mlx,
+		posx * MINIMAP_SCALE,
+		posy * MINIMAP_SCALE,
+		player->radius * MINIMAP_SCALE,
+		0x00065535);
+	ft_draw_line(
+		mlx,
+		posx * MINIMAP_SCALE,
+		posy * MINIMAP_SCALE,
+		(posx + cos(player->rotationAngle) * TILE_SIZE) * MINIMAP_SCALE,
+		(posy + sin(player->rotationAngle) * TILE_SIZE) * MINIMAP_SCALE,
+		0x00000000);
+		printf(" ===> %d\n", player->rotationAngle);
 }
 // void ft_render_map(t_mlx *mlx, t_map_data *map_data)
 // {

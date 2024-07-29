@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_wall.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:56:18 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/28 15:59:36 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/29 09:41:47 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,5 @@ void	draw_wall(t_data *data, t_ray *ray)
 void	draw_minimap(t_data *data, t_player *player)
 {
 	ft_render_map(data->mlx, data->map_data, player);
-	ft_draw_circle(
-		data->mlx,
-		player->x * MINIMAP_SCALE,
-		player->y * MINIMAP_SCALE,
-		player->radius * MINIMAP_SCALE,
-		0x00065535);
-	ft_draw_line(
-		data->mlx,
-		player->x * MINIMAP_SCALE,
-		player->y * MINIMAP_SCALE,
-		(player->x + cos(player->rotationAngle) * TILE_SIZE) * MINIMAP_SCALE,
-		(player->y + sin(player->rotationAngle) * TILE_SIZE) * MINIMAP_SCALE,
-		0x00000000);
+
 }
