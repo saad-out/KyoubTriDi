@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:56:18 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/30 13:17:40 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/30 17:17:44 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void	draw_floor(t_data *data, int column, int wallBottom, double ht)
 	int color;
 	double factor;
 
-	color = 0x634f04;
+	// color = 0x634f04;
+	color = 0x1f6370;
 
 	double x = 1;
 	for (int y = wallBottom; y < HEIGHT; y++)

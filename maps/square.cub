@@ -1,10 +1,10 @@
 F 0,135,206
 C 99,99,99
 
-NO textures/7it2.xpm
-SO textures/7itlkhr.xpm
-WE textures/7itakhor.xpm
-EA textures/7it3.xpm
+NO textures/flame2.xpm
+SO textures/dragon.xpm
+WE textures/skull.xpm
+EA textures/flame.xpm
 
 111111111111111111111111
 100000000000000000000001
