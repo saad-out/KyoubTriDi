@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/30 11:12:47 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/30 16:29:30 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 # define CUB3D_H
 
 /*   Mcros   */
-# define WIDTH 800
-# define HEIGHT 600
+// # define WIDTH 800
+// # define HEIGHT 600
+# define WIDTH 1000
+# define HEIGHT 700
 // # define MAP_NUM_ROWS 19
 // # define MAP_NUM_COLS 21
 # define TILE_SIZE 512
@@ -61,7 +63,7 @@
 # include "../libs/libft/libft.h"
 // # include "../libs/minilibx-linux/mlx.h"
 #include <mlx.h>
-//#include "mlx/mlx.h"
+// #include "mlx/mlx.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>

@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/30 10:59:00 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/30 16:46:42 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,27 +104,6 @@ void ft_render_map(t_mlx *mlx, t_map_data *map_data, t_player *player)
 		0x00000000);
 		// printf(" ===> %d\n", player->rotationAngle);
 }
-// void ft_render_map(t_mlx *mlx, t_map_data *map_data)
-// {
-// 		for (int i = 0; i < map_data->map.rows; i++)
-// 	{
-// 		for (int j = 0; j < map_data->map.cols; j++)
-// 		{
-// 			if (map_data->map.map[i][j] == '1')
-// 				ft_draw_square(mlx,
-// 								j * TILE_SIZE * MINIMAP_SCALE,
-// 								i * TILE_SIZE * MINIMAP_SCALE,
-// 								TILE_SIZE * MINIMAP_SCALE,
-// 								0x00FF0000);
-// 			else
-// 				ft_draw_square(mlx,
-// 								j * TILE_SIZE * MINIMAP_SCALE,
-// 								i * TILE_SIZE * MINIMAP_SCALE,
-// 								TILE_SIZE * MINIMAP_SCALE,
-// 								0x00FFFFFF);
-// 		}
-// 	}
-// }
 
 bool	cannot_move(double x, double y, t_data *data)
 {
@@ -153,7 +132,7 @@ void paste_part_into_image(t_img *img1, t_img *img2, t_action action)
 		j = 0;
 		while (j < img1->width)
 		{
-			if (img1_addr[j + i * img1->width] != RGBA)
+			if (img1_addr[j + i * img1->width] != RGBA && (action.x + j) < WIDTH && (i + action.y) < HEIGHT)
 				img2_addr[(action.x + j) + ((i + action.y) * (img2->width))] = img1_addr[j + i * img1->width];
 			j++;
 		}
@@ -181,8 +160,9 @@ void render_image(t_data *data)
 	raycasting(data);
 	data->mlx->img.width = WIDTH;
 	data->mlx->img.height = HEIGHT;
+	printf(RED"render\n"RESET);
 	paste_part_into_image(&flame, &data->mlx->img, (t_action){0, 0});
-	mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
+	// mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
 	// usleep(100000);
 	index_ogbi++;
 }
@@ -232,7 +212,6 @@ void move_player(t_data *data)
 	handle_collision(&next_x, &next_y, xstep, ystep, data);
 	data->player->x = next_x;
 	data->player->y = next_y;
-	render_image(data);
 }
 
 t_data	*get_data(t_data *data)
@@ -250,17 +229,6 @@ void	load_textures(t_map_data *map_data, t_mlx *mlx)
 	int	height;
 
 
-	// // Calculate the number of pixels
-    // int num_pixels = width * height;
-    // int bytes_per_pixel = map_data->no_texture_img.bpp / 8;
-
-    // // Print pixel data
-    // for (int i = 0; i < num_pixels; i++) {
-    //     int pixel_offset = i * bytes_per_pixel;
-    //     unsigned int color = *(unsigned int *)(map_data->no_texture_img.addr + pixel_offset);
-    //     printf("NO[%d]: %#x\n", i, color);
-    // }
-	// sleep(5);
 	map_data->flame_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/1bg.xpm", &map_data->flame_texture_img.width, &map_data->flame_texture_img.height);
 	map_data->flame_texture_img.addr = mlx_get_data_addr(map_data->flame_texture_img.img_ptr, &map_data->flame_texture_img.bpp, &map_data->flame_texture_img.line_length, &map_data->flame_texture_img.endian);
 	printf(" ===================== 000000 ===================== %d %d\n", map_data->flame_texture_img.width, map_data->flame_texture_img.height);
@@ -305,10 +273,11 @@ int ogbi(void *d)
 		flame = data->map_data->flame2_texture_img;
 	else
 		flame = data->map_data->flame3_texture_img;
+	data->mlx->img.width = WIDTH;
+	data->mlx->img.height = HEIGHT;
 	raycasting(data);
 	paste_part_into_image(&flame, &data->mlx->img, (t_action){0, 0});
 	mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
-	// usleep(100000);
 	index_ogbi++;
 	return (0);
 }
@@ -335,9 +304,7 @@ int	main(int ac, char **av)
 	ft_init_player_position(&player, &map_data);
 	load_textures(&map_data, &mlx);
 	ft_render_map(&mlx, &map_data, &player);
-	mlx_loop_hook(mlx.mlx_ptr, ogbi,&data);
-	// raycasting(&data);
-	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win, mlx.img.img_ptr, 0, 0);
+	mlx_loop_hook(mlx.mlx_ptr, &ogbi, &data);
 	mlx_hook(mlx.win, 2, 1L << 0, key_press, &data);
 	mlx_hook(mlx.win, 3, 1L << 1, key_realse, &data);
 	mlx_loop(mlx.mlx_ptr);
