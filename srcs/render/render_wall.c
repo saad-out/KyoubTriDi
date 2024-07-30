@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:56:18 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/30 17:17:44 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/30 17:45:14 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,7 @@ void	draw_floor(t_data *data, int column, int wallBottom, double ht)
 	int color;
 	double factor;
 
-	// color = 0x634f04;
 	color = 0x1f6370;
-
 	double x = 1;
 	for (int y = wallBottom; y < HEIGHT; y++)
 	{
@@ -50,51 +48,13 @@ void	draw_floor(t_data *data, int column, int wallBottom, double ht)
 		blue = color & 0xFF;
 
 		x = ((double)y / (double)HEIGHT);
-		// x = sqrt(x);
 		x = pow(x, 3);
-		// printf("%f\n", x);
-		// x *= 100;
-		// x = log10(x);
-		// printf("x: %f\n", x);
 		red *= x;
 		green *= x;
 		blue *= x;
 		shaded = (red << 16) | (green << 8) | blue;
 		my_mlx_pixel_put(&data->mlx->img, column, y, shaded);
 	}
-
-
-	// // factor = scale((double)wallBottom, 0, HEIGHT, 0, 1);
-	// factor = 10.0;
-	// for (int y = wallBottom; y < HEIGHT; y++)
-	// {
-	// 	// factor = exp(y / 100);
-	// 	// if (factor > 1.0)
-	// 	// 	factor = 1;
-	// 	// factor = 1 / factor;
-	// 	// printf("factor %f y %f\n", factor, y / 100);
-	// 	red = clamp(red - factor, 0, 255);
-	// 	green = clamp(green - factor, 0, 255);
-	// 	blue = clamp(blue - factor, 0, 255);
-	// 	shaded = (red << 16) | (green << 8) | blue;
-	// 	if (y > 500)
-	// 		my_mlx_pixel_put(&data->mlx->img, column, y, color);
-	// 	else
-	// 		my_mlx_pixel_put(&data->mlx->img, column, y, shaded);
-	// 	factor += 10.0;
-	// 	if (factor > 100.0)
-	// 		factor = 10.0;
-	// 	// printf("factor: %f\n", factor);
-	// }
-
-	// ft_draw_line(
-	// 	data->mlx,
-	// 	column,
-	// 	wallBottom,
-	// 	column,
-	// 	HEIGHT,
-	// 	shaded);
-		// 0x00DEB887);
 }
 
 void	draw_wall(t_data *data, t_ray *ray)

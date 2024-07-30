@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/30 16:46:42 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/30 17:54:44 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,6 +275,7 @@ int ogbi(void *d)
 		flame = data->map_data->flame3_texture_img;
 	data->mlx->img.width = WIDTH;
 	data->mlx->img.height = HEIGHT;
+	move_player(data);
 	raycasting(data);
 	paste_part_into_image(&flame, &data->mlx->img, (t_action){0, 0});
 	mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);

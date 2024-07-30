@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:43:36 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/27 15:57:25 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/30 17:55:50 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,6 @@ void	ft_init_data(t_data *data)
 	player->turnDirection = 0;
 	player->walkDirection = 0;
 	player->horMove = 0;
-	player->walkSpeed = 0.15 * TILE_SIZE;
-	player->turnSpeed = 10 * (PI / 180);
+	player->walkSpeed = 0.1 * TILE_SIZE;
+	player->turnSpeed = 5 * (PI / 180);
 }
