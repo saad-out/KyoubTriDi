@@ -6,11 +6,14 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/29 09:41:14 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/30 10:59:00 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+
+t_img flame;
+int	index_ogbi = 0;
 
 void ft_render_map(t_mlx *mlx, t_map_data *map_data, t_player *player)
 {
@@ -99,7 +102,7 @@ void ft_render_map(t_mlx *mlx, t_map_data *map_data, t_player *player)
 		(posx + cos(player->rotationAngle) * TILE_SIZE) * MINIMAP_SCALE,
 		(posy + sin(player->rotationAngle) * TILE_SIZE) * MINIMAP_SCALE,
 		0x00000000);
-		printf(" ===> %d\n", player->rotationAngle);
+		// printf(" ===> %d\n", player->rotationAngle);
 }
 // void ft_render_map(t_mlx *mlx, t_map_data *map_data)
 // {
@@ -135,13 +138,53 @@ bool	cannot_move(double x, double y, t_data *data)
 	);
 }
 
+void paste_part_into_image(t_img *img1, t_img *img2, t_action action) 
+{
+    int i;
+	int j;
+	unsigned int *img1_addr;
+	unsigned int *img2_addr;
+
+    i = 0;
+    img1_addr = (unsigned int *)img1->addr;
+	img2_addr = (unsigned int *)img2->addr;
+	while (i < img1->height)
+	{
+		j = 0;
+		while (j < img1->width)
+		{
+			if (img1_addr[j + i * img1->width] != RGBA)
+				img2_addr[(action.x + j) + ((i + action.y) * (img2->width))] = img1_addr[j + i * img1->width];
+			j++;
+		}
+		i++;
+	}
+}
+
+
 void render_image(t_data *data)
 {
+	t_img *test;
+
+	if (index_ogbi >= 30)
+		index_ogbi = 0;
+	if (index_ogbi < 10)
+		flame = data->map_data->flame_texture_img;
+	else if (index_ogbi < 20)
+		flame = data->map_data->flame2_texture_img;
+	else
+		flame = data->map_data->flame3_texture_img;
+	test = &data->mlx->img;
 	mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
 	data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
 	ft_render_map(data->mlx, data->map_data, data->player);
 	raycasting(data);
+	data->mlx->img.width = WIDTH;
+	data->mlx->img.height = HEIGHT;
+	paste_part_into_image(&flame, &data->mlx->img, (t_action){0, 0});
 	mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
+	// usleep(100000);
+	index_ogbi++;
 }
 
 void	handle_collision(double *nx, double *ny, double dx, double dy, t_data *data)
@@ -218,7 +261,18 @@ void	load_textures(t_map_data *map_data, t_mlx *mlx)
     //     printf("NO[%d]: %#x\n", i, color);
     // }
 	// sleep(5);
+	map_data->flame_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/1bg.xpm", &map_data->flame_texture_img.width, &map_data->flame_texture_img.height);
+	map_data->flame_texture_img.addr = mlx_get_data_addr(map_data->flame_texture_img.img_ptr, &map_data->flame_texture_img.bpp, &map_data->flame_texture_img.line_length, &map_data->flame_texture_img.endian);
+	printf(" ===================== 000000 ===================== %d %d\n", map_data->flame_texture_img.width, map_data->flame_texture_img.height);
 	
+	map_data->flame2_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/2bg.xpm", &map_data->flame2_texture_img.width, &map_data->flame2_texture_img.height);
+	map_data->flame2_texture_img.addr = mlx_get_data_addr(map_data->flame2_texture_img.img_ptr, &map_data->flame2_texture_img.bpp, &map_data->flame2_texture_img.line_length, &map_data->flame2_texture_img.endian);
+	printf(" ===================== 000000 ===================== %d %d\n", map_data->flame2_texture_img.width, map_data->flame2_texture_img.height);
+	
+	map_data->flame3_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/3bg.xpm", &map_data->flame3_texture_img.width, &map_data->flame3_texture_img.height);
+	map_data->flame3_texture_img.addr = mlx_get_data_addr(map_data->flame3_texture_img.img_ptr, &map_data->flame3_texture_img.bpp, &map_data->flame3_texture_img.line_length, &map_data->flame3_texture_img.endian);
+	printf(" ===================== 000000 ===================== %d %d\n", map_data->flame3_texture_img.width, map_data->flame3_texture_img.height);
+
 	map_data->no_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, map_data->no_texture, &map_data->no_texture_img.width, &map_data->no_texture_img.height);
 	map_data->no_texture_img.addr = mlx_get_data_addr(map_data->no_texture_img.img_ptr, &map_data->no_texture_img.bpp, &map_data->no_texture_img.line_length, &map_data->no_texture_img.endian);
 	printf(" ===================== 1111111 =====================\n");
@@ -236,6 +290,27 @@ void	load_textures(t_map_data *map_data, t_mlx *mlx)
 	printf(" ===================== 44444 =====================\n");
 
 	printf("Done loading textures\n");
+}
+
+int ogbi(void *d)
+{
+	t_data *data = (t_data *)d;
+	static t_img	khawya;
+
+	if (index_ogbi >= 30)
+		index_ogbi = 0;
+	if (index_ogbi < 10)
+		flame = data->map_data->flame_texture_img;
+	else if (index_ogbi < 20)
+		flame = data->map_data->flame2_texture_img;
+	else
+		flame = data->map_data->flame3_texture_img;
+	raycasting(data);
+	paste_part_into_image(&flame, &data->mlx->img, (t_action){0, 0});
+	mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
+	// usleep(100000);
+	index_ogbi++;
+	return (0);
 }
 
 int	main(int ac, char **av)
@@ -260,7 +335,8 @@ int	main(int ac, char **av)
 	ft_init_player_position(&player, &map_data);
 	load_textures(&map_data, &mlx);
 	ft_render_map(&mlx, &map_data, &player);
-	raycasting(&data);
+	mlx_loop_hook(mlx.mlx_ptr, ogbi,&data);
+	// raycasting(&data);
 	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win, mlx.img.img_ptr, 0, 0);
 	mlx_hook(mlx.win, 2, 1L << 0, key_press, &data);
 	mlx_hook(mlx.win, 3, 1L << 1, key_realse, &data);

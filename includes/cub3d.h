@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/28 15:12:28 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/30 11:12:47 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@
 /*   Includes   */
 # include "../libs/ft_containers/ft_data_structres.h"
 # include "../libs/libft/libft.h"
-# include "../libs/minilibx-linux/mlx.h"
-//#include <mlx.h>
+// # include "../libs/minilibx-linux/mlx.h"
+#include <mlx.h>
+//#include "mlx/mlx.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -70,6 +71,8 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+
+#define RGBA 0xff000000
 
 /*   Typedefs   */
 typedef struct s_data		t_data;
@@ -83,12 +86,12 @@ typedef struct s_point		t_point;
 typedef struct s_ray		t_ray;
 
 /*   Structs  */
-struct						s_data
+
+typedef struct s_action
 {
-	t_mlx					*mlx;
-	t_map_data				*map_data;
-	t_player				*player;
-};
+    ssize_t        x;
+    ssize_t        y;
+}   t_action;
 
 struct						s_img
 {
@@ -101,11 +104,19 @@ struct						s_img
 	int						height;
 };
 
+struct						s_data
+{
+	t_mlx					*mlx;
+	t_map_data				*map_data;
+	t_player				*player;
+};
+
 struct						s_mlx
 {
 	void					*mlx_ptr;
 	void					*win;
 	t_img					img;
+	t_img					lkhr;
 };
 
 struct						s_player
@@ -142,6 +153,9 @@ struct						s_map_data
 	t_img					so_texture_img;
 	t_img					we_texture_img;
 	t_img					ea_texture_img;
+	t_img					flame_texture_img;
+	t_img					flame2_texture_img;
+	t_img					flame3_texture_img;
 	t_map_grid				map;
 };
 
@@ -212,7 +226,7 @@ void						move_player(t_data *data);
 void						draw_wall(t_data *data, t_ray *ray);
 void						draw_minimap(t_data *data, t_player *player);
 void						draw_floor(t_data *data, int column,
-								int wallBottom);
+								int wallBottom, double ht);
 void						draw_wall_texture(t_data *data, t_ray *ray);
 int							get_texel_y(t_ray *ray, int y, t_img *texture);
 void						draw_ceiling(t_data *data, int column, int wallTop);
@@ -233,6 +247,7 @@ bool						is_valide_char_map(char c);
 void						check_path(char *path);
 char						*check_line_map(char *line);
 void						parse_map_file(char *file, t_map_data *map_data);
+int 						clamp(int value, int min, int max);
 /* --------   */
 /*   Mem   */
 void						free_split(char **split);

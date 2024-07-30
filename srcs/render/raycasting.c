@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 13:18:50 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/28 14:37:57 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/29 17:53:19 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	cast_ray(t_data *data, t_player *player, t_ray *ray, double rayangle)
 	else
 		ray->wasHitVertical = false;
 }
+
+
 
 void	raycasting(t_data *data)
 {
