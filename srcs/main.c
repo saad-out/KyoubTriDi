@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/31 18:37:39 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/31 20:20:21 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,31 +157,47 @@ void paste_part_into_image(t_img *img1, t_img *img2, t_action action)
 }
 
 
-void render_image(t_data *data)
-{
-	t_img *test;
+// void render_image(t_data *data)
+// {
+// 	t_img *test;
 
-	if (index_ogbi >= 30)
-		index_ogbi = 0;
-	if (index_ogbi < 10)
-		flame = data->map_data->flame_texture_img;
-	else if (index_ogbi < 20)
-		flame = data->map_data->flame2_texture_img;
-	else
-		flame = data->map_data->flame3_texture_img;
-	test = &data->mlx->img;
-	mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
-	data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
-	ft_render_map(data->mlx, data->map_data, data->player);
-	raycasting(data);
-	data->mlx->img.width = WIDTH;
-	data->mlx->img.height = HEIGHT;
-	printf(RED"render\n"RESET);
-	paste_part_into_image(&flame, &data->mlx->img, (t_action){0, 0});
-	// mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
-	// usleep(100000);
-	index_ogbi++;
-}
+// 	if (index_ogbi >= 11)
+// 		index_ogbi = 0;
+// 	if (index_ogbi == 0)
+// 		flame = data->map_data->flame_texture_img;
+// 	else if (index_ogbi == 1)
+// 		flame = data->map_data->flame2_texture_img;
+// 	else if (index_ogbi == 2)
+// 		flame = data->map_data->flame3_texture_img;
+// 	else if (index_ogbi == 3)
+// 		flame = data->map_data->flame4_texture_img;
+// 	else if (index_ogbi == 4)
+// 		flame = data->map_data->flame5_texture_img;
+// 	else if (index_ogbi == 5)
+// 		flame = data->map_data->flame6_texture_img;
+// 	else if (index_ogbi == 6)
+// 		flame = data->map_data->flame7_texture_img;
+// 	else if (index_ogbi == 7)
+// 		flame = data->map_data->flame8_texture_img;
+// 	else if (index_ogbi == 8)
+// 		flame = data->map_data->flame9_texture_img;
+// 	else if (index_ogbi == 9)
+// 		flame = data->map_data->flame10_texture_img;
+// 	else if (index_ogbi == 10)
+// 		flame = data->map_data->flame11_texture_img;
+// 	test = &data->mlx->img;
+// 	mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img.img_ptr);
+// 	data->mlx->img.img_ptr = mlx_new_image(data->mlx->mlx_ptr, WIDTH, HEIGHT);
+// 	ft_render_map(data->mlx, data->map_data, data->player);
+// 	raycasting(data);
+// 	data->mlx->img.width = WIDTH;
+// 	data->mlx->img.height = HEIGHT;
+// 	printf(RED"render\n"RESET);
+// 	paste_part_into_image(&flame, &data->mlx->img, (t_action){0, 0});
+// 	// mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win, data->mlx->img.img_ptr, 0, 0);
+// 	// usleep(100000);
+// 	index_ogbi++;
+// }
 
 void	handle_collision(double *nx, double *ny, double dx, double dy, t_data *data)
 {
@@ -248,17 +264,49 @@ void	load_textures(t_map_data *map_data, t_mlx *mlx)
 	map_data->door_img.addr = mlx_get_data_addr(map_data->door_img.img_ptr, &map_data->door_img.bpp, &map_data->door_img.line_length, &map_data->door_img.endian);
 	printf(" ===================== 000000 ===================== %d %d\n", map_data->door_img.width, map_data->door_img.height);
 
-	map_data->flame_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/1bg.xpm", &map_data->flame_texture_img.width, &map_data->flame_texture_img.height);
+	map_data->flame_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/1.xpm", &map_data->flame_texture_img.width, &map_data->flame_texture_img.height);
 	map_data->flame_texture_img.addr = mlx_get_data_addr(map_data->flame_texture_img.img_ptr, &map_data->flame_texture_img.bpp, &map_data->flame_texture_img.line_length, &map_data->flame_texture_img.endian);
 	printf(" ===================== 000000 ===================== %d %d\n", map_data->flame_texture_img.width, map_data->flame_texture_img.height);
 	
-	map_data->flame2_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/2bg.xpm", &map_data->flame2_texture_img.width, &map_data->flame2_texture_img.height);
+	map_data->flame2_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/2.xpm", &map_data->flame2_texture_img.width, &map_data->flame2_texture_img.height);
 	map_data->flame2_texture_img.addr = mlx_get_data_addr(map_data->flame2_texture_img.img_ptr, &map_data->flame2_texture_img.bpp, &map_data->flame2_texture_img.line_length, &map_data->flame2_texture_img.endian);
 	printf(" ===================== 000000 ===================== %d %d\n", map_data->flame2_texture_img.width, map_data->flame2_texture_img.height);
 	
-	map_data->flame3_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/3bg.xpm", &map_data->flame3_texture_img.width, &map_data->flame3_texture_img.height);
+	map_data->flame3_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/3.xpm", &map_data->flame3_texture_img.width, &map_data->flame3_texture_img.height);
 	map_data->flame3_texture_img.addr = mlx_get_data_addr(map_data->flame3_texture_img.img_ptr, &map_data->flame3_texture_img.bpp, &map_data->flame3_texture_img.line_length, &map_data->flame3_texture_img.endian);
 	printf(" ===================== 000000 ===================== %d %d\n", map_data->flame3_texture_img.width, map_data->flame3_texture_img.height);
+
+	map_data->flame4_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/4.xpm", &map_data->flame4_texture_img.width, &map_data->flame4_texture_img.height);
+	map_data->flame4_texture_img.addr = mlx_get_data_addr(map_data->flame4_texture_img.img_ptr, &map_data->flame4_texture_img.bpp, &map_data->flame4_texture_img.line_length, &map_data->flame4_texture_img.endian);
+	printf(" ===================== 000000 ===================== %d %d\n", map_data->flame4_texture_img.width, map_data->flame4_texture_img.height);
+
+	map_data->flame5_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/5.xpm", &map_data->flame5_texture_img.width, &map_data->flame5_texture_img.height);
+	map_data->flame5_texture_img.addr = mlx_get_data_addr(map_data->flame5_texture_img.img_ptr, &map_data->flame5_texture_img.bpp, &map_data->flame5_texture_img.line_length, &map_data->flame5_texture_img.endian);
+	printf(" ===================== 000000 ===================== %d %d\n", map_data->flame5_texture_img.width, map_data->flame5_texture_img.height);
+
+	map_data->flame6_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/6.xpm", &map_data->flame6_texture_img.width, &map_data->flame6_texture_img.height);
+	map_data->flame6_texture_img.addr = mlx_get_data_addr(map_data->flame6_texture_img.img_ptr, &map_data->flame6_texture_img.bpp, &map_data->flame6_texture_img.line_length, &map_data->flame6_texture_img.endian);
+	printf(" ===================== 000000 ===================== %d %d\n", map_data->flame6_texture_img.width, map_data->flame6_texture_img.height);
+
+	map_data->flame7_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/7.xpm", &map_data->flame7_texture_img.width, &map_data->flame7_texture_img.height);
+	map_data->flame7_texture_img.addr = mlx_get_data_addr(map_data->flame7_texture_img.img_ptr, &map_data->flame7_texture_img.bpp, &map_data->flame7_texture_img.line_length, &map_data->flame7_texture_img.endian);
+	printf(" ===================== 000000 ===================== %d %d\n", map_data->flame7_texture_img.width, map_data->flame7_texture_img.height);
+	
+	map_data->flame8_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/8.xpm", &map_data->flame8_texture_img.width, &map_data->flame8_texture_img.height);
+	map_data->flame8_texture_img.addr = mlx_get_data_addr(map_data->flame8_texture_img.img_ptr, &map_data->flame8_texture_img.bpp, &map_data->flame8_texture_img.line_length, &map_data->flame8_texture_img.endian);
+	printf(" ===================== 000000 ===================== %d %d\n", map_data->flame8_texture_img.width, map_data->flame8_texture_img.height);
+
+	map_data->flame9_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/9.xpm", &map_data->flame9_texture_img.width, &map_data->flame9_texture_img.height);
+	map_data->flame9_texture_img.addr = mlx_get_data_addr(map_data->flame9_texture_img.img_ptr, &map_data->flame9_texture_img.bpp, &map_data->flame9_texture_img.line_length, &map_data->flame9_texture_img.endian);
+	printf(" ===================== 000000 ===================== %d %d\n", map_data->flame9_texture_img.width, map_data->flame9_texture_img.height);
+
+	map_data->flame10_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/10.xpm", &map_data->flame10_texture_img.width, &map_data->flame10_texture_img.height);
+	map_data->flame10_texture_img.addr = mlx_get_data_addr(map_data->flame10_texture_img.img_ptr, &map_data->flame10_texture_img.bpp, &map_data->flame10_texture_img.line_length, &map_data->flame10_texture_img.endian);
+	printf(" ===================== 000000 ===================== %d %d\n", map_data->flame10_texture_img.width, map_data->flame10_texture_img.height);
+
+	map_data->flame11_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/11.xpm", &map_data->flame11_texture_img.width, &map_data->flame11_texture_img.height);
+	map_data->flame11_texture_img.addr = mlx_get_data_addr(map_data->flame11_texture_img.img_ptr, &map_data->flame11_texture_img.bpp, &map_data->flame11_texture_img.line_length, &map_data->flame11_texture_img.endian);
+	printf(" ===================== 000000 ===================== %d %d\n", map_data->flame11_texture_img.width, map_data->flame11_texture_img.height);
 
 	map_data->no_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, map_data->no_texture, &map_data->no_texture_img.width, &map_data->no_texture_img.height);
 	map_data->no_texture_img.addr = mlx_get_data_addr(map_data->no_texture_img.img_ptr, &map_data->no_texture_img.bpp, &map_data->no_texture_img.line_length, &map_data->no_texture_img.endian);
@@ -282,16 +330,31 @@ void	load_textures(t_map_data *map_data, t_mlx *mlx)
 int ogbi(void *d)
 {
 	t_data *data = (t_data *)d;
-	static t_img	khawya;
 
-	if (index_ogbi >= 30)
+	if (index_ogbi >= 55)
 		index_ogbi = 0;
-	if (index_ogbi < 10)
+	if (index_ogbi < 5)
 		flame = data->map_data->flame_texture_img;
-	else if (index_ogbi < 20)
+	else if (index_ogbi < 10)
 		flame = data->map_data->flame2_texture_img;
-	else
+	else if (index_ogbi < 15)
 		flame = data->map_data->flame3_texture_img;
+	else if (index_ogbi < 20)
+		flame = data->map_data->flame4_texture_img;
+	else if (index_ogbi < 25)
+		flame = data->map_data->flame5_texture_img;
+	else if (index_ogbi < 30)
+		flame = data->map_data->flame6_texture_img;
+	else if (index_ogbi	< 35)
+		flame = data->map_data->flame7_texture_img;
+	else if (index_ogbi < 40)
+		flame = data->map_data->flame8_texture_img;
+	else if (index_ogbi < 45)
+		flame = data->map_data->flame9_texture_img;
+	else if (index_ogbi < 50)
+		flame = data->map_data->flame10_texture_img;
+	else if (index_ogbi < 55)
+		flame = data->map_data->flame11_texture_img;
 	data->mlx->img.width = WIDTH;
 	data->mlx->img.height = HEIGHT;
 	move_player(data);

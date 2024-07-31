@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/31 18:48:13 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/31 20:01:21 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,21 +67,21 @@
 /*   Includes   */
 # include "../libs/ft_containers/ft_data_structres.h"
 # include "../libs/libft/libft.h"
-// # include "../libs/minilibx-linux/mlx.h"
-#include <mlx.h>
+# include "../libs/minilibx-linux/mlx.h"
+// #include <mlx.h>
 // #include "mlx/mlx.h"
+# include <ao/ao.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
 # include <math.h>
+# include <mpg123.h>
+# include <pthread.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-#include <mpg123.h>
-#include <ao/ao.h>
-# include <pthread.h>
 
 # define RGBA 0xff000000
 
@@ -167,6 +167,14 @@ struct						s_map_data
 	t_img					flame_texture_img;
 	t_img					flame2_texture_img;
 	t_img					flame3_texture_img;
+	t_img					flame4_texture_img;
+	t_img					flame5_texture_img;
+	t_img					flame6_texture_img;
+	t_img					flame7_texture_img;
+	t_img					flame8_texture_img;
+	t_img					flame9_texture_img;
+	t_img					flame10_texture_img;
+	t_img					flame11_texture_img;	
 	t_img					door_img;
 	t_map_grid				map;
 };
@@ -282,11 +290,11 @@ void						parse_map_elements(int fd, t_map_data *map_data);
 char						**ft_lst_to_map(t_lst *head);
 char						**allocate_and_initialize_map(t_lst *head);
 void						parse_map_file(char *file, t_map_data *map_data);
-int 						clamp(int value, int min, int max);
+int							clamp(int value, int min, int max);
 bool						is_door(t_data *data, double x, double y, int skip);
 void						handle_doors(t_data *data);
-void 						*playMP3(void *arg);
-void    					play_sound_bg(char *mp3);
+void						*playMP3(void *arg);
+void						play_sound_bg(char *mp3);
 /* --------   */
 /*   Mem   */
 void						free_split(char **split);
