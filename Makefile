@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+         #
+#    By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/20 16:06:03 by klakbuic          #+#    #+#              #
-#    Updated: 2024/07/31 10:24:01 by klakbuic         ###   ########.fr        #
+#    Updated: 2024/07/31 12:48:30 by soutchak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,11 +15,11 @@ HEADER       = includes/cub3d.h
 
 CC           = cc
 DEBUG        = -g3 -fsanitize=address
-CFLAGS       = -Wall -Wextra $(DEBUG) #-Werror
+CFLAGS       = -Wall -Wextra 
 
 # libs
-MLX          = libs/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm
-# MLX := -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
+# MLX          = libs/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm
+MLX := -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 LIBFT        = libs/libft/libft.a
 CONTAINERS   = libs/ft_containers/containersft.a
 LIBS         = $(MLX) $(LIBFT) $(CONTAINERS)
@@ -34,7 +34,7 @@ RENDERDIR    := render
 # sources files
 PARSE        := get_next_line.c  get_next_line_utils.c  parse_bools.c  parse.c  parse_elements.c  parse_elements_utils.c  parse_map.c  parse_map_utils.c  parse_utils.c
 UTILS        := hooks.c  init.c  mem.c
-RENDER       := draw.c  raycasting.c  raycasting_utils.c  utils.c textures.c render_wall.c DDA.c DDA_2.c
+RENDER       := draw.c  raycasting.c  raycasting_utils.c  utils.c textures.c render_wall.c DDA.c DDA_2.c doors.c
 
 # All sources files
 SRCS         := $(foreach F,$(PARSE), $(SRCSDIR)/$(PARSEDIR)/$(F))  \

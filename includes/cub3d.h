@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/31 10:26:26 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/31 12:47:44 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@
 # define A 97
 # define S 115
 # define D 100
+# define T 116
 
 /* Hooking events */
 # define ON_KEYDOWN 2
@@ -61,8 +62,8 @@
 /*   Includes   */
 # include "../libs/ft_containers/ft_data_structres.h"
 # include "../libs/libft/libft.h"
-# include "../libs/minilibx-linux/mlx.h"
-// #include <mlx.h>
+// # include "../libs/minilibx-linux/mlx.h"
+#include <mlx.h>
 // #include "mlx/mlx.h"
 # include <errno.h>
 # include <fcntl.h>
@@ -158,6 +159,7 @@ struct						s_map_data
 	t_img					flame_texture_img;
 	t_img					flame2_texture_img;
 	t_img					flame3_texture_img;
+	t_img					door_img;
 	t_map_grid				map;
 };
 
@@ -202,16 +204,16 @@ void						raycasting(t_data *data);
 bool						is_wall_1(double x, double y, t_data *data);
 bool						is_wall_2(double x, double y, t_data *data);
 void						cast_ray(t_data *data, t_player *player, t_ray *ray,
-								double rayangle);
+								double rayangle, int skip);
 void						compute_ver_intercept(t_player *player, t_ray *ray,
 								double *xI, double *yI);
 void						compute_ver_step(t_ray *ray, double *xS,
 								double *yS);
 void						point_adjustment(t_point *point, t_data *data);
 t_point						ver_intersection_distance(t_ray *ray,
-								t_player *player, t_data *data);
+								t_player *player, t_data *data, int skip);
 t_point						hor_intersection_distance(t_ray *ray,
-								t_player *player, t_data *data);
+								t_player *player, t_data *data, int skip);
 
 t_data						*get_data(t_data *data);
 t_point						min_point(t_point a, t_point b, t_player *player);
@@ -272,7 +274,9 @@ void						parse_map_elements(int fd, t_map_data *map_data);
 char						**ft_lst_to_map(t_lst *head);
 char						**allocate_and_initialize_map(t_lst *head);
 void						parse_map_file(char *file, t_map_data *map_data);
-int							clamp(int value, int min, int max);
+int 						clamp(int value, int min, int max);
+bool						is_door(t_data *data, double x, double y, int skip);
+void						handle_doors(t_data *data);
 /* --------   */
 /*   Mem   */
 void						free_split(char **split);

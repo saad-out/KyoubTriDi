@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/31 10:34:21 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/31 12:47:57 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,18 @@ void ft_render_map(t_mlx *mlx, t_map_data *map_data, t_player *player)
 								offsety * (int)(TILE_SIZE * MINIMAP_SCALE),
 								(int)(TILE_SIZE * MINIMAP_SCALE),
 								0x00FF0000);
+			else if (map_data->map.map[i][j] == '2')
+				ft_draw_square(mlx,
+								offsetx * (int)(TILE_SIZE * MINIMAP_SCALE),
+								offsety * (int)(TILE_SIZE * MINIMAP_SCALE),
+								(int)(TILE_SIZE * MINIMAP_SCALE),
+								0x000000FF);
+			else if (map_data->map.map[i][j] == '3')
+				ft_draw_square(mlx,
+								offsetx * (int)(TILE_SIZE * MINIMAP_SCALE),
+								offsety * (int)(TILE_SIZE * MINIMAP_SCALE),
+								(int)(TILE_SIZE * MINIMAP_SCALE),
+								0x0000FF00);
 			else if (map_data->map.map[i][j] != ' ')
 				ft_draw_square(mlx,
 								offsetx * (int)(TILE_SIZE * MINIMAP_SCALE),
@@ -232,6 +244,9 @@ void	load_textures(t_map_data *map_data, t_mlx *mlx)
 	int	width;
 	int	height;
 
+	map_data->door_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/creepydoor.xpm", &map_data->door_img.width, &map_data->door_img.height);
+	map_data->door_img.addr = mlx_get_data_addr(map_data->door_img.img_ptr, &map_data->door_img.bpp, &map_data->door_img.line_length, &map_data->door_img.endian);
+	printf(" ===================== 000000 ===================== %d %d\n", map_data->door_img.width, map_data->door_img.height);
 
 	map_data->flame_texture_img.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, "textures/1bg.xpm", &map_data->flame_texture_img.width, &map_data->flame_texture_img.height);
 	map_data->flame_texture_img.addr = mlx_get_data_addr(map_data->flame_texture_img.img_ptr, &map_data->flame_texture_img.bpp, &map_data->flame_texture_img.line_length, &map_data->flame_texture_img.endian);

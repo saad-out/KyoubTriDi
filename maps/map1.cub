@@ -1,8 +1,8 @@
 
-NO textures/7it2.xpm
-SO textures/7itlkhr.xpm
-WE textures/7itakhor.xpm
-EA textures/7it3.xpm
+NO textures/7itlkhr.xpm
+SO textures/dragon.xpm
+WE textures/skull.xpm
+EA textures/flame.xpm
 
 F 164,169,20
 C 153,204,255
