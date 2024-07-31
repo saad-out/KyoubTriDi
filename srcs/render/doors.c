@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:23:36 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/31 12:31:31 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/31 15:57:43 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,10 @@ void	toggle_door(t_data *data, double x, double y)
 		return ;
 	}
 	if (data->map_data->map.map[map_y][map_x] == '2')
+	{
+		playMP3(OPEN_DOOR);
 		data->map_data->map.map[map_y][map_x] = '3';
+	}
 	else if (data->map_data->map.map[map_y][map_x] == '3')
 		data->map_data->map.map[map_y][map_x] = '2';
 	else

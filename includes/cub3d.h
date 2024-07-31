@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/31 12:47:44 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/31 15:57:21 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 # define SO "textures/7it2.xpm"
 # define WE "textures/7itakhor.xpm"
 # define EA "textures/7it3.xpm"
+
+# define OPEN_DOOR "../sounds/fbi-open-the-door.mp3"
 
 /* PRINTF COLORS */
 # define RED "\033[0;31m"
@@ -74,6 +76,8 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+#include <mpg123.h>
+#include <ao/ao.h>
 
 # define RGBA 0xff000000
 
@@ -277,6 +281,7 @@ void						parse_map_file(char *file, t_map_data *map_data);
 int 						clamp(int value, int min, int max);
 bool						is_door(t_data *data, double x, double y, int skip);
 void						handle_doors(t_data *data);
+void 						playMP3(const char *filename);
 /* --------   */
 /*   Mem   */
 void						free_split(char **split);
