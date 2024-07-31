@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 10:43:10 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/08 15:02:15 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/31 11:39:28 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool	is_valide_char_map(char c)
 {
 	if (c == ' ' || c == '1' || c == '0' || c == 'N' || c == 'S' || c == 'W'
-		|| c == 'E')
+		|| c == 'E' || c == '2' || c == '3')
 		return (true);
 	return (false);
 }

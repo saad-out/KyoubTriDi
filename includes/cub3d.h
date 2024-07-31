@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/30 16:29:30 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/31 12:19:52 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@
 # define A 97
 # define S 115
 # define D 100
+# define T 116
 
 /* Hooking events */
 # define ON_KEYDOWN 2
@@ -158,6 +159,7 @@ struct						s_map_data
 	t_img					flame_texture_img;
 	t_img					flame2_texture_img;
 	t_img					flame3_texture_img;
+	t_img					door_img;
 	t_map_grid				map;
 };
 
@@ -202,16 +204,16 @@ void						raycasting(t_data *data);
 bool						is_wall_1(double x, double y, t_data *data);
 bool						is_wall_2(double x, double y, t_data *data);
 void						cast_ray(t_data *data, t_player *player, t_ray *ray,
-								double rayangle);
+								double rayangle, int skip);
 void						compute_ver_intercept(t_player *player, t_ray *ray,
 								double *xI, double *yI);
 void						compute_ver_step(t_ray *ray, double *xS,
 								double *yS);
 void						point_adjustment(t_point *point, t_data *data);
 t_point						ver_intersection_distance(t_ray *ray,
-								t_player *player, t_data *data);
+								t_player *player, t_data *data, int skip);
 t_point						hor_intersection_distance(t_ray *ray,
-								t_player *player, t_data *data);
+								t_player *player, t_data *data, int skip);
 
 t_data						*get_data(t_data *data);
 t_point						min_point(t_point a, t_point b, t_player *player);
@@ -250,6 +252,8 @@ void						check_path(char *path);
 char						*check_line_map(char *line);
 void						parse_map_file(char *file, t_map_data *map_data);
 int 						clamp(int value, int min, int max);
+bool						is_door(t_data *data, double x, double y, int skip);
+void						handle_doors(t_data *data);
 /* --------   */
 /*   Mem   */
 void						free_split(char **split);

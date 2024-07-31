@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 15:19:43 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/30 18:10:29 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/31 12:08:33 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	key_press(int keycode, t_data *data)
 {
 	int	movestep;
 
-	// printf(GREEN"keypress\n"RESET);
 	float next_y, next_x;
 	if (keycode == UP_ARROW || keycode == W)
 	{
@@ -43,6 +42,10 @@ int	key_press(int keycode, t_data *data)
 	{
 		data->player->walkDirection = 1; // Move right
 		data->player->horMove = PI_2;
+	}
+	else if (keycode == T)
+	{
+		handle_doors(data);
 	}
 	else if (keycode == ESC)
 	{
