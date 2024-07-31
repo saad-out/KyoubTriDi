@@ -6,13 +6,15 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:31 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/31 15:55:05 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/31 16:12:52 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-void playMP3(const char *filename) {
+// void    *playMP3(const char *filename) {
+void    *playMP3(void *arg) {
+    char *filename = (char *)arg;
     mpg123_handle *mh;
     unsigned char *buffer;
     size_t buffer_size;
@@ -50,7 +52,7 @@ void playMP3(const char *filename) {
     dev = ao_open_live(driver, &format, NULL);
     if (dev == NULL) {
         fprintf(stderr, "Error opening device.\n");
-        return;
+        return (NULL);
     }
 
     // Play the MP3 file
@@ -65,4 +67,15 @@ void playMP3(const char *filename) {
     mpg123_delete(mh);
     mpg123_exit();
     ao_shutdown();
+    return (NULL);
+}
+
+void    play_sound_bg(char *mp3)
+{
+    pthread_t   thread;
+
+    if (pthread_create(&thread, NULL, play_sound_bg, (void *)mp3) != 0)
+        return (printf(RED"error creating thread\n"RESET), (void)0);
+    if (pthread_detach(thread) != 0)
+        return (printf(RED"error detaching thread\n"RESET), (void)0);
 }

@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/31 15:57:21 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/31 16:07:38 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@
 # include <unistd.h>
 #include <mpg123.h>
 #include <ao/ao.h>
+# include <pthread.h>
 
 # define RGBA 0xff000000
 
