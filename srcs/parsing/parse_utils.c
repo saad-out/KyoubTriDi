@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 09:45:56 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/06 10:11:47 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/30 12:21:41 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	check_extension(char *filename)
 	i = 0;
 	while (filename[i] != '\0')
 		i++;
-	if (filename[i - 1] != 'b' || filename[i - 2] != 'u' || filename[i
-		- 3] != 'c' || filename[i - 4] != '.')
+	if (filename[i - 1] != 'b' || filename[i - 2] != 'u'
+		|| filename[i - 3] != 'c' || filename[i - 4] != '.')
 		ft_error();
 }
 

@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 10:09:48 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/27 15:46:18 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/30 12:04:56 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,31 +59,31 @@ int	get_color(char *joined)
 	else
 		ft_error();
 	b = ft_atoi_rgb(line);
-	skip_whitespace(line);
-	printf("line: |%d|\n", **line);
 	if (**line != '\0' && **line != '\n')
 		ft_error();
-	// if (**line != '\n' || **line != '\0')
-	// {
-	// 	puts("Error hona na3am");
-	// 	ft_error();
-	// }
 	return (t << 24 | r << 16 | g << 8 | b);
 }
 
-void check_path(char *path)
+void	check_extension_textures(char *filename)
 {
-	int i;
-	int fd;
+	int	i;
+	int	len;
 
 	i = 0;
-	while (path[i] && path[i] != '\n')
+	while (filename[i] && filename[i] != '\n')
 		i++;
-	path[i] = '\0';
+	filename[i] = '\0';
+	len = ft_strlen(filename);
+	if (len < 4 || ft_strcmp(filename + len - 4, ".xpm") != 0)
+		ft_error();
+}
+
+void	check_path(char *path)
+{
+	int	fd;
+
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
-	{
 		ft_error();
-	}
 	close(fd);
 }
