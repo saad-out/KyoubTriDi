@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 10:43:10 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/30 12:04:16 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/31 12:17:02 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool	is_valide_char_map(char c)
 {
 	if (c == ' ' || c == '1' || c == '0' || c == 'N' || c == 'S' || c == 'W'
-		|| c == 'E')
+		|| c == 'E' || c == 'D')
 		return (true);
 	return (false);
 }
@@ -82,7 +82,7 @@ void	check_map(char **map, int nb_line, int col_len)
 		j = 0;
 		while (j < col_len)
 		{
-			if (map[i][j] == '0' || is_player_in_map(map[i][j]))
+			if (map[i][j] == '0' || map[i][j] == 'D' || is_player_in_map(map[i][j]))
 			{
 				if (i == 0 || i == nb_line - 1 || j == 0 || j == col_len - 1)
 					ft_error();

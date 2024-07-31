@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:05:44 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/30 12:10:21 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/31 12:20:59 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ char	**ft_lst_to_map(t_lst *head)
 			line = lst->content;
 			if (j < ft_strlen(line))
 				map[i][j] = line[j];
+			if (map[i][j] == 'D')
+				map[i][j] = '2';
 			j++;
 		}
 		lst = (t_lst *)lst->next;
@@ -118,4 +120,11 @@ void	parse_map_elements(int fd, t_map_data *map_data)
 	if (elemts != 6 || !line)
 		ft_error();
 	parsing_map(map_data, fd, line);
+	// print map:
+	for (int i = 0; i < map_data->map.rows; i++)
+	{
+		for (int j = 0; j < map_data->map.cols; j++)
+			printf("%c", map_data->map.map[i][j]);
+		printf("\n");
+	}
 }
