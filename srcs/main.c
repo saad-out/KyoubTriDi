@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/31 10:26:53 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/07/31 10:34:21 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	index_ogbi = 0;
 
 void ft_render_map(t_mlx *mlx, t_map_data *map_data, t_player *player)
 {
-	double player_x;
-	double player_y;
+	double	player_x;
+	double	player_y;
 	int		start_x;
 	int		start_y;
 	int		end_x;
@@ -39,22 +39,26 @@ void ft_render_map(t_mlx *mlx, t_map_data *map_data, t_player *player)
 	while (start_x < 0)
 	{
 		start_x++;
-		end_x++;
+		if (end_x < map_data->map.cols)
+			end_x++;
 	}
 	while (start_y < 0)
 	{
 		start_y++;
-		end_y++;
+		if (end_y < map_data->map.rows)
+			end_y++;
 	}
 	while (end_x > map_data->map.cols)
 	{
 		end_x--;
-		start_x--;
+		if (start_x > 0)
+			start_x--;
 	}
 	while (end_y > map_data->map.rows)
 	{
 		end_y--;
-		start_y--;
+		if (start_y > 0)
+			start_y--;
 	}
 	int offsety = 0;
 	//printf(RED"px=%d, py=%d", player_x, player_y);
@@ -70,7 +74,7 @@ void ft_render_map(t_mlx *mlx, t_map_data *map_data, t_player *player)
 								offsety * (int)(TILE_SIZE * MINIMAP_SCALE),
 								(int)(TILE_SIZE * MINIMAP_SCALE),
 								0x00FF0000);
-			else
+			else if (map_data->map.map[i][j] != ' ')
 				ft_draw_square(mlx,
 								offsetx * (int)(TILE_SIZE * MINIMAP_SCALE),
 								offsety * (int)(TILE_SIZE * MINIMAP_SCALE),
