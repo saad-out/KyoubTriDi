@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/31 12:19:52 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/31 12:47:44 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@
 # include <string.h>
 # include <unistd.h>
 
-#define RGBA 0xff000000
+# define RGBA 0xff000000
 
 /*   Typedefs   */
 typedef struct s_data		t_data;
@@ -92,9 +92,9 @@ typedef struct s_ray		t_ray;
 
 typedef struct s_action
 {
-    ssize_t        x;
-    ssize_t        y;
-}   t_action;
+	ssize_t					x;
+	ssize_t					y;
+}							t_action;
 
 struct						s_img
 {
@@ -229,8 +229,8 @@ void						set_texture(t_ray *ray, t_data *data,
 void						move_player(t_data *data);
 void						draw_wall(t_data *data, t_ray *ray);
 void						draw_minimap(t_data *data, t_player *player);
-void						draw_floor(t_data *data, int column,
-								int wallBottom, double ht);
+void						draw_floor(t_data *data, int column, int wallBottom,
+								double ht);
 void						draw_wall_texture(t_data *data, t_ray *ray);
 int							get_texel_y(t_ray *ray, int y, t_img *texture);
 void						draw_ceiling(t_data *data, int column, int wallTop);
@@ -239,6 +239,7 @@ int							is_same(double a, double b);
 /*   Hooks   */
 int							key_press(int keycode, t_data *data);
 int							key_realse(int keycode, t_data *data);
+int							mouse_move(int x, int y, t_data *data);
 /*   Parsing   */
 void						ft_error(void);
 void						skip_digits(char **line);
@@ -248,8 +249,30 @@ char						*join_splited(char **splited_line);
 int							get_color(char *joined);
 int							ft_atoi_rgb(char **str);
 bool						is_valide_char_map(char c);
+bool						is_player_in_map(char c);
+bool						is_ea(char **splited);
+bool						is_we(char **splited);
+bool						is_so(char **splited);
+bool						is_no(char **splited);
+bool						is_empty_line(char final_char_line);
 void						check_path(char *path);
-char						*check_line_map(char *line);
+void						add_color(int *color, char *joined, int *elemts);
+void						add_path(char **identifier, char *path,
+								int *elemts);
+void						check_extension_textures(char *filename);
+void						check_map(char **map, int nb_line, int col_len);
+char						*check_line_map(char *line, bool *player_exist);
+void						parsing_map(t_map_data *map_data, int fd,
+								char *line);
+int							max_line_len(t_lst *head);
+void						read_new_line(char **splited, char **line, int fd);
+void						parsing_map(t_map_data *map_data, int fd,
+								char *line);
+void						check_elements(char **splited, t_map_data *map_data,
+								int *elemts);
+void						parse_map_elements(int fd, t_map_data *map_data);
+char						**ft_lst_to_map(t_lst *head);
+char						**allocate_and_initialize_map(t_lst *head);
 void						parse_map_file(char *file, t_map_data *map_data);
 int 						clamp(int value, int min, int max);
 bool						is_door(t_data *data, double x, double y, int skip);

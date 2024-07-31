@@ -6,11 +6,27 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 15:19:43 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/31 12:08:33 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/31 12:46:51 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+
+int	mouse_move(int x, int y, t_data *data)
+{
+	static int	old_x = 0;
+	static int	old_y = 0;
+	int			diff_x;
+	int			diff_y;
+
+	diff_x = x - old_x;
+	diff_y = y - old_y;
+	old_x = x;
+	old_y = y;
+	data->player->rotationAngle += diff_x * 0.005;
+	// data->player->horMove += diff_y * 0.005;
+	return (0);
+}
 
 int	key_press(int keycode, t_data *data)
 {
