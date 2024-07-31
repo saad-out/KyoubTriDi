@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/31 16:07:38 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/31 18:48:13 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@
 # define WE "textures/7itakhor.xpm"
 # define EA "textures/7it3.xpm"
 
-# define OPEN_DOOR "../sounds/fbi-open-the-door.mp3"
+// # define OPEN_DOOR "sounds/fbi-open-the-door.mp3"
+# define OPEN_DOOR "sounds/open2.mp3"
+# define CLOSE_DOOR "sounds/close.mp3"
+# define THEME "sounds/haunted.mp3"
 
 /* PRINTF COLORS */
 # define RED "\033[0;31m"
@@ -282,7 +285,8 @@ void						parse_map_file(char *file, t_map_data *map_data);
 int 						clamp(int value, int min, int max);
 bool						is_door(t_data *data, double x, double y, int skip);
 void						handle_doors(t_data *data);
-void 						playMP3(const char *filename);
+void 						*playMP3(void *arg);
+void    					play_sound_bg(char *mp3);
 /* --------   */
 /*   Mem   */
 void						free_split(char **split);

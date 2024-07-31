@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 15:19:43 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/31 12:46:51 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/31 17:45:15 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int	key_press(int keycode, t_data *data)
 	else if (keycode == ESC)
 	{
 		// free all the allocated memory
+    	ao_shutdown();
 		exit(0);
 	}
 	// move_player(data);

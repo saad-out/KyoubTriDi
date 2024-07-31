@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/31 13:31:47 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/31 18:37:39 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,10 +317,12 @@ int	main(int ac, char **av)
 	data.map_data = &map_data;
 	data.player = &player;
 
+    ao_initialize();
 	get_data(&data);
 	ft_init_data(&data);
 	parse_map_file(av[1], &map_data);
 	ft_init_mlx(&mlx);
+	play_sound_bg(THEME);
 	ft_init_player_position(&player, &map_data);
 	load_textures(&map_data, &mlx);
 	ft_render_map(&mlx, &map_data, &player);

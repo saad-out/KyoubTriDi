@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:23:36 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/31 16:06:45 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/31 18:44:13 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ void	toggle_door(t_data *data, double x, double y)
 		data->map_data->map.map[map_y][map_x] = '3';
 	}
 	else if (data->map_data->map.map[map_y][map_x] == '3')
+	{
+		play_sound_bg(CLOSE_DOOR);
 		data->map_data->map.map[map_y][map_x] = '2';
+	}
 	else
 	{
 		printf(RED"NOT a door\n"RESET);
