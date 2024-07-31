@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/30 16:29:30 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/07/31 10:07:33 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@
 /*   Includes   */
 # include "../libs/ft_containers/ft_data_structres.h"
 # include "../libs/libft/libft.h"
-// # include "../libs/minilibx-linux/mlx.h"
-#include <mlx.h>
+# include "../libs/minilibx-linux/mlx.h"
+// #include <mlx.h>
 // #include "mlx/mlx.h"
 # include <errno.h>
 # include <fcntl.h>
