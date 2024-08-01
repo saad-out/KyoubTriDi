@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/01 12:35:24 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:25:43 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@
 /*   Includes   */
 # include "../libs/ft_containers/ft_data_structres.h"
 # include "../libs/libft/libft.h"
-# include "../libs/minilibx-linux/mlx.h"
-// #include <mlx.h>
+// # include "../libs/minilibx-linux/mlx.h"
+#include <mlx.h>
 // #include "mlx/mlx.h"
 # include <ao/ao.h>
 # include <errno.h>
@@ -95,8 +95,28 @@ typedef struct s_map_grid	t_map_grid;
 typedef struct s_player		t_player;
 typedef struct s_point		t_point;
 typedef struct s_ray		t_ray;
+typedef struct s_sound		t_sound;
+typedef struct s_rgb		t_rgb;
 
 /*   Structs  */
+
+struct s_rgb
+{
+	int	red;
+	int	green;
+	int	blue;
+};
+
+
+struct s_sound
+{
+	mpg123_handle	*mh;
+	unsigned char	*buffer;
+	size_t			buffer_size;
+	size_t			done;
+	int				driver;
+	ao_device		*dev;
+};
 
 typedef struct s_action
 {
@@ -219,7 +239,7 @@ void						ft_draw_line(t_mlx *mlx, int x0, int y0, int x1,
 void						raycasting(t_data *data);
 bool						is_wall_1(double x, double y, t_data *data);
 bool						is_wall_2(double x, double y, t_data *data);
-void						cast_ray(t_data *data, t_player *player, t_ray *ray,
+void						cast_ray(t_data *data, t_ray *ray,
 								double rayangle, int skip);
 void						compute_ver_intercept(t_player *player, t_ray *ray,
 								double *xI, double *yI);
@@ -245,8 +265,7 @@ void						set_texture(t_ray *ray, t_data *data,
 void						move_player(t_data *data);
 void						draw_wall(t_data *data, t_ray *ray);
 void						draw_minimap(t_data *data, t_player *player);
-void						draw_floor(t_data *data, int column, int wallBottom,
-								double ht);
+void						draw_floor(t_data *data, int column, int wallBottom);
 void						draw_wall_texture(t_data *data, t_ray *ray);
 int							get_texel_y(t_ray *ray, int y, t_img *texture);
 void						draw_ceiling(t_data *data, int column, int wallTop);
@@ -294,7 +313,7 @@ void						parse_map_file(char *file, t_map_data *map_data);
 int							clamp(int value, int min, int max);
 bool						is_door(t_data *data, double x, double y, int skip);
 void						handle_doors(t_data *data);
-void						*playMP3(void *arg);
+void						*play_mp3(void *arg);
 void						play_sound_bg(char *mp3);
 /* --------   */
 /*   Mem   */

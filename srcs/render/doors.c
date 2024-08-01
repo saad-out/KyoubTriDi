@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:23:36 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/31 18:44:13 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/01 13:18:14 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	toggle_door(t_data *data, double x, double y)
 	}
 	if (data->map_data->map.map[map_y][map_x] == '2')
 	{
-		// playMP3(OPEN_DOOR);
 		play_sound_bg(OPEN_DOOR);
 		data->map_data->map.map[map_y][map_x] = '3';
 	}
@@ -55,10 +54,7 @@ void	toggle_door(t_data *data, double x, double y)
 		data->map_data->map.map[map_y][map_x] = '2';
 	}
 	else
-	{
-		printf(RED"NOT a door\n"RESET);
-		return ;
-	}
+		return (printf(RED"NOT a door\n"RESET), (void)0);
 }
 
 void	handle_doors(t_data *data)
@@ -68,7 +64,8 @@ void	handle_doors(t_data *data)
 
 	player = data->player;
 	ray.column = -1;
-	cast_ray(data, player, &ray, normalize_angle(player->rotationAngle), 0);
-	if (is_door(data, ray.intersection.x, ray.intersection.y, 0) && ray.distance < (double)(TILE_SIZE * 2))
+	cast_ray(data, &ray, normalize_angle(player->rotationAngle), 0);
+	if (is_door(data, ray.intersection.x, ray.intersection.y, 0) \
+		&& ray.distance < (double)(TILE_SIZE * 2))
 		toggle_door(data, ray.intersection.x, ray.intersection.y);
 }

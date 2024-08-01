@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 12:35:26 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/31 11:15:41 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/01 12:38:05 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	compute_ver_step(t_ray *ray, double *xS, double *yS)
 		*yS *= -1;
 }
 
-t_point	ver_intersection_distance(t_ray *ray, t_player *player, t_data *data, int skip)
+t_point	ver_intersection_distance(t_ray *ray, t_player *player, \
+									t_data *data, int skip)
 {
 	t_point	point;
 	double	x_intercept;
@@ -47,7 +48,8 @@ t_point	ver_intersection_distance(t_ray *ray, t_player *player, t_data *data, in
 	while ((point.x > 0 && point.x < data->map_data->map.cols * TILE_SIZE) \
 			&& (point.y > 0 && point.y < data->map_data->map.rows * TILE_SIZE))
 	{
-		if (is_wall_2(point.x, point.y, data) || is_door(data, point.x, point.y, skip))
+		if (is_wall_2(point.x, point.y, data) \
+			|| is_door(data, point.x, point.y, skip))
 			break ;
 		else
 		{
@@ -55,8 +57,7 @@ t_point	ver_intersection_distance(t_ray *ray, t_player *player, t_data *data, in
 			point.y += y_step;
 		}
 	}
-	point_adjustment(&point, data);
-	return (point);
+	return (point_adjustment(&point, data), point);
 }
 
 void	point_adjustment(t_point *point, t_data *data)

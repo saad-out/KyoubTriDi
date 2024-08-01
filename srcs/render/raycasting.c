@@ -6,19 +6,21 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 13:18:50 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/31 11:13:27 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/01 13:07:51 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-void	cast_ray(t_data *data, t_player *player, t_ray *ray, double rayangle, int skip)
+void	cast_ray(t_data *data, t_ray *ray, double rayangle, int skip)
 {
-	t_point	hor_inter;
-	t_point	ver_inter;
-	t_point	min;
-	t_point	tmp;
+	t_player	*player;
+	t_point		hor_inter;
+	t_point		ver_inter;
+	t_point		min;
+	t_point		tmp;
 
+	player = data->player;
 	set_ray_angle(ray, rayangle);
 	hor_inter = hor_intersection_distance(ray, player, data, skip);
 	ver_inter = ver_intersection_distance(ray, player, data, skip);
@@ -33,8 +35,6 @@ void	cast_ray(t_data *data, t_player *player, t_ray *ray, double rayangle, int s
 	else
 		ray->wasHitVertical = false;
 }
-
-
 
 void	raycasting(t_data *data)
 {
@@ -52,7 +52,7 @@ void	raycasting(t_data *data)
 	{
 		ray[i].column = i;
 		rayangle = normalize_angle(rayangle);
-		cast_ray(data, player, &ray[i], rayangle, 1);
+		cast_ray(data, &ray[i], rayangle, 1);
 		ray[i].wallStripHeight = get_wall_height(data, &ray[i]);
 		ray[i].wallTop = (HEIGHT / 2) - (ray[i].wallStripHeight / 2);
 		ray[i].wallBottom = (HEIGHT / 2) + (ray[i].wallStripHeight / 2);
