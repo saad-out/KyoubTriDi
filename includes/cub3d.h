@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/01 14:25:43 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/01 17:51:10 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@
 # define SO "textures/7it2.xpm"
 # define WE "textures/7itakhor.xpm"
 # define EA "textures/7it3.xpm"
+
+# define DOOR "textures/creepydoor.xpm"
+# define F1 "textures/1bg.xpm"
+# define F2 "textures/2bg.xpm"
+# define F3 "textures/3bg.xpm"
 
 // # define OPEN_DOOR "sounds/fbi-open-the-door.mp3"
 # define OPEN_DOOR "sounds/open2.mp3"
@@ -62,7 +67,8 @@
 # define ON_KEYUP 3
 
 # define EPSILON 0.00001L
-# define ALPHA 1
+
+# define RGBA 0xff000000
 
 /*   Includes   */
 # include "../libs/ft_containers/ft_data_structres.h"
@@ -83,8 +89,6 @@
 # include <string.h>
 # include <unistd.h>
 
-# define RGBA 0xff000000
-
 /*   Typedefs   */
 typedef struct s_data		t_data;
 typedef struct s_mlx		t_mlx;
@@ -97,9 +101,9 @@ typedef struct s_point		t_point;
 typedef struct s_ray		t_ray;
 typedef struct s_sound		t_sound;
 typedef struct s_rgb		t_rgb;
+typedef struct s_textures	t_textures;
 
 /*   Structs  */
-
 struct s_rgb
 {
 	int	red;
@@ -153,8 +157,6 @@ struct						s_mlx
 struct						s_player
 {
 	int						radius;
-	// int						x;
-	// int						y;
 	double					x;
 	double					y;
 	int						turnDirection;
@@ -172,6 +174,13 @@ struct						s_map_grid
 	char					**map;
 };
 
+struct						s_textures
+{
+	t_img					walls[4];
+	t_img					flame[3];
+	t_img					door;
+};
+
 struct						s_map_data
 {
 	int						ceil_color;
@@ -180,22 +189,7 @@ struct						s_map_data
 	char					*so_texture;
 	char					*we_texture;
 	char					*ea_texture;
-	t_img					no_texture_img;
-	t_img					so_texture_img;
-	t_img					we_texture_img;
-	t_img					ea_texture_img;
-	t_img					flame_texture_img;
-	t_img					flame2_texture_img;
-	t_img					flame3_texture_img;
-	t_img					flame4_texture_img;
-	t_img					flame5_texture_img;
-	t_img					flame6_texture_img;
-	t_img					flame7_texture_img;
-	t_img					flame8_texture_img;
-	t_img					flame9_texture_img;
-	t_img					flame10_texture_img;
-	t_img					flame11_texture_img;
-	t_img					door_img;
+	t_textures				txt;
 	t_map_grid				map;
 };
 
@@ -315,6 +309,7 @@ bool						is_door(t_data *data, double x, double y, int skip);
 void						handle_doors(t_data *data);
 void						*play_mp3(void *arg);
 void						play_sound_bg(char *mp3);
+void						load_textures(t_map_data *md, t_mlx *mlx);
 /* --------   */
 /*   Mem   */
 void						free_split(char **split);

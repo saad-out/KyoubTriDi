@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 05:27:19 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/31 12:25:15 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/01 17:53:43 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,20 @@ void	set_ray_angle(t_ray	*ray, double rayangle)
 void	set_texture(t_ray *ray, t_data *data, t_img *texture)
 {
 	if (is_door(data, ray->intersection.x, ray->intersection.y, 0))
-		*texture = data->map_data->door_img;
+		*texture = data->map_data->txt.door;
 	else if (ray->wasHitVertical)
 	{
 		if (ray->facingRight)
-			*texture = data->map_data->ea_texture_img;
+			*texture = data->map_data->txt.walls[1];
 		else
-			*texture = data->map_data->we_texture_img;
+			*texture = data->map_data->txt.walls[3];
 	}
 	else
 	{
 		if (ray->facingUp)
-			*texture = data->map_data->no_texture_img;
+			*texture = data->map_data->txt.walls[0];
 		else
-			*texture = data->map_data->so_texture_img;
+			*texture = data->map_data->txt.walls[2];
 	}
 }
 
