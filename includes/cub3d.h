@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/31 20:01:21 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/01 11:01:11 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@
 # define WE "textures/7itakhor.xpm"
 # define EA "textures/7it3.xpm"
 
-// # define OPEN_DOOR "sounds/fbi-open-the-door.mp3"
-# define OPEN_DOOR "sounds/open2.mp3"
+# define OPEN_DOOR "sounds/fbi-open-the-door.mp3"
+// # define OPEN_DOOR "sounds/open2.mp3"
 # define CLOSE_DOOR "sounds/close.mp3"
 # define THEME "sounds/haunted.mp3"
 
@@ -67,8 +67,8 @@
 /*   Includes   */
 # include "../libs/ft_containers/ft_data_structres.h"
 # include "../libs/libft/libft.h"
-# include "../libs/minilibx-linux/mlx.h"
-// #include <mlx.h>
+// # include "../libs/minilibx-linux/mlx.h"
+#include <mlx.h>
 // #include "mlx/mlx.h"
 # include <ao/ao.h>
 # include <errno.h>

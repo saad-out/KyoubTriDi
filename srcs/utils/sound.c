@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:31 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/31 16:12:52 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/01 11:23:16 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void    *playMP3(void *arg) {
     long rate;
 
     // Initialize libao
-    ao_initialize();
     driver = ao_default_driver_id();
 
     // Initialize mpg123
@@ -66,7 +65,6 @@ void    *playMP3(void *arg) {
     mpg123_close(mh);
     mpg123_delete(mh);
     mpg123_exit();
-    ao_shutdown();
     return (NULL);
 }
 
@@ -74,7 +72,7 @@ void    play_sound_bg(char *mp3)
 {
     pthread_t   thread;
 
-    if (pthread_create(&thread, NULL, play_sound_bg, (void *)mp3) != 0)
+    if (pthread_create(&thread, NULL, playMP3, (void *)mp3) != 0)
         return (printf(RED"error creating thread\n"RESET), (void)0);
     if (pthread_detach(thread) != 0)
         return (printf(RED"error detaching thread\n"RESET), (void)0);
