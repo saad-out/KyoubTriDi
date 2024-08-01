@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 18:18:16 by soutchak          #+#    #+#             */
-/*   Updated: 2024/08/01 18:28:51 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/01 19:01:12 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ void	handle_collision(double *nx, double *ny, t_point p, t_data *data)
 	}
 	else if (!cannot_move(player->x + p.x, player->y, data))
 	{
-		*nx = player->x + p.x;
+		*nx = player->x + floor(p.x / 2);
 		*ny = player->y;
 	}
 	else if (!cannot_move(player->x, player->y + p.y, data))
 	{
 		*nx = player->x;
-		*ny = player->y + p.y;
+		*ny = player->y + floor(p.y / 2);
 	}
 	else
 	{
