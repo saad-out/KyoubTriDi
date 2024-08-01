@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 10:43:10 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/31 12:57:43 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/01 12:04:06 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool	is_valide_char_map(char c)
 	return (false);
 }
 
-bool	is_player_in_map(char c)
+bool	player_exist(char c)
 {
 	if (c == 'N' || c == 'S' || c == 'W' || c == 'E')
 		return (true);
@@ -45,7 +45,7 @@ int	max_line_len(t_lst *head)
 	return (max_len);
 }
 
-char	*check_line_map(char *line, bool *player_exist)
+char	*check_line_map(char *line, bool *player)
 {
 	int	i;
 
@@ -59,9 +59,9 @@ char	*check_line_map(char *line, bool *player_exist)
 		}
 		if (!is_valide_char_map(line[i]))
 			ft_error();
-		if (is_player_in_map(line[i]))
-			*player_exist = true;
-		else if (is_player_in_map(line[i]) && (*player_exist))
+		if (player_exist(line[i]))
+			*player = true;
+		else if (player_exist(line[i]) && (*player_exist))
 			ft_error();
 		i++;
 	}
@@ -76,22 +76,26 @@ void	check_map(char **map, int nb_line, int col_len)
 	int	i;
 	int	j;
 
-	i = 0;
-	while (i < nb_line)
+	i = -1;
+	while (++i < nb_line)
 	{
-		j = 0;
-		while (j < col_len)
+		j = -1;
+		while (++j < col_len)
 		{
-			if (map[i][j] == '0' || map[i][j] == 'D' || is_player_in_map(map[i][j]))
+			if (map[i][j] == '0' || map[i][j] == '2' || player_exist(map[i][j]))
 			{
 				if (i == 0 || i == nb_line - 1 || j == 0 || j == col_len - 1)
 					ft_error();
-				if (map[i - 1][j] == ' ' || map[i + 1][j] == ' ' || map[i][j
-					- 1] == ' ' || map[i][j + 1] == ' ')
+				if (map[i - 1][j] == ' ' || map[i + 1][j] == ' '
+					|| map[i][j - 1] == ' ' || map[i][j + 1] == ' ')
 					ft_error();
 			}
-			j++;
+			if (map[i][j] == '2')
+			{
+				if (!((map[i - 1][j] == '1' && map[i + 1][j] == '1')
+					|| map[i][j - 1] == '1' || map[i][j + 1] == '1'))
+					ft_error();
+			}
 		}
-		i++;
 	}
 }
