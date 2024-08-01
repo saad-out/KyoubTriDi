@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/01 11:11:07 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/01 12:43:33 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void ft_render_map(t_mlx *mlx, t_map_data *map_data, t_player *player)
 			start_y--;
 	}
 	int offsety = 0;
-	//printf(RED"px=%d, py=%d", player_x, player_y);
 	for (int i = start_y; i < end_y; i++)
 	{
 		int offsetx = 0;
@@ -401,9 +400,7 @@ int	main(int ac, char **av)
 	load_textures(&map_data, &mlx);
 	play_sound_bg(THEME);
 	ft_render_map(&mlx, &map_data, &player);
+	setup_hooks(&data);
 	mlx_loop_hook(mlx.mlx_ptr, &ogbi, &data);
-	mlx_hook(mlx.win, 2, 1L << 0, key_press, &data);
-	mlx_hook(mlx.win, 3, 1L << 1, key_realse, &data);
-	mlx_hook(mlx.win, 6, 1L << 6, mouse_move, &data);
 	mlx_loop(mlx.mlx_ptr);
 }

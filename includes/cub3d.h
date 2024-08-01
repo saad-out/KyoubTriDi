@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/01 11:01:11 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/01 12:35:24 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@
 # define WE "textures/7itakhor.xpm"
 # define EA "textures/7it3.xpm"
 
-# define OPEN_DOOR "sounds/fbi-open-the-door.mp3"
-// # define OPEN_DOOR "sounds/open2.mp3"
+// # define OPEN_DOOR "sounds/fbi-open-the-door.mp3"
+# define OPEN_DOOR "sounds/open2.mp3"
 # define CLOSE_DOOR "sounds/close.mp3"
 # define THEME "sounds/haunted.mp3"
 
@@ -67,8 +67,8 @@
 /*   Includes   */
 # include "../libs/ft_containers/ft_data_structres.h"
 # include "../libs/libft/libft.h"
-// # include "../libs/minilibx-linux/mlx.h"
-#include <mlx.h>
+# include "../libs/minilibx-linux/mlx.h"
+// #include <mlx.h>
 // #include "mlx/mlx.h"
 # include <ao/ao.h>
 # include <errno.h>
@@ -174,7 +174,7 @@ struct						s_map_data
 	t_img					flame8_texture_img;
 	t_img					flame9_texture_img;
 	t_img					flame10_texture_img;
-	t_img					flame11_texture_img;	
+	t_img					flame11_texture_img;
 	t_img					door_img;
 	t_map_grid				map;
 };
@@ -256,6 +256,7 @@ int							is_same(double a, double b);
 int							key_press(int keycode, t_data *data);
 int							key_realse(int keycode, t_data *data);
 int							mouse_move(int x, int y, t_data *data);
+void						setup_hooks(t_data *data);
 /*   Parsing   */
 void						ft_error(void);
 void						skip_digits(char **line);
@@ -265,7 +266,7 @@ char						*join_splited(char **splited_line);
 int							get_color(char *joined);
 int							ft_atoi_rgb(char **str);
 bool						is_valide_char_map(char c);
-bool						is_player_in_map(char c);
+bool						player_exist(char c);
 bool						is_ea(char **splited);
 bool						is_we(char **splited);
 bool						is_so(char **splited);
@@ -298,4 +299,5 @@ void						play_sound_bg(char *mp3);
 /* --------   */
 /*   Mem   */
 void						free_split(char **split);
+void						free_all_mem(t_data *data);
 #endif

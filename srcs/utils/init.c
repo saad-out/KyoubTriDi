@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:43:36 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/01 11:00:27 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/01 12:05:41 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,12 @@ void	ft_init_mlx(t_mlx *mlx)
 	mlx->img.addr = mlx_get_data_addr(mlx->img.img_ptr, &mlx->img.bpp,
 			&mlx->img.line_length, &mlx->img.endian);
 }
+
 bool is_player(char c)
 {
 	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
 }
+
 void	ft_init_player_position(t_player *player, t_map_data *map_data)
 {
 	int	i;
@@ -85,7 +87,6 @@ void	ft_init_data(t_data *data)
 	map_data->ceil_color = -1;
 	map_data->floor_color = -1;
 
-	// player->radius = 7;
 	player->radius = 100;
 	player->turnDirection = 0;
 	player->walkDirection = 0;
