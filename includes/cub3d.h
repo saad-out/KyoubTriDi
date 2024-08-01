@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/01 17:51:10 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/01 18:48:09 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,9 @@
 # define ON_KEYUP 3
 
 # define EPSILON 0.00001L
+# define PLAYER_SIZE 30
 
-# define RGBA 0xff000000
+# define BG 0xff000000
 
 /*   Includes   */
 # include "../libs/ft_containers/ft_data_structres.h"
@@ -310,6 +311,8 @@ void						handle_doors(t_data *data);
 void						*play_mp3(void *arg);
 void						play_sound_bg(char *mp3);
 void						load_textures(t_map_data *md, t_mlx *mlx);
+int							render_frame(void *d);
+void						paste_part_into_image(t_img *img1, t_img *img2, int x, int y);
 /* --------   */
 /*   Mem   */
 void						free_split(char **split);

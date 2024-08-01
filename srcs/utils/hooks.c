@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 15:19:43 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/01 12:43:43 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/01 18:45:32 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,34 @@ int	key_realse(int keycode, t_data *data)
 		data->player->walkDirection = 0;
 		data->player->horMove = 0;
 	}
+	return (0);
+}
+
+int	render_frame(void *d)
+{
+	t_data		*data;
+	t_img		flame;
+	static int	index = 0;
+
+	data = (t_data *)d;
+	if (index >= 30)
+		index = 0;
+	if (index < 10)
+		flame = data->map_data->txt.flame[0];
+	else if (index < 20)
+		flame = data->map_data->txt.flame[1];
+	else if (index < 30)
+		flame = data->map_data->txt.flame[2];
+	data->mlx->img.width = WIDTH;
+	data->mlx->img.height = HEIGHT;
+	move_player(data);
+	raycasting(data);
+	paste_part_into_image(&flame, &data->mlx->img, 0, 0);
+	mlx_put_image_to_window(data->mlx->mlx_ptr, \
+							data->mlx->win, \
+							data->mlx->img.img_ptr, \
+							0, 0);
+	index++;
 	return (0);
 }
 
