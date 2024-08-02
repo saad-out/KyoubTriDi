@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:31 by soutchak          #+#    #+#             */
-/*   Updated: 2024/08/01 12:33:12 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/02 10:51:09 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,15 @@ void	*play_mp3(void *arg)
 {
 	char	*filename;
 	t_sound	sound;
+	t_data	*data;
 
+	data = get_data(NULL);
 	filename = (char *)arg;
 	sound.driver = ao_default_driver_id();
 	sound.buffer = init_mpg123(&sound.mh, &sound.buffer_size);
 	open_out_device(&sound.mh, filename, &sound.dev, sound.driver);
 	while (mpg123_read(sound.mh, sound.buffer, sound.buffer_size, &sound.done) \
-			== MPG123_OK)
+			== MPG123_OK && !quit_program(data))
 		ao_play(sound.dev, (char *)sound.buffer, sound.done);
 	free(sound.buffer);
 	ao_close(sound.dev);
@@ -70,6 +72,5 @@ void	play_sound_bg(char *mp3)
 
 	if (pthread_create(&thread, NULL, play_mp3, (void *)mp3) != 0)
 		return (printf(RED"error creating thread\n"RESET), (void)0);
-	if (pthread_detach(thread) != 0)
-		return (printf(RED"error detaching thread\n"RESET), (void)0);
+	running_threads(ADD, thread);
 }

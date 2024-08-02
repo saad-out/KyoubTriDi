@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:43:36 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/01 12:05:41 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/02 09:47:20 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,11 @@ void	ft_init_data(t_data *data)
 	player->horMove = 0;
 	player->walkSpeed = 0.05 * TILE_SIZE;
 	player->turnSpeed = 2 * (PI / 180);
+}
+
+void	ft_init_lock(t_data *data)
+{
+	data->quit.flag = false;
+	if (pthread_mutex_init(&data->quit.mutex, NULL) != 0)
+		return (printf(RED"Error init mutex\n"RESET), exit(1));
 }

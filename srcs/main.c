@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/02 10:25:22 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:38:02 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,11 @@ void	ft_render_map(t_mlx *mlx, t_map_data *map_data, t_player *player)
 	render_map(mlx, &map, map_data);
 	posx = (map.imran_x + map.player_x - (int)map.player_x) * TILE_SIZE;
 	posy = (map.imran_y + map.player_y - (int)map.player_y) * TILE_SIZE;
-	ft_draw_circle(mlx, posx * MINIMAP_SCALE, posy * MINIMAP_SCALE,
-		player->radius * MINIMAP_SCALE, 0x283fd1);
+	// to handle draw circle:
+	// ft_draw_circle(mlx, posx * MINIMAP_SCALE, posy * MINIMAP_SCALE,
+	// 	player->radius * MINIMAP_SCALE, 0x283fd1);
+	ft_draw_square(mlx, posx * MINIMAP_SCALE, posy * MINIMAP_SCALE,
+		player->radius * 0.05, 0x283fd1);
 	line.x0 = posx * MINIMAP_SCALE;
 	line.y0 = posy * MINIMAP_SCALE;
 	line.x1 = (posx + cos(player->rotationAngle) * TILE_SIZE) * MINIMAP_SCALE;
@@ -125,18 +128,7 @@ void	ft_render_map(t_mlx *mlx, t_map_data *map_data, t_player *player)
 	ft_draw_line(mlx,  &line);
 }
 
-bool	cannot_move(double x, double y, t_data *data)
-{
-	int	playerSize;
-
-	playerSize = 30;
-	return (is_wall_1(x - playerSize, y - playerSize, data) || is_wall_1(x
-			+ playerSize, y - playerSize, data) || is_wall_1(x - playerSize, y
-			+ playerSize, data) || is_wall_1(x + playerSize, y + playerSize,
-			data));
-}
-
-void	paste_part_into_image(t_img *img1, t_img *img2, t_action action)
+void	paste_part_into_image(t_img *img1, t_img *img2, int x, int y)
 {
 	int				i;
 	int				j;
@@ -151,62 +143,14 @@ void	paste_part_into_image(t_img *img1, t_img *img2, t_action action)
 		j = 0;
 		while (j < img1->width)
 		{
-			if (img1_addr[j + i * img1->width] != RGBA && (action.x + j) < WIDTH
-				&& (i + action.y) < HEIGHT)
-				img2_addr[(action.x + j) + ((i + action.y)
-						* (img2->width))] = img1_addr[j + i * img1->width];
+			if (img1_addr[j + i * img1->width] != BG \
+				&& (x + j) < WIDTH && (i + y) < HEIGHT)
+				img2_addr[(x + j) + ((i + y) * (img2->width))] \
+				= img1_addr[j + i * img1->width];
 			j++;
 		}
 		i++;
 	}
-}
-
-void	handle_collision(double *nx, double *ny, double dx, double dy,
-		t_data *data)
-{
-	t_player	*player;
-
-	player = data->player;
-	if (!cannot_move(player->x + dx, player->y + dy, data))
-	{
-		*nx = player->x + dx;
-		*ny = player->y + dy;
-	}
-	else if (!cannot_move(player->x + dx, player->y, data))
-	{
-		*nx = player->x + dx;
-		*ny = player->y;
-	}
-	else if (!cannot_move(player->x, player->y + dy, data))
-	{
-		*nx = player->x;
-		*ny = player->y + dy;
-	}
-	else
-	{
-		printf(RED "Error asat\n" RESET);
-		*nx = player->x;
-		*ny = player->y;
-	}
-}
-
-void	move_player(t_data *data)
-{
-	t_player	*player;
-	double		movestep;
-	double		next_y;
-	double		next_x;
-	double		xstep;
-	double		ystep;
-
-	player = data->player;
-	movestep = player->walkDirection * player->walkSpeed;
-	player->rotationAngle += player->turnDirection * player->turnSpeed;
-	xstep = cos(player->rotationAngle + player->horMove) * movestep;
-	ystep = sin(data->player->rotationAngle + player->horMove) * movestep;
-	handle_collision(&next_x, &next_y, xstep, ystep, data);
-	data->player->x = next_x;
-	data->player->y = next_y;
 }
 
 t_data	*get_data(t_data *data)
@@ -218,36 +162,12 @@ t_data	*get_data(t_data *data)
 	return (tmp);
 }
 
-int	ogbi(void *d)
-{
-	t_data	*data;
-
-	data = (t_data *)d;
-	if (index_ogbi >= 30)
-		index_ogbi = 0;
-	if (index_ogbi < 10)
-		flame = data->map_data->txt.flame[0];
-	else if (index_ogbi < 20)
-		flame = data->map_data->txt.flame[1];
-	else if (index_ogbi < 30)
-		flame = data->map_data->txt.flame[2];
-	data->mlx->img.width = WIDTH;
-	data->mlx->img.height = HEIGHT;
-	move_player(data);
-	raycasting(data);
-	paste_part_into_image(&flame, &data->mlx->img, (t_action){0, 0});
-	mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win,
-		data->mlx->img.img_ptr, 0, 0);
-	index_ogbi++;
-	return (0);
-}
-
 int	main(int ac, char **av)
 {
-	t_map_data	map_data;
-	t_player	player;
-	t_mlx		mlx;
-	t_data		data;
+	t_map_data map_data;
+	t_player player;
+	t_mlx mlx;
+	t_data data;
 
 	if (ac != 2)
 	{
@@ -259,14 +179,17 @@ int	main(int ac, char **av)
 	data.player = &player;
 	ao_initialize();
 	get_data(&data);
+	running_threads(INIT, 0);
+    ao_initialize();
 	ft_init_data(&data);
 	parse_map_file(av[1], &map_data);
 	ft_init_mlx(&mlx);
 	ft_init_player_position(&player, &map_data);
 	load_textures(&map_data, &mlx);
+	ft_init_lock(&data);
 	play_sound_bg(THEME);
 	ft_render_map(&mlx, &map_data, &player);
 	setup_hooks(&data);
-	mlx_loop_hook(mlx.mlx_ptr, &ogbi, &data);
+	mlx_loop_hook(mlx.mlx_ptr, &render_frame, &data);
 	mlx_loop(mlx.mlx_ptr);
 }

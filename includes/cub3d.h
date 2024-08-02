@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/02 10:22:46 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:30:38 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@
 # define CLOSE_DOOR "sounds/close.mp3"
 # define THEME "sounds/haunted.mp3"
 
+# define ADD 0
+# define STOP 1
+# define INIT 2
+# define MAX_THREADS 10000
+
 /* PRINTF COLORS */
 # define RED "\033[0;31m"
 # define GREEN "\033[0;32m"
@@ -67,8 +72,9 @@
 # define ON_KEYUP 3
 
 # define EPSILON 0.00001L
+# define PLAYER_SIZE 30
 
-# define RGBA 0xff000000
+# define BG 0xff000000
 
 /*   Includes   */
 # include "../libs/ft_containers/ft_data_structres.h"
@@ -104,6 +110,7 @@ typedef struct s_rgb		t_rgb;
 typedef struct s_textures	t_textures;
 typedef struct s_render_map	t_render_map;
 typedef struct s_draw_line	t_draw_line;
+typedef struct s_exit		t_exit;
 
 /*   Structs  */
 
@@ -169,11 +176,18 @@ struct						s_img
 	int						height;
 };
 
+struct						s_exit
+{
+	pthread_mutex_t			mutex;
+	bool					flag;
+};
+
 struct						s_data
 {
 	t_mlx					*mlx;
 	t_map_data				*map_data;
 	t_player				*player;
+	t_exit					quit;
 };
 
 struct						s_mlx
@@ -260,7 +274,7 @@ void						ft_draw_circle(t_mlx *mlx, int xc, int yc,
 void						draw_map(t_mlx *mlx, t_map_data *map_data);
 // void						ft_draw_line(t_mlx *mlx, int x0, int y0, int x1,
 // 								int y1, int color);
-void	ft_draw_line(t_mlx *mlx, t_draw_line *line);
+void						ft_draw_line(t_mlx *mlx, t_draw_line *line);
 void						raycasting(t_data *data);
 bool						is_wall_1(double x, double y, t_data *data);
 bool						is_wall_2(double x, double y, t_data *data);
@@ -337,11 +351,20 @@ char						**ft_lst_to_map(t_lst *head);
 char						**allocate_and_initialize_map(t_lst *head);
 void						parse_map_file(char *file, t_map_data *map_data);
 int							clamp(int value, int min, int max);
+bool						cannot_move(double x, double y, t_data *data);
 bool						is_door(t_data *data, double x, double y, int skip);
 void						handle_doors(t_data *data);
 void						*play_mp3(void *arg);
 void						play_sound_bg(char *mp3);
 void						load_textures(t_map_data *md, t_mlx *mlx);
+int							render_frame(void *d);
+void						paste_part_into_image(t_img *img1, t_img *img2,
+								int x, int y);
+void						ft_init_lock(t_data *data);
+bool						quit_program(t_data *data);
+void						set_exit_flag(t_data *data);
+t_data						*get_data(t_data *data);
+void						running_threads(int action, pthread_t thread);
 /* --------   */
 /*   Mem   */
 void						free_split(char **split);

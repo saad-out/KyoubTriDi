@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 12:08:19 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/02 10:27:13 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:33:30 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,22 +91,14 @@ void	ft_draw_line(t_mlx *mlx, t_draw_line *line)
 
 // void	ft_draw_circle(t_mlx *mlx, int xc, int yc, int radius, int color)
 // {
-// 	t_draw_line	line;
-// 	int	x;
-// 	int	y;
-// 	int	p;
+// 	int x = radius;
+// 	int y = 0;
+// 	int p = 1 - radius;
 
-// 	x = radius;
-// 	y = 0;
-// 	p = 1 - radius;
 // 	// Draw initial points on each quadrant
-// 	line.x0 = xc - x;
-// 	line.y0 = yc;
-// 	line.x1 = xc + x;
-// 	line.y1 = yc;
-// 	line.color = color;
-// 	ft_draw_line(mlx, &line);
-// 	// Initial horizontal diameter
+// 	ft_draw_line(mlx, xc - x, yc, xc + x, yc, color);
+// 		// Initial horizontal diameter
+
 // 	if (radius > 0)
 // 	{
 // 		ft_draw_square(mlx, xc - radius, yc, 1, color); // Leftmost point
@@ -114,10 +106,12 @@ void	ft_draw_line(t_mlx *mlx, t_draw_line *line)
 // 		ft_draw_square(mlx, xc, yc + radius, 1, color); // Topmost point
 // 		ft_draw_square(mlx, xc, yc - radius, 1, color); // Bottommost point
 // 	}
+
 // 	// Filling the circle
 // 	while (x > y)
 // 	{
 // 		y++;
+
 // 		// Mid-point is inside or on the perimeter
 // 		if (p <= 0)
 // 		{
@@ -128,12 +122,15 @@ void	ft_draw_line(t_mlx *mlx, t_draw_line *line)
 // 			x--;
 // 			p = p + 2 * y - 2 * x + 1;
 // 		}
+
 // 		// All the perimeter points have already been printed
 // 		if (x < y)
 // 			break ;
+
 // 		// Drawing the horizontal lines for each quadrant
 // 		ft_draw_line(mlx, xc - x, yc + y, xc + x, yc + y, color);
 // 		ft_draw_line(mlx, xc - x, yc - y, xc + x, yc - y, color);
+
 // 		if (x != y)
 // 		{
 // 			ft_draw_line(mlx, xc - y, yc + x, xc + y, yc + x, color);
