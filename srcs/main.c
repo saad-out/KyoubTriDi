@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/02 11:38:02 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/02 12:22:39 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,6 @@ int	main(int ac, char **av)
 	data.mlx = &mlx;
 	data.map_data = &map_data;
 	data.player = &player;
-	ao_initialize();
 	get_data(&data);
 	running_threads(INIT, 0);
     ao_initialize();

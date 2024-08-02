@@ -3,23 +3,26 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+         #
+#    By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/20 16:06:03 by klakbuic          #+#    #+#              #
-#    Updated: 2024/08/01 12:13:35 by klakbuic         ###   ########.fr        #
+#    Updated: 2024/08/02 12:23:55 by soutchak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME         = cub3D
 HEADER       = includes/cub3d.h
 
+HOME = /nfs/homes/soutchak
+
 CC           = cc
 DEBUG        = -g3 -fsanitize=address
-CFLAGS       = -Wall -Wextra -lmpg123 -lao $(DEBUG)
+CFLAGS       = -Wall -Wextra -I$(HOME)/local/include $(DEBUG)
+LDFLAGS      = -L$(HOME)/local/lib -lmpg123 -lao
 
 # libs
-MLX          = libs/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm
-# MLX := -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
+# MLX          = libs/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm
+MLX := -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 LIBFT        = libs/libft/libft.a
 CONTAINERS   = libs/ft_containers/containersft.a
 LIBS         = $(MLX) $(LIBFT) $(CONTAINERS)
@@ -33,8 +36,8 @@ RENDERDIR    := render
 
 # sources files
 PARSE        := get_next_line.c  get_next_line_utils.c  parse_bools.c  parse.c  parse_elements.c  parse_elements_utils.c  parse_map.c  parse_map_utils.c  parse_utils.c
-UTILS        := hooks.c  init.c  mem.c sound.c
-RENDER       := draw.c  raycasting.c  raycasting_utils.c  utils.c textures.c render_wall.c DDA.c DDA_2.c doors.c
+UTILS        := exit.c  hooks.c  init.c  load.c  mem.c  sound.c
+RENDER       := draw.c  raycasting.c  raycasting_utils.c  utils.c textures.c render_wall.c DDA.c DDA_2.c doors.c player.c
 
 # All sources files
 SRCS         := $(foreach F,$(PARSE), $(SRCSDIR)/$(PARSEDIR)/$(F))  \
@@ -48,7 +51,7 @@ OBJS         := $(patsubst srcs/%.c, obj/%.o,$(SRCS))
 all: $(NAME)
 
 $(NAME): $(OBJSDIR) $(OBJS) $(HEADER)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -I $(HEADER) -o $(NAME)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBS) -I $(HEADER) -o $(NAME)
 
 $(OBJS) : $(OBJSDIR)/%.o : $(SRCSDIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
