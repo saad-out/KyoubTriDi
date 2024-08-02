@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 10:09:48 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/01 12:21:42 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:53:43 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ int	get_color(char *joined)
 	int		r;
 	int		g;
 	int		b;
-	int		t;
+	char *tmp;
 	char	**line;
 
+	tmp = joined;
 	line = &joined;
-	t = 0;
 	r = ft_atoi_rgb(line);
 	skip_whitespace(line);
 	if (**line == ',')
@@ -61,7 +61,8 @@ int	get_color(char *joined)
 	b = ft_atoi_rgb(line);
 	if (**line != '\0' && **line != '\n')
 		ft_error();
-	return (t << 24 | r << 16 | g << 8 | b);
+	free(tmp);
+	return (0 << 24 | r << 16 | g << 8 | b);
 }
 
 void	check_extension_textures(char *filename)

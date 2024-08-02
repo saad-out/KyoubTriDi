@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:05:44 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/01 12:10:38 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:43:35 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,10 @@ void	parse_map_elements(int fd, t_map_data *map_data)
 	{
 		splited = ft_split(line, ' ');
 		if (elemts == 6 && splited[0] && splited[0][0] == '1')
+		{
+			free_split(splited);
 			break ;
+		}
 		else if (splited[0] == NULL || is_empty_line(splited[0][0]))
 		{
 			read_new_line(splited, &line, fd);
