@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 15:19:43 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/02 10:23:41 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/02 17:41:00 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,6 @@ int	render_frame(void *d)
 		flame = data->map_data->txt.flame[1];
 	else if (index < 30)
 		flame = data->map_data->txt.flame[2];
-	data->mlx->img.width = WIDTH;
-	data->mlx->img.height = HEIGHT;
 	move_player(data);
 	raycasting(data);
 	paste_part_into_image(&flame, &data->mlx->img, 0, 0);

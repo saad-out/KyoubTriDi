@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 13:18:50 by soutchak          #+#    #+#             */
-/*   Updated: 2024/08/01 13:07:51 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:33:40 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,5 @@ void	raycasting(t_data *data)
 	i = -1;
 	while (++i < NUM_RAYS)
 		draw_wall(data, &ray[i]);
-	draw_minimap(data, player);
+	ft_render_map(data->mlx, data->map_data, player);
 }

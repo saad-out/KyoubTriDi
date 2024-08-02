@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 02:55:56 by soutchak          #+#    #+#             */
-/*   Updated: 2024/07/28 14:34:11 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:09:23 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,4 @@ t_point	min_point(t_point a, t_point b, t_player *player)
 bool	equal_points(t_point a, t_point b)
 {
 	return (a.x == b.x && a.y == b.y);
-}
-
-int	is_same(double a, double b)
-{
-	return (fabs(a - b) < EPSILON);
 }

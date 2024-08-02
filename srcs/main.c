@@ -6,14 +6,11 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/02 12:38:28 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:36:59 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-t_img	flame;
-int		index_ogbi = 0;
 
 void	init_render_map(t_render_map *map, t_player *player)
 {
@@ -186,9 +183,7 @@ int	main(int ac, char **av)
 	ft_init_player_position(&player, &map_data);
 	load_textures(&map_data, &mlx);
 	ft_init_lock(&data);
-	// play_sound_bg(THEME);
 	theme_sound(THEME);
-	ft_render_map(&mlx, &map_data, &player);
 	setup_hooks(&data);
 	mlx_loop_hook(mlx.mlx_ptr, &render_frame, &data);
 	mlx_loop(mlx.mlx_ptr);

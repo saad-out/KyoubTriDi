@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:43:36 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/02 09:47:20 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/02 17:41:24 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	ft_init_mlx(t_mlx *mlx)
 	}
 	mlx->img.addr = mlx_get_data_addr(mlx->img.img_ptr, &mlx->img.bpp,
 			&mlx->img.line_length, &mlx->img.endian);
+	mlx->img.width = WIDTH;
+	mlx->img.height = HEIGHT;
 }
 
 bool is_player(char c)

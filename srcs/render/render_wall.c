@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:56:18 by soutchak          #+#    #+#             */
-/*   Updated: 2024/08/02 16:10:35 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:33:44 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,4 @@ void	draw_wall(t_data *data, t_ray *ray)
 	draw_ceiling(data, ray->column, ray->wallTop);
 	draw_wall_texture(data, ray);
 	draw_floor(data, ray->column, ray->wallBottom);
-}
-
-void	draw_minimap(t_data *data, t_player *player)
-{
-	ft_render_map(data->mlx, data->map_data, player);
 }

@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/02 16:07:26 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:33:50 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,13 +303,11 @@ void						set_texture(t_ray *ray, t_data *data,
 								t_img *texture);
 void						move_player(t_data *data);
 void						draw_wall(t_data *data, t_ray *ray);
-void						draw_minimap(t_data *data, t_player *player);
 void						draw_floor(t_data *data, int column, int wallBottom);
 void						draw_wall_texture(t_data *data, t_ray *ray);
 int							get_texel_y(t_ray *ray, int y, t_img *texture);
 void						draw_ceiling(t_data *data, int column, int wallTop);
 double						get_wall_height(t_data *data, t_ray *ray);
-int							is_same(double a, double b);
 /*   Hooks   */
 int							key_press(int keycode, t_data *data);
 int							key_realse(int keycode, t_data *data);
