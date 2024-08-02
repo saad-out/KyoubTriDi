@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_wall.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:56:18 by soutchak          #+#    #+#             */
-/*   Updated: 2024/08/01 13:05:31 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/02 10:24:03 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,44 @@
 
 void	draw_ceiling(t_data *data, int column, int wallTop)
 {
-	ft_draw_line(
-		data->mlx,
-		column,
-		0,
-		column,
-		wallTop,
-		0x111026);
+	t_draw_line	line;
+	
+	line.x0 = column;
+	line.y0 = 0;
+	line.x1 = column;
+	line.y1 = wallTop;
+	line.color = data->map_data->ceil_color;
+	ft_draw_line(data->mlx, &line);
 }
 
-void	draw_floor(t_data *data, int column, int wallBottom)
+float scale(float value, float x0, float y0, float x1, float y1) {
+    return x1 + ((value - x0) * (y1 - x1)) / (y0 - x0);
+}
+
+void	draw_floor(t_data *data, int column, int wallBottom, double ht)
 {
-	t_rgb	c;
-	int		color;
-	double	x;
-	int		y;
+	int	red;
+	int	green;
+	int	blue;
+	int	shaded;
+	int color;
+	double factor;
 
 	color = 0x1f6370;
-	c.red = (color >> 16) & 0xFF;
-	c.green = (color >> 8) & 0xFF;
-	c.blue = color & 0xFF;
-	x = 1;
-	y = wallBottom;
-	while (y < HEIGHT)
+	double x = 1;
+	for (int y = wallBottom; y < HEIGHT; y++)
 	{
+		red = (color >> 16) & 0xFF;
+		green = (color >> 8) & 0xFF;
+		blue = color & 0xFF;
+
 		x = ((double)y / (double)HEIGHT);
 		x = pow(x, 3);
-		my_mlx_pixel_put(&data->mlx->img, column, y, \
-						(((int)(c.red * x) << 16) \
-						| ((int)(c.green * x) << 8) \
-						| (int)(c.blue * x)));
-		y++;
+		red *= x;
+		green *= x;
+		blue *= x;
+		shaded = (red << 16) | (green << 8) | blue;
+		my_mlx_pixel_put(&data->mlx->img, column, y, shaded);
 	}
 }
 
@@ -59,10 +66,11 @@ void	draw_wall(t_data *data, t_ray *ray)
 		ray->wallBottom = HEIGHT;
 	draw_ceiling(data, ray->column, ray->wallTop);
 	draw_wall_texture(data, ray);
-	draw_floor(data, ray->column, ray->wallBottom);
+	draw_floor(data, ray->column, ray->wallBottom, ray->wallStripHeight);
 }
 
 void	draw_minimap(t_data *data, t_player *player)
 {
 	ft_render_map(data->mlx, data->map_data, player);
+
 }

@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/01 19:06:54 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/02 10:25:22 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void	ft_render_map(t_mlx *mlx, t_map_data *map_data, t_player *player)
 	int				posx;
 	int				posy;
 	t_render_map	map;
+	t_draw_line		line;
 
 	init_render_map(&map, player);
 	init_start_x_y(&map, map_data);
@@ -116,10 +117,12 @@ void	ft_render_map(t_mlx *mlx, t_map_data *map_data, t_player *player)
 	posy = (map.imran_y + map.player_y - (int)map.player_y) * TILE_SIZE;
 	ft_draw_circle(mlx, posx * MINIMAP_SCALE, posy * MINIMAP_SCALE,
 		player->radius * MINIMAP_SCALE, 0x283fd1);
-	ft_draw_line(mlx, posx * MINIMAP_SCALE, posy * MINIMAP_SCALE, (posx
-			+ cos(player->rotationAngle) * TILE_SIZE) * MINIMAP_SCALE, (posy
-			+ sin(player->rotationAngle) * TILE_SIZE) * MINIMAP_SCALE,
-		0x283fd1);
+	line.x0 = posx * MINIMAP_SCALE;
+	line.y0 = posy * MINIMAP_SCALE;
+	line.x1 = (posx + cos(player->rotationAngle) * TILE_SIZE) * MINIMAP_SCALE;
+	line.y1 = (posy + sin(player->rotationAngle) * TILE_SIZE) * MINIMAP_SCALE;
+	line.color = 0x283fd1;
+	ft_draw_line(mlx,  &line);
 }
 
 bool	cannot_move(double x, double y, t_data *data)
