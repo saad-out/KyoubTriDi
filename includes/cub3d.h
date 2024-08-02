@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/01 18:48:09 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/02 10:50:47 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@
 # define OPEN_DOOR "sounds/open2.mp3"
 # define CLOSE_DOOR "sounds/close.mp3"
 # define THEME "sounds/haunted.mp3"
+
+# define ADD 0
+# define STOP 1
+# define INIT 2
+# define MAX_THREADS 10000
 
 /* PRINTF COLORS */
 # define RED "\033[0;31m"
@@ -103,6 +108,7 @@ typedef struct s_ray		t_ray;
 typedef struct s_sound		t_sound;
 typedef struct s_rgb		t_rgb;
 typedef struct s_textures	t_textures;
+typedef struct s_exit		t_exit;
 
 /*   Structs  */
 struct s_rgb
@@ -140,11 +146,18 @@ struct						s_img
 	int						height;
 };
 
+struct s_exit
+{
+	pthread_mutex_t	mutex;
+	bool			flag;
+};
+
 struct						s_data
 {
 	t_mlx					*mlx;
 	t_map_data				*map_data;
 	t_player				*player;
+	t_exit					quit;
 };
 
 struct						s_mlx
@@ -313,6 +326,11 @@ void						play_sound_bg(char *mp3);
 void						load_textures(t_map_data *md, t_mlx *mlx);
 int							render_frame(void *d);
 void						paste_part_into_image(t_img *img1, t_img *img2, int x, int y);
+void						ft_init_lock(t_data *data);
+bool    					quit_program(t_data *data);
+void						set_exit_flag(t_data *data);
+t_data						*get_data(t_data *data);
+void						running_threads(int action, pthread_t thread);
 /* --------   */
 /*   Mem   */
 void						free_split(char **split);

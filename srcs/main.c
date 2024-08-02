@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/01 18:55:46 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/02 10:28:20 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,15 @@ void	paste_part_into_image(t_img *img1, t_img *img2, int x, int y)
 	}
 }
 
+t_data	*get_data(t_data *data)
+{
+	static t_data *tmp = NULL;
+
+	if (data)
+		tmp = data;
+	return (tmp);
+}
+
 int	main(int ac, char **av)
 {
 	t_map_data map_data;
@@ -155,12 +164,15 @@ int	main(int ac, char **av)
 	data.mlx = &mlx;
 	data.map_data = &map_data;
 	data.player = &player;
+	get_data(&data);
+	running_threads(INIT, 0);
     ao_initialize();
 	ft_init_data(&data);
 	parse_map_file(av[1], &map_data);
 	ft_init_mlx(&mlx);
 	ft_init_player_position(&player, &map_data);
 	load_textures(&map_data, &mlx);
+	ft_init_lock(&data);
 	play_sound_bg(THEME);
 	ft_render_map(&mlx, &map_data, &player);
 	setup_hooks(&data);

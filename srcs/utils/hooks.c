@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 15:19:43 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/01 18:45:32 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/02 10:23:41 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	key_press(int keycode, t_data *data)
 	player_movement_hooks(keycode, data);
 	if (keycode == ESC)
 	{
+		set_exit_flag(data);
+		running_threads(STOP, 0);
 		free_all_mem(data);
 		ao_shutdown();
 		exit(0);
