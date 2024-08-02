@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/02 11:30:38 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/02 12:46:08 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@
 /*   Includes   */
 # include "../libs/ft_containers/ft_data_structres.h"
 # include "../libs/libft/libft.h"
-# include "../libs/minilibx-linux/mlx.h"
-// #include <mlx.h>
+// # include "../libs/minilibx-linux/mlx.h"
+#include <mlx.h>
 // #include "mlx/mlx.h"
 # include <ao/ao.h>
 # include <errno.h>
@@ -365,6 +365,7 @@ bool						quit_program(t_data *data);
 void						set_exit_flag(t_data *data);
 t_data						*get_data(t_data *data);
 void						running_threads(int action, pthread_t thread);
+void						theme_sound(char *mp3);
 /* --------   */
 /*   Mem   */
 void						free_split(char **split);

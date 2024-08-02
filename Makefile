@@ -6,7 +6,7 @@
 #    By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/20 16:06:03 by klakbuic          #+#    #+#              #
-#    Updated: 2024/08/02 12:23:55 by soutchak         ###   ########.fr        #
+#    Updated: 2024/08/02 12:47:40 by soutchak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ HOME = /nfs/homes/soutchak
 
 CC           = cc
 DEBUG        = -g3 -fsanitize=address
-CFLAGS       = -Wall -Wextra -I$(HOME)/local/include $(DEBUG)
+CFLAGS       = -Wall -Wextra -I$(HOME)/local/include
 LDFLAGS      = -L$(HOME)/local/lib -lmpg123 -lao
 
 # libs
@@ -36,7 +36,7 @@ RENDERDIR    := render
 
 # sources files
 PARSE        := get_next_line.c  get_next_line_utils.c  parse_bools.c  parse.c  parse_elements.c  parse_elements_utils.c  parse_map.c  parse_map_utils.c  parse_utils.c
-UTILS        := exit.c  hooks.c  init.c  load.c  mem.c  sound.c
+UTILS        := exit.c  hooks.c  init.c  load.c  mem.c  sound.c sound_utils.c
 RENDER       := draw.c  raycasting.c  raycasting_utils.c  utils.c textures.c render_wall.c DDA.c DDA_2.c doors.c player.c
 
 # All sources files
