@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/02 18:33:50 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/03 15:21:06 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,6 +363,7 @@ void						set_exit_flag(t_data *data);
 t_data						*get_data(t_data *data);
 void						running_threads(int action, pthread_t thread);
 void						theme_sound(char *mp3);
+void						load_flames(t_map_data *md, t_mlx *mlx);
 /* --------   */
 /*   Mem   */
 void						free_split(char **split);
