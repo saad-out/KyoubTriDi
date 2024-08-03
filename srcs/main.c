@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/02 18:36:59 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/03 15:06:58 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,11 +174,11 @@ int	main(int ac, char **av)
 	data.mlx = &mlx;
 	data.map_data = &map_data;
 	data.player = &player;
+	ft_init_data(&data);
+	parse_map_file(av[1], &map_data);
 	get_data(&data);
 	running_threads(INIT, 0);
     ao_initialize();
-	ft_init_data(&data);
-	parse_map_file(av[1], &map_data);
 	ft_init_mlx(&mlx);
 	ft_init_player_position(&player, &map_data);
 	load_textures(&map_data, &mlx);
