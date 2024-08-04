@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/03 15:17:28 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/04 13:26:36 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,10 @@ void	render_squres(t_mlx *mlx, t_render_map *map, t_map_data *map_data,
 		ft_draw_square(mlx, map->offsetx * (int)(TILE_SIZE * MINIMAP_SCALE),
 			map->offsety * (int)(TILE_SIZE * MINIMAP_SCALE), (int)(TILE_SIZE
 				* MINIMAP_SCALE), 0x808080);
+	else
+		ft_draw_square(mlx, map->offsetx * (int)(TILE_SIZE * MINIMAP_SCALE),
+			map->offsety * (int)(TILE_SIZE * MINIMAP_SCALE), (int)(TILE_SIZE
+				* MINIMAP_SCALE), 0x000000);
 }
 
 void	render_map(t_mlx *mlx, t_render_map *map, t_map_data *map_data)
