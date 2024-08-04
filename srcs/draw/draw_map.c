@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 09:32:39 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/04 10:21:34 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/04 11:00:27 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,9 +126,9 @@ void	ft_render_map(t_data *data)
 	ft_draw_square(data->mlx, &square);
 	line.x0 = posx * MINIMAP_SCALE + data->player->radius * 0.05 / 2;
 	line.y0 = posy * MINIMAP_SCALE + data->player->radius * 0.05 / 2;
-	line.x1 = (posx + cos(data->player->rotationAngle) * TILE_SIZE)
+	line.x1 = (posx + cos(data->player->rotation_angle) * TILE_SIZE)
 		* MINIMAP_SCALE;
-	line.y1 = (posy + sin(data->player->rotationAngle) * TILE_SIZE)
+	line.y1 = (posy + sin(data->player->rotation_angle) * TILE_SIZE)
 		* MINIMAP_SCALE;
 	line.color = 0x283fd1;
 	ft_draw_line(data->mlx, &line);

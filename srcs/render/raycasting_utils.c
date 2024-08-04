@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 05:27:19 by soutchak          #+#    #+#             */
-/*   Updated: 2024/08/01 17:53:43 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/04 11:09:27 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,29 @@ void	set_ray_angle(t_ray	*ray, double rayangle)
 {
 	ray->angle = rayangle;
 	if (ray->angle >= PI)
-		ray->facingUp = true;
+		ray->facing_up = true;
 	else
-		ray->facingUp = false;
+		ray->facing_up = false;
 	if (ray->angle <= (PI / 2) || ray->angle >= ((3 * PI) / 2))
-		ray->facingRight = true;
+		ray->facing_right = true;
 	else
-		ray->facingRight = false;
+		ray->facing_right = false;
 }
 
 void	set_texture(t_ray *ray, t_data *data, t_img *texture)
 {
 	if (is_door(data, ray->intersection.x, ray->intersection.y, 0))
 		*texture = data->map_data->txt.door;
-	else if (ray->wasHitVertical)
+	else if (ray->was_hit_vertical)
 	{
-		if (ray->facingRight)
+		if (ray->facing_right)
 			*texture = data->map_data->txt.walls[1];
 		else
 			*texture = data->map_data->txt.walls[3];
 	}
 	else
 	{
-		if (ray->facingUp)
+		if (ray->facing_up)
 			*texture = data->map_data->txt.walls[0];
 		else
 			*texture = data->map_data->txt.walls[2];
@@ -84,7 +84,7 @@ double	get_wall_height(t_data *data, t_ray *ray)
 	double	dist_proj_plane;
 
 	corrected_distance = ray->distance * \
-			cos(ray->angle - data->player->rotationAngle);
+			cos(ray->angle - data->player->rotation_angle);
 	dist_proj_plane = ((double)WIDTH / 2) / tan(FOV / 2);
 	return (((double)TILE_SIZE / corrected_distance) * dist_proj_plane);
 }

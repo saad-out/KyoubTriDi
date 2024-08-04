@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/04 10:17:52 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/04 11:57:22 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,22 @@
 # define CUB3D_H
 
 /*   Mcros   */
-// # define WIDTH 800
-// # define HEIGHT 600
+
 # define WIDTH 1000
 # define HEIGHT 700
-// # define MAP_NUM_ROWS 19
-// # define MAP_NUM_COLS 21
 # define TILE_SIZE 512
-// # define TILE_SIZE 64
 # define TEXT_SIZE 512
 # define PI 3.14159265
-# define PI_2 (PI / 2)
+# define PI2 1.570796325
 # define MINIMAP_SCALE 0.02
-# define FOV (60 * (PI / 180)) // 60 degrees in radians
-# define NUM_RAYS (WIDTH)
-
-# define NO "textures/7it5.xpm"
-# define SO "textures/7it2.xpm"
-# define WE "textures/7itakhor.xpm"
-# define EA "textures/7it3.xpm"
+# define FOV 1.04719755 
+# define NUM_RAYS WIDTH
 
 # define DOOR "textures/creepydoor.xpm"
 # define F1 "textures/1bg.xpm"
 # define F2 "textures/2bg.xpm"
 # define F3 "textures/3bg.xpm"
 
-// # define OPEN_DOOR "sounds/fbi-open-the-door.mp3"
 # define OPEN_DOOR "sounds/open2.mp3"
 # define CLOSE_DOOR "sounds/close.mp3"
 # define THEME "sounds/haunted.mp3"
@@ -211,12 +201,12 @@ struct							s_player
 	int							radius;
 	double						x;
 	double						y;
-	int							turnDirection;
-	int							walkDirection;
-	float						rotationAngle;
-	float						walkSpeed;
-	float						turnSpeed;
-	float						horMove;
+	int							turn_direction;
+	int							walk_direction;
+	float						rotation_angle;
+	float						walk_speed;
+	float						turen_speed;
+	float						hor_move;
 };
 
 struct							s_map_grid
@@ -254,16 +244,16 @@ struct							s_point
 struct							s_ray
 {
 	double						angle;
-	bool						facingUp;
-	bool						facingRight;
-	bool						wasHitVertical;
+	bool						facing_up;
+	bool						facing_right;
+	bool						was_hit_vertical;
 	t_point						intersection;
 	double						distance;
-	double						textureOffset;
-	double						wallStripHeight;
+	double						texture_offset;
+	double						wall_strip_height;
 	int							column;
-	int							wallTop;
-	int							wallBottom;
+	int							wall_top;
+	int							wall_bottom;
 };
 
 /*   Prototypes   */
@@ -273,13 +263,9 @@ void							ft_init_player_position(t_player *player,
 									t_map_data *map_data);
 void							my_mlx_pixel_put(t_img *img, int x, int y,
 									int color);
-void							draw_square(t_img *img, int x, int y, int size,
-									int color);
 void							ft_draw_square(t_mlx *mlx,
 									t_draw_square *square);
 void							draw_map(t_mlx *mlx, t_map_data *map_data);
-// void						ft_draw_line(t_mlx *mlx, int x0, int y0, int x1,
-// 								int y1, int color);
 void							ft_draw_line(t_mlx *mlx, t_draw_line *line);
 void							raycasting(t_data *data);
 bool							is_wall_1(double x, double y, t_data *data);
@@ -296,13 +282,11 @@ t_point							ver_intersection_distance(t_ray *ray,
 									t_player *player, t_data *data, int skip);
 t_point							hor_intersection_distance(t_ray *ray,
 									t_player *player, t_data *data, int skip);
-
 t_data							*get_data(t_data *data);
 t_point							min_point(t_point a, t_point b,
 									t_player *player);
 double							distance(t_point a, t_point b);
 double							normalize_angle(double angle);
-// void						ft_render_map(t_mlx *mlx, t_map_data *map_data);
 void							ft_render_map(t_data *data);
 bool							equal_points(t_point a, t_point b);
 void							set_ray_angle(t_ray *ray, double rayangle);
@@ -317,12 +301,10 @@ int								get_texel_y(t_ray *ray, int y, t_img *texture);
 void							draw_ceiling(t_data *data, int column,
 									int wallTop);
 double							get_wall_height(t_data *data, t_ray *ray);
-/*   Hooks   */
 int								key_press(int keycode, t_data *data);
 int								key_realse(int keycode, t_data *data);
 int								mouse_move(int x, int y, t_data *data);
 void							setup_hooks(t_data *data);
-/*   Parsing   */
 void							ft_error(void);
 void							skip_digits(char **line);
 void							skip_whitespace(char **line);
@@ -378,8 +360,6 @@ t_data							*get_data(t_data *data);
 void							running_threads(int action, pthread_t thread);
 void							theme_sound(char *mp3);
 void							load_flames(t_map_data *md, t_mlx *mlx);
-/* --------   */
-/*   Mem   */
 void							free_split(char **split);
 void							free_all_mem(t_data *data);
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   DDA.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 12:35:26 by soutchak          #+#    #+#             */
-/*   Updated: 2024/08/01 12:38:05 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/04 11:08:42 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	compute_ver_intercept(t_player *p, t_ray *ray, double *xI, double *yI)
 {
 	*xI = floor(p->x / TILE_SIZE) * TILE_SIZE;
-	if (ray->facingRight)
+	if (ray->facing_right)
 		*xI += TILE_SIZE;
 	*yI = p->y + ((*xI - p->x) * tan(ray->angle));
 }
@@ -23,10 +23,10 @@ void	compute_ver_intercept(t_player *p, t_ray *ray, double *xI, double *yI)
 void	compute_ver_step(t_ray *ray, double *xS, double *yS)
 {
 	*xS = TILE_SIZE;
-	if (!ray->facingRight)
+	if (!ray->facing_right)
 		*xS *= -1;
 	*yS = *xS * tan(ray->angle);
-	if ((*yS > 0 && ray->facingUp) || (*yS < 0 && !ray->facingUp))
+	if ((*yS > 0 && ray->facing_up) || (*yS < 0 && !ray->facing_up))
 		*yS *= -1;
 }
 
@@ -43,7 +43,7 @@ t_point	ver_intersection_distance(t_ray *ray, t_player *player, \
 	compute_ver_step(ray, &x_step, &y_step);
 	point.x = x_intercept;
 	point.y = y_intercept;
-	if (!ray->facingRight)
+	if (!ray->facing_right)
 		point.x -= EPSILON;
 	while ((point.x > 0 && point.x < data->map_data->map.cols * TILE_SIZE) \
 			&& (point.y > 0 && point.y < data->map_data->map.rows * TILE_SIZE))

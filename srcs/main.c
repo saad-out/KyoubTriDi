@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:46:50 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/04 10:21:00 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/04 10:25:33 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	main(int ac, char **av)
 
 	if (ac != 2)
 	{
-		printf("Error\nInvalid number of arguments\n");
+		printf("Error\n");
 		return (EXIT_FAILURE);
 	}
 	data.mlx = &mlx;

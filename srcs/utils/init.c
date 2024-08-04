@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:43:36 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/04 10:18:39 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/04 11:01:16 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,13 @@ void	ft_init_player_position(t_player *player, t_map_data *map_data)
 				player->x = (j * TILE_SIZE) + (TILE_SIZE / 2);
 				player->y = (i * TILE_SIZE) + (TILE_SIZE / 2);
 				if (map_data->map.map[i][j] == 'N')
-					player->rotationAngle = 3 * PI / 2;
+					player->rotation_angle = 3 * PI / 2;
 				else if (map_data->map.map[i][j] == 'S')
-					player->rotationAngle = PI / 2;
+					player->rotation_angle = PI / 2;
 				else if (map_data->map.map[i][j] == 'E')
-					player->rotationAngle = 0;
+					player->rotation_angle = 0;
 				else if (map_data->map.map[i][j] == 'W')
-					player->rotationAngle = PI;
+					player->rotation_angle = PI;
 				return ;
 			}
 		}
@@ -88,11 +88,11 @@ void	ft_init_data(t_data *data)
 	map_data->ceil_color = -1;
 	map_data->floor_color = -1;
 	player->radius = 100;
-	player->turnDirection = 0;
-	player->walkDirection = 0;
-	player->horMove = 0;
-	player->walkSpeed = 0.05 * TILE_SIZE;
-	player->turnSpeed = 2 * (PI / 180);
+	player->turn_direction = 0;
+	player->walk_direction = 0;
+	player->hor_move = 0;
+	player->walk_speed = 0.05 * TILE_SIZE;
+	player->turen_speed = 2 * (PI / 180);
 }
 
 void	ft_init_lock(t_data *data)

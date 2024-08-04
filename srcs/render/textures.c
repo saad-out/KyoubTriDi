@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:51:02 by soutchak          #+#    #+#             */
-/*   Updated: 2024/08/01 13:15:35 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/04 11:11:49 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ int	get_texel_y(t_ray *ray, int y, t_img *texture)
 {
 	int	dis_from_top;
 
-	dis_from_top = y + (ray->wallStripHeight / 2) - (HEIGHT / 2);
-	return ((1LL * dis_from_top * texture->height + ray->wallStripHeight / 2) \
-			/ ray->wallStripHeight);
+	dis_from_top = y + (ray->wall_strip_height / 2) - (HEIGHT / 2);
+	return ((1LL * dis_from_top * texture->height + ray->wall_strip_height / 2) \
+			/ ray->wall_strip_height);
 }
 
 int	clamp(int value, int min, int max)
@@ -49,7 +49,7 @@ int	add_shading(t_ray *ray, int color)
 	c.red = (color >> 16) & 0xFF;
 	c.green = (color >> 8) & 0xFF;
 	c.blue = color & 0xFF;
-	factor = log10(ray->wallStripHeight / 35);
+	factor = log10(ray->wall_strip_height / 35);
 	c.red = clamp(c.red * factor, 0, 255);
 	c.green = clamp(c.green * factor, 0, 255);
 	c.blue = clamp(c.blue * factor, 0, 255);
@@ -66,13 +66,13 @@ void	draw_wall_texture(t_data *data, t_ray *ray)
 	t_img	texture;
 
 	set_texture(ray, data, &texture);
-	if (ray->wasHitVertical)
+	if (ray->was_hit_vertical)
 		texel_x = (int)ray->intersection.y % TILE_SIZE;
 	else
 		texel_x = (int)ray->intersection.x % TILE_SIZE;
 	texel_x = (texel_x * texture.width) / TILE_SIZE;
-	y = ray->wallTop;
-	while (y < ray->wallBottom)
+	y = ray->wall_top;
+	while (y < ray->wall_bottom)
 	{
 		texel_y = get_texel_y(ray, y, &texture);
 		texel_y = texel_y % texture.height;
