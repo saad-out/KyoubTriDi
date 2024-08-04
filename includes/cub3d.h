@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/04 10:08:48 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/04 10:17:52 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,6 +284,7 @@ void							ft_draw_line(t_mlx *mlx, t_draw_line *line);
 void							raycasting(t_data *data);
 bool							is_wall_1(double x, double y, t_data *data);
 bool							is_wall_2(double x, double y, t_data *data);
+bool							is_player(char c);
 void							cast_ray(t_data *data, t_ray *ray,
 									double rayangle, int skip);
 void							compute_ver_intercept(t_player *player,

@@ -6,11 +6,16 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:23:01 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/01 12:05:36 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/04 10:17:20 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+
+bool	is_player(char c)
+{
+	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
+}
 
 bool	is_empty_line(char final_char_line)
 {

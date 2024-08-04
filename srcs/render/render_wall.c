@@ -3,14 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   render_wall.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:56:18 by soutchak          #+#    #+#             */
-/*   Updated: 2024/08/02 18:33:44 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/04 10:12:44 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+
+int	render_frame(void *d)
+{
+	t_data		*data;
+	t_img		flame;
+	static int	index = 0;
+
+	data = (t_data *)d;
+	if (index >= 30)
+		index = 0;
+	if (index < 10)
+		flame = data->map_data->txt.flame[0];
+	else if (index < 20)
+		flame = data->map_data->txt.flame[1];
+	else if (index < 30)
+		flame = data->map_data->txt.flame[2];
+	move_player(data);
+	raycasting(data);
+	paste_part_into_image(&flame, &data->mlx->img, 0, 0);
+	mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win,
+		data->mlx->img.img_ptr, 0, 0);
+	index++;
+	return (0);
+}
 
 void	draw_ceiling(t_data *data, int column, int wallTop)
 {
@@ -41,10 +65,9 @@ void	draw_floor(t_data *data, int column, int wallBottom)
 	{
 		x = ((double)y / (double)HEIGHT);
 		x = pow(x, 3);
-		my_mlx_pixel_put(&data->mlx->img, column, y, \
-						(((int)(c.red * x) << 16) \
-						| ((int)(c.green * x) << 8) \
-						| (int)(c.blue * x)));
+		my_mlx_pixel_put(&data->mlx->img, column, y, (((int)(c.red
+						* x) << 16) | ((int)(c.green * x) << 8) | (int)(c.blue
+					* x)));
 		y++;
 	}
 }
