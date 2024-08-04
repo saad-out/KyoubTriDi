@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/04 11:57:22 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/04 13:02:59 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define PI 3.14159265
 # define PI2 1.570796325
 # define MINIMAP_SCALE 0.02
-# define FOV 1.04719755 
+# define FOV 1.04719755
 # define NUM_RAYS WIDTH
 
 # define DOOR "textures/creepydoor.xpm"
@@ -70,8 +70,6 @@
 # include "../libs/ft_containers/ft_data_structres.h"
 # include "../libs/libft/libft.h"
 # include "../libs/minilibx-linux/mlx.h"
-// #include <mlx.h>
-// #include "mlx/mlx.h"
 # include <ao/ao.h>
 # include <errno.h>
 # include <fcntl.h>

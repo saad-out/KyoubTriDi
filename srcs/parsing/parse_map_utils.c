@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:05:44 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/02 11:43:35 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/04 12:54:45 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ char	**ft_lst_to_map(t_lst *head)
 	map = allocate_and_initialize_map(head);
 	i = -1;
 	lst = head;
-	while (++i < ft_lstsize(head))
+	while (++i < (int)ft_lstsize(head))
 	{
 		j = -1;
 		while (++j < max_line_len(head))
 		{
 			line = lst->content;
-			if (j < ft_strlen(line))
+			if (j < (int)ft_strlen(line))
 				map[i][j] = line[j];
 			if (map[i][j] == 'D')
 				map[i][j] = '2';

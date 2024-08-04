@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 15:19:43 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/04 11:05:14 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/04 13:03:24 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,11 @@
 int	mouse_move(int x, int y, t_data *data)
 {
 	static int	old_x = 0;
-	static int	old_y = 0;
 	int			diff_x;
-	int			diff_y;
 
+	y = 0;
 	diff_x = x - old_x;
-	diff_y = y - old_y;
-	old_x = x;
-	old_y = y;
+	old_x = x - y;
 	data->player->rotation_angle += diff_x * 0.005;
 	return (0);
 }
