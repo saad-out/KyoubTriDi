@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 15:19:43 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/03 15:21:27 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/04 13:03:24 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,37 +15,34 @@
 int	mouse_move(int x, int y, t_data *data)
 {
 	static int	old_x = 0;
-	static int	old_y = 0;
 	int			diff_x;
-	int			diff_y;
 
+	y = 0;
 	diff_x = x - old_x;
-	diff_y = y - old_y;
-	old_x = x;
-	old_y = y;
-	data->player->rotationAngle += diff_x * 0.005;
+	old_x = x - y;
+	data->player->rotation_angle += diff_x * 0.005;
 	return (0);
 }
 
 void	player_movement_hooks(int keycode, t_data *data)
 {
 	if (keycode == UP_ARROW || keycode == W)
-		data->player->walkDirection = 1;
+		data->player->walk_direction = 1;
 	else if (keycode == DOWN_ARROW || keycode == S)
-		data->player->walkDirection = -1;
+		data->player->walk_direction = -1;
 	else if (keycode == LEFT_ARROW)
-		data->player->turnDirection = -1;
+		data->player->turn_direction = -1;
 	else if (keycode == RIGHT_ARROW)
-		data->player->turnDirection = 1;
+		data->player->turn_direction = 1;
 	else if (keycode == A)
 	{
-		data->player->walkDirection = -1;
-		data->player->horMove = PI_2;
+		data->player->walk_direction = -1;
+		data->player->hor_move = PI2;
 	}
 	else if (keycode == D)
 	{
-		data->player->walkDirection = 1;
-		data->player->horMove = PI_2;
+		data->player->walk_direction = 1;
+		data->player->hor_move = PI2;
 	}
 	else if (keycode == T)
 		handle_doors(data);
@@ -70,44 +67,18 @@ int	key_realse(int keycode, t_data *data)
 	if (keycode == UP_ARROW || keycode == DOWN_ARROW || keycode == W
 		|| keycode == S)
 	{
-		data->player->walkDirection = 0;
+		data->player->walk_direction = 0;
 	}
 	else if (keycode == LEFT_ARROW || keycode == RIGHT_ARROW)
 	{
-		data->player->turnDirection = 0;
-		data->player->horMove = 0;
+		data->player->turn_direction = 0;
+		data->player->hor_move = 0;
 	}
 	else if (keycode == A || keycode == D)
 	{
-		data->player->walkDirection = 0;
-		data->player->horMove = 0;
+		data->player->walk_direction = 0;
+		data->player->hor_move = 0;
 	}
-	return (0);
-}
-
-int	render_frame(void *d)
-{
-	t_data		*data;
-	t_img		flame;
-	static int	index = 0;
-
-	data = (t_data *)d;
-	if (index >= 30)
-		index = 0;
-	if (index < 10)
-		flame = data->map_data->txt.flame[0];
-	else if (index < 20)
-		flame = data->map_data->txt.flame[1];
-	else if (index < 30)
-		flame = data->map_data->txt.flame[2];
-	move_player(data);
-	raycasting(data);
-	paste_part_into_image(&flame, &data->mlx->img, 0, 0);
-	mlx_put_image_to_window(data->mlx->mlx_ptr, \
-							data->mlx->win, \
-							data->mlx->img.img_ptr, \
-							0, 0);
-	index++;
 	return (0);
 }
 

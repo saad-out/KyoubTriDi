@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 10:43:10 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/01 12:04:06 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/04 13:15:40 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,17 @@ char	*check_line_map(char *line, bool *player)
 	i = 0;
 	while (line[i] != '\0')
 	{
-		if (i == ft_strlen(line) - 1 && line[i] == '\n')
+		if ((size_t) i == ft_strlen(line) - 1 && line[i] == '\n')
 		{
 			line[i] = '\0';
 			break ;
 		}
 		if (!is_valide_char_map(line[i]))
 			ft_error();
+		if (player_exist(line[i]) && (*player))
+			ft_error();
 		if (player_exist(line[i]))
 			*player = true;
-		else if (player_exist(line[i]) && (*player_exist))
-			ft_error();
 		i++;
 	}
 	i = ft_strlen(line) - 1;
@@ -86,14 +86,14 @@ void	check_map(char **map, int nb_line, int col_len)
 			{
 				if (i == 0 || i == nb_line - 1 || j == 0 || j == col_len - 1)
 					ft_error();
-				if (map[i - 1][j] == ' ' || map[i + 1][j] == ' '
-					|| map[i][j - 1] == ' ' || map[i][j + 1] == ' ')
+				if (map[i - 1][j] == ' ' || map[i + 1][j] == ' ' || map[i][j
+					- 1] == ' ' || map[i][j + 1] == ' ')
 					ft_error();
 			}
 			if (map[i][j] == '2')
 			{
-				if (!((map[i - 1][j] == '1' && map[i + 1][j] == '1')
-					|| map[i][j - 1] == '1' || map[i][j + 1] == '1'))
+				if (!((map[i - 1][j] == '1' && map[i + 1][j] == '1') || map[i][j
+						- 1] == '1' || map[i][j + 1] == '1'))
 					ft_error();
 			}
 		}

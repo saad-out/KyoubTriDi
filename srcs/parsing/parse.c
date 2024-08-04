@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:26:16 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/30 12:26:55 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/04 12:18:06 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ char	**allocate_and_initialize_map(t_lst *head)
 	if (!map)
 		ft_error();
 	i = 0;
-	while (i < ft_lstsize(head))
+	while ((size_t)i < ft_lstsize(head))
 	{
 		map[i] = (char *)malloc(sizeof(char) * max_line_len(head));
 		i++;
 	}
 	i = 0;
-	while (i < ft_lstsize(head))
+	while ((size_t)i < ft_lstsize(head))
 	{
 		j = 0;
 		while (j < max_line_len(head))

@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 10:09:48 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/02 11:53:43 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/04 09:41:13 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	get_color(char *joined)
 	int		r;
 	int		g;
 	int		b;
-	char *tmp;
+	char	*tmp;
 	char	**line;
 
 	tmp = joined;

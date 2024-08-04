@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 13:18:50 by soutchak          #+#    #+#             */
-/*   Updated: 2024/08/02 18:33:40 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/04 11:11:49 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ void	cast_ray(t_data *data, t_ray *ray, double rayangle, int skip)
 	tmp.y = player->y;
 	ray->distance = distance(tmp, min);
 	if (equal_points(min, ver_inter))
-		ray->wasHitVertical = true;
+		ray->was_hit_vertical = true;
 	else
-		ray->wasHitVertical = false;
+		ray->was_hit_vertical = false;
 }
 
 void	raycasting(t_data *data)
@@ -45,7 +45,7 @@ void	raycasting(t_data *data)
 	int			i;
 
 	player = data->player;
-	rayangle = player->rotationAngle - FOV / 2;
+	rayangle = player->rotation_angle - FOV / 2;
 	angle_inc = (double)FOV / (double)NUM_RAYS;
 	i = -1;
 	while (++i < NUM_RAYS)
@@ -53,13 +53,13 @@ void	raycasting(t_data *data)
 		ray[i].column = i;
 		rayangle = normalize_angle(rayangle);
 		cast_ray(data, &ray[i], rayangle, 1);
-		ray[i].wallStripHeight = get_wall_height(data, &ray[i]);
-		ray[i].wallTop = (HEIGHT / 2) - (ray[i].wallStripHeight / 2);
-		ray[i].wallBottom = (HEIGHT / 2) + (ray[i].wallStripHeight / 2);
+		ray[i].wall_strip_height = get_wall_height(data, &ray[i]);
+		ray[i].wall_top = (HEIGHT / 2) - (ray[i].wall_strip_height / 2);
+		ray[i].wall_bottom = (HEIGHT / 2) + (ray[i].wall_strip_height / 2);
 		rayangle += angle_inc;
 	}
 	i = -1;
 	while (++i < NUM_RAYS)
 		draw_wall(data, &ray[i]);
-	ft_render_map(data->mlx, data->map_data, player);
+	ft_render_map(data);
 }

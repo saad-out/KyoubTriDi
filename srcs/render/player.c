@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 18:18:16 by soutchak          #+#    #+#             */
-/*   Updated: 2024/08/01 19:01:12 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/04 11:01:16 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ void	move_player(t_data *data)
 	t_point		step;
 
 	player = data->player;
-	movestep = player->walkDirection * player->walkSpeed;
-	player->rotationAngle += player->turnDirection * player->turnSpeed;
-	step.x = cos(player->rotationAngle + player->horMove) * movestep;
-	step.y = sin(data->player->rotationAngle + player->horMove) * movestep;
+	movestep = player->walk_direction * player->walk_speed;
+	player->rotation_angle += player->turn_direction * player->turen_speed;
+	step.x = cos(player->rotation_angle + player->hor_move) * movestep;
+	step.y = sin(data->player->rotation_angle + player->hor_move) * movestep;
 	handle_collision(&next_x, &next_y, step, data);
 	data->player->x = next_x;
 	data->player->y = next_y;

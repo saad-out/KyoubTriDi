@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doors.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:23:36 by soutchak          #+#    #+#             */
-/*   Updated: 2024/08/02 10:28:31 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/04 11:00:27 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	handle_doors(t_data *data)
 
 	player = data->player;
 	ray.column = -1;
-	cast_ray(data, &ray, normalize_angle(player->rotationAngle), 0);
+	cast_ray(data, &ray, normalize_angle(player->rotation_angle), 0);
 	if (is_door(data, ray.intersection.x, ray.intersection.y, 0) \
 		&& ray.distance < (double)(TILE_SIZE * 2))
 		toggle_door(data, ray.intersection.x, ray.intersection.y);
