@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/04 13:02:59 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/05 10:47:55 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,12 +255,14 @@ struct							s_ray
 };
 
 /*   Prototypes   */
+/* Init and Mlx */
 void							ft_init_data(t_data *data);
 void							ft_init_mlx(t_mlx *mlx);
 void							ft_init_player_position(t_player *player,
 									t_map_data *map_data);
 void							my_mlx_pixel_put(t_img *img, int x, int y,
 									int color);
+/* Drawing and Raycasting */
 void							ft_draw_square(t_mlx *mlx,
 									t_draw_square *square);
 void							draw_map(t_mlx *mlx, t_map_data *map_data);
@@ -299,10 +301,18 @@ int								get_texel_y(t_ray *ray, int y, t_img *texture);
 void							draw_ceiling(t_data *data, int column,
 									int wallTop);
 double							get_wall_height(t_data *data, t_ray *ray);
+int								clamp(int value, int min, int max);
+bool							cannot_move(double x, double y, t_data *data);
+bool							is_door(t_data *data, double x, double y,
+									int skip);
+/* Hooks */
 int								key_press(int keycode, t_data *data);
 int								key_realse(int keycode, t_data *data);
 int								mouse_move(int x, int y, t_data *data);
+int								close_window(t_data *data);
 void							setup_hooks(t_data *data);
+
+/* Parsing */
 void							ft_error(void);
 void							skip_digits(char **line);
 void							skip_whitespace(char **line);
@@ -340,11 +350,8 @@ char							**ft_lst_to_map(t_lst *head);
 char							**allocate_and_initialize_map(t_lst *head);
 void							parse_map_file(char *file,
 									t_map_data *map_data);
-int								clamp(int value, int min, int max);
-bool							cannot_move(double x, double y, t_data *data);
-bool							is_door(t_data *data, double x, double y,
-									int skip);
 void							handle_doors(t_data *data);
+/* Sound and Utils*/
 void							*play_mp3(void *arg);
 void							play_sound_bg(char *mp3);
 void							load_textures(t_map_data *md, t_mlx *mlx);

@@ -6,7 +6,7 @@
 #    By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/20 16:06:03 by klakbuic          #+#    #+#              #
-#    Updated: 2024/08/04 11:57:08 by klakbuic         ###   ########.fr        #
+#    Updated: 2024/08/04 13:04:16 by klakbuic         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ DRAWDIR      := draw
 
 # Compiler and flags
 CC           := cc
-CFLAGS       := -Wall -Wextra -lmpg123 -lao
+CFLAGS       := -Wall -Wextra -Werror -lmpg123 -lao
 DEBUG        := -g3 -fsanitize=address
 
 # Libraries
@@ -101,7 +101,7 @@ $(OBJSDIR):
 $(LIBS):
 	@make -C libs/libft
 	@make -C libs/ft_containers
-	@cd libs/minilibx-linux && ./configure && make
+	@cd libs/minilibx-linux && ./configure && make > /dev/null
 
 # Clean object files
 clean:

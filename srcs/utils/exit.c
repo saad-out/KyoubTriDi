@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 09:53:21 by soutchak          #+#    #+#             */
-/*   Updated: 2024/08/02 10:51:29 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/05 10:45:08 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,27 @@ bool	quit_program(t_data *data)
 	bool	quit;
 
 	if (pthread_mutex_lock(&data->quit.mutex) != 0)
-		return (printf(RED"Error init mutex\n"RESET), exit(1), true);
+		return (printf(RED "Error init mutex\n" RESET), exit(1), true);
 	quit = data->quit.flag;
 	if (pthread_mutex_unlock(&data->quit.mutex) != 0)
-		return (printf(RED"Error init mutex\n"RESET), exit(1), true);
+		return (printf(RED "Error init mutex\n" RESET), exit(1), true);
 	return (quit);
 }
 
 void	set_exit_flag(t_data *data)
 {
 	if (pthread_mutex_lock(&data->quit.mutex) != 0)
-		return (printf(RED"Error init mutex\n"RESET), exit(1));
+		return (printf(RED "Error init mutex\n" RESET), exit(1));
 	data->quit.flag = true;
 	if (pthread_mutex_unlock(&data->quit.mutex) != 0)
-		return (printf(RED"Error init mutex\n"RESET), exit(1));
+		return (printf(RED "Error init mutex\n" RESET), exit(1));
+}
+
+int	close_window(t_data *data)
+{
+	set_exit_flag(data);
+	running_threads(STOP, 0);
+	free_all_mem(data);
+	ao_shutdown();
+	exit(0);
 }

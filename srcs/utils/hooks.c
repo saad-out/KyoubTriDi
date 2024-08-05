@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 15:19:43 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/04 13:03:24 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/05 10:45:14 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,5 @@ void	setup_hooks(t_data *data)
 	mlx_hook(data->mlx->win, 2, 1L << 0, key_press, data);
 	mlx_hook(data->mlx->win, 3, 1L << 1, key_realse, data);
 	mlx_hook(data->mlx->win, 6, 1L << 6, mouse_move, data);
+	mlx_hook(data->mlx->win, 17, 0, close_window, data);
 }
