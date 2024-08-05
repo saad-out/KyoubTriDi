@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 13:18:50 by soutchak          #+#    #+#             */
-/*   Updated: 2024/08/04 11:11:49 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:46:43 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,4 @@ void	raycasting(t_data *data)
 	i = -1;
 	while (++i < NUM_RAYS)
 		draw_wall(data, &ray[i]);
-	ft_render_map(data);
 }

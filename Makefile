@@ -6,7 +6,7 @@
 #    By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/20 16:06:03 by klakbuic          #+#    #+#              #
-#    Updated: 2024/08/04 13:04:16 by klakbuic         ###   ########.fr        #
+#    Updated: 2024/08/05 14:35:59 by klakbuic         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,11 +23,12 @@ DRAWDIR      := draw
 
 # Compiler and flags
 CC           := cc
-CFLAGS       := -Wall -Wextra -Werror -lmpg123 -lao
 DEBUG        := -g3 -fsanitize=address
+CFLAGS       = -Wall -Wextra -Werror -I$(HOME)/local/include
+LDFLAGS      = -L$(HOME)/local/lib -lmpg123 -lao
 
 # Libraries
-MLX          := libs/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm
+MLX          := libs/mlx/libmlx_Linux.a -lXext -lX11 -lm
 LIBFT        := libs/libft/libft.a
 CONTAINERS   := libs/ft_containers/containersft.a
 LIBS         := $(MLX) $(LIBFT) $(CONTAINERS)
@@ -84,11 +85,11 @@ all: $(NAME)
 
 # Build target
 $(NAME): $(OBJSDIR) $(OBJS) $(HEADER) $(LIBS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -I $(HEADER) -o $(NAME)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBS) -I $(HEADER) -o $(NAME)
 
 # Compile source files
 $(OBJSDIR)/%.o: $(SRCSDIR)/%.c $(HEADER)
-	@$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 # Create object directories
 $(OBJSDIR):
@@ -101,13 +102,13 @@ $(OBJSDIR):
 $(LIBS):
 	@make -C libs/libft
 	@make -C libs/ft_containers
-	@cd libs/minilibx-linux && ./configure && make > /dev/null
+	@cd libs/mlx && ./configure && make
 
 # Clean object files
 clean:
 	@make -C libs/libft clean
 	@make -C libs/ft_containers clean
-	@make -C libs/minilibx-linux clean
+	@make -C libs/mlx clean
 	@$(RM) -rf $(OBJSDIR)
 
 # Clean object files and executable

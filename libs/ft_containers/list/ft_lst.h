@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lst.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 22:18:28 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/07/06 10:39:06 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/04 13:32:22 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 typedef struct s_lst
 {
 	void			*content;
-	struct s_list	*next;
-	struct s_list	*prev;
+	struct s_lst	*next;
+	struct s_lst	*prev;
 }					t_lst;
 
 t_lst				*ft_lstnew(void *content);

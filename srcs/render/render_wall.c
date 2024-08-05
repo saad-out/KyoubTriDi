@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_wall.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:56:18 by soutchak          #+#    #+#             */
-/*   Updated: 2024/08/04 11:11:49 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:47:36 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	render_frame(void *d)
 	move_player(data);
 	raycasting(data);
 	paste_part_into_image(&flame, &data->mlx->img, 0, 0);
+	ft_render_map(data);
 	mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win,
 		data->mlx->img.img_ptr, 0, 0);
 	index++;

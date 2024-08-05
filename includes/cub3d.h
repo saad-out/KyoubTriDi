@@ -6,7 +6,7 @@
 /*   By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/05 10:47:55 by klakbuic         ###   ########.fr       */
+/*   Updated: 2024/08/05 14:35:03 by klakbuic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@
 /*   Includes   */
 # include "../libs/ft_containers/ft_data_structres.h"
 # include "../libs/libft/libft.h"
-# include "../libs/minilibx-linux/mlx.h"
+# include "../libs/mlx/mlx.h"
 # include <ao/ao.h>
 # include <errno.h>
 # include <fcntl.h>
