@@ -11,6 +11,9 @@
 - Minimap: A minimap shows the player's position and surrounding environment, with a portion of the map centered around the player.
 - Interactive Doors: Doors can be opened and closed using the O key, allowing for dynamic interaction with the environment.
 
+  ![alt text](https://github.com/saad-out/KyoubTriDi/blob/main/images/screen1.png)
+    ![alt text](https://github.com/saad-out/KyoubTriDi/blob/main/images/screen2.png)
+
 ## How It Works
 ### Raycasting Algorithm
 Raycasting is the core technique used in this engine. It involves casting rays from the player’s viewpoint and calculating where these rays intersect with walls in the 2D grid map. The distance from the player to these intersections determines the height of the walls to be rendered on the screen, creating a 3D illusion.
