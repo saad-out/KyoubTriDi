@@ -10,6 +10,16 @@
 - Player Movement and Rotation: The player can move forward, backward, and rotate left or right, changing their viewpoint dynamically.
 - Minimap: A minimap shows the player's position and surrounding environment, with a portion of the map centered around the player.
 - Interactive Doors: Doors can be opened and closed using the O key, allowing for dynamic interaction with the environment.
+- Animated Flame Sprite: The player holds an animated flame sprite, adding to the immersive experience.
+- Interactive Doors: Doors represented as D on the map that the player can open and close by pressing O.
+- Theme Music: The game features a theme music track that plays in the background, enhancing the atmosphere.
+- Sound Effects: Opening and closing doors trigger corresponding sound effects, adding to the interactive environment.
+
+
+
+
+
+
 
   ![alt text](https://github.com/saad-out/KyoubTriDi/blob/main/images/screen1.png)
     ![alt text](https://github.com/saad-out/KyoubTriDi/blob/main/images/screen2.png)
