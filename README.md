@@ -1,6 +1,8 @@
 # 3D Raycasting Engine
  This project is inspired by the world-famous eponymous 90's game, which was the first FPS ever. It will enable you to explore ray-casting. our goal will be to make a dynamic view inside a maze, in which you'll have to find our way. 
 
+![til](https://github.com/saad-out/KyoubTriDi/blob/main/images/kyoub.gif)
+
  ## Overview
  This project is a 3D raycasting engine implemented in C, inspired by classic games like Wolfenstein 3D. It showcases how a simple 2D grid map can be transformed into a 3D perspective by using the raycasting technique. The player can move around a map, interact with the environment, and experience a 3D representation of a 2D space.
 
