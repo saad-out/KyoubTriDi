@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: klakbuic <klakbuic@student.42.fr>          +#+  +:+       +#+         #
+#    By: saad <saad@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/20 16:06:03 by klakbuic          #+#    #+#              #
-#    Updated: 2024/08/05 14:35:59 by klakbuic         ###   ########.fr        #
+#    Updated: 2024/08/16 03:28:24 by saad             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,11 +24,11 @@ DRAWDIR      := draw
 # Compiler and flags
 CC           := cc
 DEBUG        := -g3 -fsanitize=address
-CFLAGS       = -Wall -Wextra -Werror -I$(HOME)/local/include
-LDFLAGS      = -L$(HOME)/local/lib -lmpg123 -lao
+CFLAGS       = -Wall -Wextra -Werror 
+LDFLAGS      = -lmpg123 -lao  -lXext -lX11 -lm 
 
 # Libraries
-MLX          := libs/mlx/libmlx_Linux.a -lXext -lX11 -lm
+MLX          := libs/mlx/libmlx_Linux.a
 LIBFT        := libs/libft/libft.a
 CONTAINERS   := libs/ft_containers/containersft.a
 LIBS         := $(MLX) $(LIBFT) $(CONTAINERS)
@@ -85,7 +85,7 @@ all: $(NAME)
 
 # Build target
 $(NAME): $(OBJSDIR) $(OBJS) $(HEADER) $(LIBS)
-	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBS) -I $(HEADER) -o $(NAME)
+	$(CC) $(OBJS) $(LIBS) $(LDFLAGS) -o $(NAME)
 
 # Compile source files
 $(OBJSDIR)/%.o: $(SRCSDIR)/%.c $(HEADER)
