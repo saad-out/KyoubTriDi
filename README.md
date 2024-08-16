@@ -1,5 +1,6 @@
-# 3D Raycasting Engine
- This project is inspired by the world-famous eponymous 90's game, which was the first FPS ever. It will enable you to explore ray-casting. our goal will be to make a dynamic view inside a maze, in which you'll have to find our way. 
+# <p align="center">3D Raycasting Engine</p>
+
+Cub3D is a 42-School cursus project, inspired by the world-famous eponymous 90's game Wolfenstein. It will enable you to explore ray-casting. Our goal will be to make a dynamic view inside a maze, in which you'll have to find our way. 
 
 ![til](https://github.com/saad-out/KyoubTriDi/blob/main/images/kyoub.gif)
 
@@ -60,6 +61,31 @@ Raycasting is the core technique used in this engine. It involves casting rays f
 
 ### Texturing
 Textures are applied to walls to enhance the visual experience. The texture mapping ensures that the correct portion of the texture is displayed based on the wall's position and the player's viewpoint. Special care is taken to minimize pixelation, ensuring that textures appear smooth even when viewed at different distances.
+
+## How to run locally
+
+### Install dependencies
+First, you need to install two sound dependencies that the program needs:
+```bash
+sudo apt-get install libao-dev libmpg123-dev
+```
+### Clone repo
+Then clone this repo locally:
+```bash
+git clone https://github.com/saad-out/KyoubTriDi
+cd KyoubTriDi
+```
+
+### Compile
+```bash
+make
+```
+
+### Run!!
+This will create `cub3D` executable in the root folder, run it with a map of ur choice (test maps are available in maps/ folder):
+```bash
+./cub3D maps/doors.cub
+```
 
 ## Conclusion
 This raycasting engine demonstrates the power of simple algorithms to create complex visual effects. The project provides a foundational understanding of 3D rendering techniques and interactive game mechanics, offering ample opportunities for further development and enhancement.
