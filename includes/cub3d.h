@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:40:24 by klakbuic          #+#    #+#             */
-/*   Updated: 2024/08/09 00:53:09 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/23 01:42:03 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define F1 "textures/1bg.xpm"
 # define F2 "textures/2bg.xpm"
 # define F3 "textures/3bg.xpm"
+# define SPRITE_FRAMES 40
 
 # define OPEN_DOOR "sounds/open2.mp3"
 # define CLOSE_DOOR "sounds/close.mp3"
@@ -217,7 +218,7 @@ struct							s_map_grid
 struct							s_textures
 {
 	t_img						walls[4];
-	t_img						flame[3];
+	t_img						flame[SPRITE_FRAMES];
 	t_img						door;
 };
 

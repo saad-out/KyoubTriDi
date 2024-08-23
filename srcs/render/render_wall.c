@@ -6,7 +6,7 @@
 /*   By: soutchak <soutchak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:56:18 by soutchak          #+#    #+#             */
-/*   Updated: 2024/08/04 15:47:36 by soutchak         ###   ########.fr       */
+/*   Updated: 2024/08/23 01:42:23 by soutchak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,12 @@ int	render_frame(void *d)
 	static int	index = 0;
 
 	data = (t_data *)d;
-	if (index >= 30)
+	if (index >= SPRITE_FRAMES * 3)
 		index = 0;
-	if (index < 10)
-		flame = data->map_data->txt.flame[0];
-	else if (index < 20)
-		flame = data->map_data->txt.flame[1];
-	else if (index < 30)
-		flame = data->map_data->txt.flame[2];
+	flame = data->map_data->txt.flame[index / 3];
 	move_player(data);
 	raycasting(data);
-	paste_part_into_image(&flame, &data->mlx->img, 0, 0);
+	paste_part_into_image(&flame, &data->mlx->img, 0, HEIGHT - flame.height);
 	ft_render_map(data);
 	mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win,
 		data->mlx->img.img_ptr, 0, 0);
